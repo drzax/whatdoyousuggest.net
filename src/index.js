@@ -1,4 +1,8 @@
 import App from './components/App';
-export default function() {
-	return <App />;
-}
+import Router from 'preact-router';
+
+export default () => (
+	<Router>
+		<App path="/:word?" />
+	</Router>
+);

@@ -5,15 +5,23 @@ import d from 'debug';
 import debounce from 'debounce';
 import { CubeGrid } from 'better-react-spinkit';
 import classNames from 'classnames/bind';
+import { route } from 'preact-router';
 
 const cx = classNames.bind(styles);
 
 const debug = d('wdys');
 
-debug(styles);
 export default class App extends Component {
 	handleInput = ev => {
-		let word = ev.target.value
+		let input = ev.target.value;
+		this.setState({ input });
+		route(
+			`/${input
+				.split(' ')
+				.map(encodeURIComponent)
+				.join('+')}`
+		);
+		let word = input
 			.trim()
 			.toLowerCase()
 			.replace(/[.,\\/#!$%\\^&\\*;:{}=\-_`~()\\?]/g, '');
@@ -43,12 +51,19 @@ export default class App extends Component {
 	};
 	constructor() {
 		super();
-		this.fetchData = debounce(this.fetchData, 2000);
+		this.fetchData = debounce(this.fetchData, 1500);
 	}
 
-	componentDidMount() {}
+	componentWillMount() {
+		let { word } = this.props;
+		word = word.replace('+', ' ');
+		if (word) {
+			this.setState({ input: word, loading: true });
+			this.fetchData(word);
+		}
+	}
 
-	render(props, { data, word, loading }) {
+	render(props, { data, word, loading, input }) {
 		debug(['Phrases'].concat(data), word);
 		return (
 			<div className={cx('container')}>
@@ -59,6 +74,7 @@ export default class App extends Component {
 						type="text"
 						placeholder="Suggest this ..."
 						onKeyup={this.handleInput}
+						value={input}
 					/>
 				</div>
 				<div>
