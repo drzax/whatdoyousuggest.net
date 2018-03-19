@@ -1,1 +1,4 @@
-.svn
+node_modules
+build
+*.log
+.env
