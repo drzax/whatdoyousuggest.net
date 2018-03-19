@@ -11,10 +11,11 @@ const app = express();
 
 app.use(
   cors({
-    origin: (origin, cb) =>
-      allowedOrigins.indexOf(origin) > -1
+    origin: (origin, cb) => {
+      return allowedOrigins.indexOf(origin) > -1
         ? cb(null, true)
-        : cb(new Error('CORS Error'))
+        : cb(new Error('CORS Error'));
+    }
   })
 );
 
