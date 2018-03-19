@@ -20,6 +20,8 @@ app.use(
 );
 
 app.get('/', (req, res) => {
+  res.set('Cache-Control', 'public, max-age=604800, s-maxage=604800');
+
   got('http://google.com/complete/search', {
     json: true,
     query: { client: 'chrome', q: req.query.q }
