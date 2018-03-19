@@ -5,6 +5,7 @@ const express = require('express');
 
 const allowedOrigins = [
   'https://whatdoyousuggest.net',
+  'http://whatdoyousuggest.net',
   'http://localhost:8080',
   'https://laughing-euclid-388e47.netlify.com'
 ];
