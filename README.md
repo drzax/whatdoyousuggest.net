@@ -4,6 +4,8 @@ This is an old experiment which has now gone through [a few](https://elvery.net/
 
 It explores the suggestions made by Google's search engine. It's basically just some fun with words and the zeitgeist (and how it's mediated by Google).
 
+![Visualisation of Google suggestions for the search phrase 'what do you suggest'](https://elvery.net/drzax/user/files/Screen%20Shot%202018-03-20%20at%2011.27.19%20am.png)
+
 ## Deployment
 
 This is deployed using [firebase functions](https://firebase.google.com/docs/functions/?authuser=0) and [Netlify](https://www.netlify.com/) (which is awesome, btw).
