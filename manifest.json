@@ -1,6 +1,6 @@
 {
 	"name": "What do you suggest?",
-	"short_name": "what-do-you-suggest",
+	"short_name": "WDYS?",
 	"start_url": "/",
 	"display": "standalone",
 	"orientation": "portrait",
