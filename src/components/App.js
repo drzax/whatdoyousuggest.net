@@ -56,7 +56,7 @@ export default class App extends Component {
 
 	componentWillMount() {
 		let { word } = this.props;
-		word = word.replace('+', ' ');
+		word = word.replace(/\+/g, ' ');
 		if (word) {
 			this.setState({ input: word, loading: true });
 			this.fetchData(word);
