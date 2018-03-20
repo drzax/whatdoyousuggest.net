@@ -103,7 +103,7 @@ export default class App extends Component {
 				</div>
 				<p className={cx('attribution')}>
 					{'A resurected project by '}
-					<a href="https://elvery.net">
+					<a href="https://twitter.com/drzax">
 						drzax
 					</a> (<a href="https://github.com/drzax/whatdoyousuggest.net">
 						code
