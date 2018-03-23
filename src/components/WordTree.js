@@ -37,8 +37,6 @@ export default function WordTree({ data, term }) {
 			.pop().word;
 	}
 
-	console.log('words', words);
-
 	debug('chartData', { chartData, chartTerm });
 
 	return (
