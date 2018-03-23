@@ -39,7 +39,7 @@ export default class App extends Component {
 	handleLocationChange = location => {
 		debug('location', location);
 		localStorage.location = location.code;
-		this.updateChart(this.state.term, location);
+		this.updateChart(this.state.term, location.code);
 	};
 
 	currentRequest = null;
