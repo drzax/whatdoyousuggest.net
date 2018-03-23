@@ -26,7 +26,8 @@ app.get('/', (req, res) => {
 
   got('http://google.com/complete/search', {
     json: true,
-    query: { client: 'chrome', q: req.query.q }
+    // TODO: Maybe whitelist the query params here
+    query: Object.assign({ client: 'chrome' }, req.query)
   })
     .then(res => {
       return res.body[1].filter((d, i) => {

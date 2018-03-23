@@ -1,118 +1,162 @@
 import styles from './App.css';
 import { Component } from 'preact';
-import { Chart } from 'react-google-charts';
 import d from 'debug';
 import debounce from 'debounce';
-import { CubeGrid } from 'better-react-spinkit';
 import classNames from 'classnames/bind';
 import { route } from 'preact-router';
+import LocationSelector from './LocationSelector';
+import { CubeGrid } from 'better-react-spinkit';
+import WordTree from './WordTree';
+import { codes as isoCountryCodes } from 'iso-country-codes';
 
+const modifiedCountryNames = {
+	US: 'United States of America',
+	GB: 'United Kingdom'
+};
+const countriesToDisplay = ['AU', 'US', 'GB', 'DK', 'AR', 'NZ'];
+const countryData = isoCountryCodes
+	.map(d => ({
+		name: modifiedCountryNames[d.alpha2] || d.name,
+		code: d.alpha2
+	}))
+	.filter(d => countriesToDisplay.indexOf(d.code) > -1);
 const cx = classNames.bind(styles);
+const debug = d('wdys:App');
+const url2input = str => decodeURIComponent(str).replace(/\+/g, ' ');
+const input2url = str =>
+	str
+		.split(' ')
+		.map(encodeURIComponent)
+		.join('+');
+const sanitiseTerm = str =>
+	str
+		.toLowerCase()
+		.replace(/[.,\\/#!$%\\^&\\*;:{}=\-_`~()\\?]/g, '')
+		.replace(/\+/g, ' ');
+const getUserCountryCode = () =>
+	fetch('http://freegeoip.net/json/')
+		.then(res => res.json())
+		.then(json => json.country_code);
+const countryDataByCode = code => countryData.find(d => d.code === code);
 
-const debug = d('wdys');
+const debouncedFetch = debounce(fetch, 200);
 
 export default class App extends Component {
 	handleInput = ev => {
 		let input = ev.target.value;
+		let term = sanitiseTerm(input);
+		debug('handleInput', { ev, input, term });
 		this.setState({ input });
-		route(
-			`/${input
-				.split(' ')
-				.map(encodeURIComponent)
-				.join('+')}`
-		);
-		let word = input
-			.trim()
-			.toLowerCase()
-			.replace(/[.,\\/#!$%\\^&\\*;:{}=\-_`~()\\?]/g, '');
-		if (word !== this.state.word) {
-			this.fetchData.clear();
-			if (word === '') {
-				this.setState({ loading: false, data: null });
-			}
-			else {
-				this.setState({ loading: true });
-				this.fetchData(word);
-			}
-		}
+
+		route(`/${input2url(term)}`);
 	};
 
-	fetchData = word => {
-		let replacer = new RegExp(`(^|\\B)${word}\\B`);
+	handleLocationChange = location => {
+		debug('location', location);
+		localStorage.location = location.code;
+		this.updateChart(this.state.term, location);
+	};
 
-		fetch(
-			`https://us-central1-whatdoyousugges.cloudfunctions.net/suggestions/?q=${encodeURIComponent(
-				word
-			)}`
-		)
+	currentRequest = null;
+
+	updateChart = (term, location) => {
+		if (!term || term.length === 0) {
+			return this.setState({ data: null, loading: false });
+		}
+
+		if (term === this.state.term && location === this.state.location) {
+			return;
+		}
+
+		this.setState({ loading: true, term, location });
+
+		this.fetchit(term, location);
+	};
+
+	fetchit = debounce((term, location) => {
+		let replacer = new RegExp(`(^|\\B)${term}\\B`);
+		let url = `https://us-central1-whatdoyousugges.cloudfunctions.net/suggestions/?q=${encodeURIComponent(
+			term
+		)}&gl=${location.code}`;
+
+		this.currentRequest = url;
+		fetch(url)
 			.then(res => res.json())
-			.then(data => data.map(phrase => phrase.replace(replacer, word + ' ⇢ ')))
-			.then(data => this.setState({ data, word, loading: false }));
-	};
-	constructor() {
-		super();
-		this.fetchData = debounce(this.fetchData, 1500);
+			.then(data => data.map(phrase => phrase.replace(replacer, term + ' ⇢ ')))
+			.then(data => {
+				if (this.currentRequest === url) {
+					debug('Data loaded; refreshing chart', { data });
+					this.setState({ data, loading: false });
+				}
+				else {
+					debug('Stale data', { data });
+				}
+			});
+	}, 200);
+
+	async componentWillMount() {
+		// document.title = 'WDYS?';
+		debug('componentWillMount', this.props);
+		let term = sanitiseTerm(this.props.term);
+		let input = url2input(term);
+		let location =
+			countryDataByCode(
+				localStorage.location || (await getUserCountryCode())
+			) || countryDataByCode('AU');
+		this.setState({ input });
+		this.updateChart(term, location);
 	}
 
-	componentWillMount() {
-		let { word } = this.props;
-		word = word.replace(/\+/g, ' ');
-		if (word) {
-			this.setState({ input: word, loading: true });
-			this.fetchData(word);
-		}
+	componentWillReceiveProps(newProps) {
+		debug('componentWillReceiveProps', { newProps });
+		this.updateChart(
+			sanitiseTerm(newProps.term),
+			countryDataByCode(localStorage.location)
+		);
 	}
 
-	render(props, { data, word, loading, input }) {
-		debug(['Phrases'].concat(data), word);
+	render(props, { data, term, loading, input, location }) {
+		debug('render', { data, term, loading, input, location });
 		return (
 			<div className={cx('container')}>
-				<div>
-					<h1 className={cx('title')}>WDYS</h1>
+				<h1 className={cx('title')}>WDYS?</h1>
+				<div className={cx('inputContainer')}>
 					<input
-						className={cx('input', { chartVisible: loading || data })}
+						className={cx('input', {
+							chartVisible: loading || data
+						})}
 						type="text"
 						placeholder="Suggest this ..."
-						onKeyup={this.handleInput}
+						onInput={this.handleInput}
 						value={input}
 					/>
 				</div>
-				<div>
-					{loading && <CubeGrid className={cx('loader')} size={100} />}
-					{!loading && data && data.length === 0 ? (
-						<p className={cx('noSuggestions')}>
-							{'Tragically, there are no suggestions for this search.'}
-						</p>
-					) : null}
-					{!loading && data && data.length ? (
-						<Chart
-							chartType="WordTree"
-							data={[['Phrases']].concat(data.map(d => [d]))}
-							options={{
-								wordtree: {
-									format: 'implicit',
-									type: 'double',
-									word: word.split(' ').pop()
-								}
-							}}
-							width="100%"
-							height="400px"
-							loader={<span style="display:none;" />}
-						/>
-					) : null}
+				<div className={cx('chart')}>
+					{loading ? (
+						<CubeGrid className={cx('loader')} size={100} />
+					) : (
+						<WordTree data={data} term={term} />
+					)}
 				</div>
-				<p className={cx('attribution')}>
-					{'A resurected project by '}
-					<a href="https://twitter.com/drzax">
-						drzax
-					</a> (<a href="https://github.com/drzax/whatdoyousuggest.net">
-						code
-					</a>{' '}
-					|{' '}
-					<a href="https://elvery.net/drzax/tag/google-suggest">
-						explanation
-					</a>).
-				</p>
+				<div className={cx('attribution')}>
+					<p>
+						{'A resurected experiment by '}
+						<a href="https://twitter.com/drzax">
+							drzax
+						</a> (<a href="https://github.com/drzax/whatdoyousuggest.net">
+							code
+						</a>{' '}
+						| <a href="https://elvery.net/drzax/tag/wdys">explanation</a>).
+					</p>
+				</div>
+				<div className={cx('options')}>
+					<LocationSelector
+						className={cx('locationSelector')}
+						value={location}
+						options={countryData}
+						handleLocationChange={this.handleLocationChange}
+					/>
+				</div>
 			</div>
 		);
 	}
