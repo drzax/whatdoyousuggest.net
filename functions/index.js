@@ -5,16 +5,15 @@ const express = require('express');
 
 const allowedOrigins = [
   'https://whatdoyousuggest.net',
-  'http://whatdoyousuggest.net',
   'http://localhost:8080',
-  'https://laughing-euclid-388e47.netlify.com'
+  /https:\/\/([0-9a-z]+--)?laughing-euclid-388e47.netlify.com/
 ];
 const app = express();
 
 app.use(
   cors({
     origin: (origin, cb) => {
-      return allowedOrigins.indexOf(origin) > -1
+      return allowedOrigins.some(o => origin.match(o))
         ? cb(null, true)
         : cb(new Error('CORS Error'));
     }
