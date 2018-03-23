@@ -115,7 +115,7 @@ export default class LocationSelector extends Component {
 				<Snackbar
 					open={this.state.displayNotification}
 					message={`Location set to ${current.name}`}
-					autoHideDuration={40000}
+					autoHideDuration={4000}
 					onRequestClose={this.handleRequestCloseNotify}
 				/>
 			</div>
