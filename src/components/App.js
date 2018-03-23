@@ -120,7 +120,7 @@ export default class App extends Component {
 		debug('componentWillMount', this.props);
 		let term = sanitiseTerm(this.props.term);
 		this.setState({ input: url2input(term) });
-		if (localStorage.location) {
+		if (typeof window !== 'undefined' && window.localStorage.location) {
 			this.updateChart(term, countryDataByCode(localStorage.location));
 		}
 		else {
