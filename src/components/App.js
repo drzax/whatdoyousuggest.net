@@ -22,7 +22,7 @@ const sanitiseTerm = str =>
 		.replace(/[.,\\/#!$%\\^&\\*;:{}=\-_`~()\\?]/g, '')
 		.replace(/\+/g, ' ');
 const getUserCountryCode = () =>
-	fetch('http://freegeoip.net/json/')
+	fetch('https://freegeoip.net/json/')
 		.then(res => res.json())
 		.then(json => json.country_code);
 
