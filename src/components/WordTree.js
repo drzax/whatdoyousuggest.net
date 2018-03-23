@@ -27,9 +27,11 @@ export default function WordTree({ data, term }) {
 		.trim()
 		.split(' ')
 		.pop();
+	// TODO: maybe use the regex specified here to split the words / phrases https://developers.google.com/chart/interactive/docs/gallery/wordtree#tokenizing-sentences
 	let words = data
 		.reduce((acc, d) => acc.concat(d.split(' ')), [])
 		.filter((d, i, arr) => arr.indexOf(d) === i);
+
 	if (words.indexOf(chartTerm) === -1) {
 		chartTerm = words
 			.map(d => ({ word: d, dist: leven(d, term) }))
@@ -37,22 +39,29 @@ export default function WordTree({ data, term }) {
 			.pop().word;
 	}
 
+	let firstWords = data
+		.map(d => d.split(' '))
+		.filter(d => d.indexOf(chartTerm) > -1 && d[0] !== chartTerm);
+
+	debug('words', { words, firstWords });
 	debug('chartData', { chartData, chartTerm });
 
 	return (
-		<Chart
-			chartType="WordTree"
-			data={chartData}
-			options={{
-				wordtree: {
-					format: 'implicit',
-					type: 'double',
-					word: chartTerm
-				}
-			}}
-			width="100%"
-			height="400px"
-			loader={<span style="display:none;" />}
-		/>
+		<div className={cx(firstWords.length > 0 ? 'double' : 'suffix')}>
+			<Chart
+				chartType="WordTree"
+				data={chartData}
+				options={{
+					wordtree: {
+						format: 'implicit',
+						type: firstWords.length > 0 ? 'double' : 'suffix',
+						word: chartTerm
+					}
+				}}
+				width="100%"
+				height="400px"
+				loader={<span style="display:none;" />}
+			/>
+		</div>
 	);
 }
