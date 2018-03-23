@@ -7,40 +7,7 @@ import { route } from 'preact-router';
 import LocationSelector from './LocationSelector';
 import { CubeGrid } from 'better-react-spinkit';
 import WordTree from './WordTree';
-import { codes as isoCountryCodes } from 'iso-country-codes';
 
-const modifiedCountryNames = {
-	US: 'United States of America',
-	GB: 'United Kingdom',
-	RU: 'Russia'
-};
-const g20 = [
-	'AR',
-	'AU',
-	'BR',
-	'CA',
-	'CN',
-	'FR',
-	'DE',
-	'IN',
-	'ID',
-	'IT',
-	'JP',
-	'MX',
-	'RU',
-	'SA',
-	'ZA',
-	'KR',
-	'TR',
-	'GB',
-	'US'
-];
-const countryData = isoCountryCodes
-	.map(d => ({
-		name: modifiedCountryNames[d.alpha2] || d.name,
-		code: d.alpha2
-	}))
-	.filter(d => g20.indexOf(d.code) > -1);
 const cx = classNames.bind(styles);
 const debug = d('wdys:App');
 const url2input = str => decodeURIComponent(str).replace(/\+/g, ' ');
@@ -58,10 +25,6 @@ const getUserCountryCode = () =>
 	fetch('http://freegeoip.net/json/')
 		.then(res => res.json())
 		.then(json => json.country_code);
-const countryDataByCode = code =>
-	countryData.find(
-		d => (g20.indexOf(code) > -1 ? d.code === code : d.code === 'US')
-	);
 
 export default class App extends Component {
 	handleInput = ev => {
@@ -91,7 +54,6 @@ export default class App extends Component {
 		}
 
 		this.setState({ loading: true, term, location });
-
 		this.fetchit(term, location);
 	};
 
@@ -99,7 +61,7 @@ export default class App extends Component {
 		let replacer = new RegExp(`(^|\\B)${term}\\B`);
 		let url = `https://us-central1-whatdoyousugges.cloudfunctions.net/suggestions/?q=${encodeURIComponent(
 			term
-		)}&gl=${location ? location.code : null}`;
+		)}&gl=${location}`;
 
 		this.currentRequest = url;
 		fetch(url)
@@ -121,21 +83,18 @@ export default class App extends Component {
 		let term = sanitiseTerm(this.props.term);
 		this.setState({ input: url2input(term) });
 		if (typeof window !== 'undefined' && window.localStorage.location) {
-			this.updateChart(term, countryDataByCode(localStorage.location));
+			this.updateChart(term, localStorage.location);
 		}
 		else {
 			getUserCountryCode().then(code => {
-				this.updateChart(term, countryDataByCode(code));
+				this.updateChart(term, code);
 			});
 		}
 	}
 
 	componentWillReceiveProps(newProps) {
 		debug('componentWillReceiveProps', { newProps });
-		this.updateChart(
-			sanitiseTerm(newProps.term),
-			countryDataByCode(localStorage.location)
-		);
+		this.updateChart(sanitiseTerm(newProps.term), localStorage.location);
 	}
 
 	render(props, { data, term, loading, input, location }) {
@@ -176,7 +135,7 @@ export default class App extends Component {
 					<LocationSelector
 						className={cx('locationSelector')}
 						value={location}
-						options={countryData}
+						default="US"
 						handleLocationChange={this.handleLocationChange}
 					/>
 				</div>
