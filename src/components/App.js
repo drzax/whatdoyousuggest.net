@@ -11,15 +11,36 @@ import { codes as isoCountryCodes } from 'iso-country-codes';
 
 const modifiedCountryNames = {
 	US: 'United States of America',
-	GB: 'United Kingdom'
+	GB: 'United Kingdom',
+	RU: 'Russia'
 };
-const countriesToDisplay = ['AU', 'US', 'GB', 'DK', 'AR', 'NZ'];
+const g20 = [
+	'AR',
+	'AU',
+	'BR',
+	'CA',
+	'CN',
+	'FR',
+	'DE',
+	'IN',
+	'ID',
+	'IT',
+	'JP',
+	'MX',
+	'RU',
+	'SA',
+	'ZA',
+	'KR',
+	'TR',
+	'GB',
+	'US'
+];
 const countryData = isoCountryCodes
 	.map(d => ({
 		name: modifiedCountryNames[d.alpha2] || d.name,
 		code: d.alpha2
 	}))
-	.filter(d => countriesToDisplay.indexOf(d.code) > -1);
+	.filter(d => g20.indexOf(d.code) > -1);
 const cx = classNames.bind(styles);
 const debug = d('wdys:App');
 const url2input = str => decodeURIComponent(str).replace(/\+/g, ' ');
@@ -37,9 +58,10 @@ const getUserCountryCode = () =>
 	fetch('http://freegeoip.net/json/')
 		.then(res => res.json())
 		.then(json => json.country_code);
-const countryDataByCode = code => countryData.find(d => d.code === code);
-
-const debouncedFetch = debounce(fetch, 200);
+const countryDataByCode = code =>
+	countryData.find(
+		d => (g20.indexOf(code) > -1 ? d.code === code : d.code === 'US')
+	);
 
 export default class App extends Component {
 	handleInput = ev => {
@@ -77,7 +99,7 @@ export default class App extends Component {
 		let replacer = new RegExp(`(^|\\B)${term}\\B`);
 		let url = `https://us-central1-whatdoyousugges.cloudfunctions.net/suggestions/?q=${encodeURIComponent(
 			term
-		)}&gl=${location.code}`;
+		)}&gl=${location ? location.code : null}`;
 
 		this.currentRequest = url;
 		fetch(url)
@@ -94,17 +116,18 @@ export default class App extends Component {
 			});
 	}, 200);
 
-	async componentWillMount() {
-		// document.title = 'WDYS?';
+	componentWillMount() {
 		debug('componentWillMount', this.props);
 		let term = sanitiseTerm(this.props.term);
-		let input = url2input(term);
-		let location =
-			countryDataByCode(
-				localStorage.location || (await getUserCountryCode())
-			) || countryDataByCode('AU');
-		this.setState({ input });
-		this.updateChart(term, location);
+		this.setState({ input: url2input(term) });
+		if (localStorage.location) {
+			this.updateChart(term, countryDataByCode(localStorage.location));
+		}
+		else {
+			getUserCountryCode().then(code => {
+				this.updateChart(term, countryDataByCode(code));
+			});
+		}
 	}
 
 	componentWillReceiveProps(newProps) {

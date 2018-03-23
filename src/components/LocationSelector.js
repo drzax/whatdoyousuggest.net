@@ -46,6 +46,7 @@ export default class LocationSelector extends Component {
 				>
 					<Menu
 						autoWidth
+						maxHeight={250}
 						onChange={this.handleSelection}
 						value={value}
 						children={options.map(option => (
