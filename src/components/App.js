@@ -45,16 +45,15 @@ export default class App extends Component {
 	currentRequest = null;
 
 	updateChart = (term, location) => {
-		this.setState({ location });
 		if (!term || term.length === 0) {
 			return this.setState({ data: null, loading: false });
 		}
 
 		if (term === this.state.term && location === this.state.location) {
-			return;
+			return this.setState({ location });
 		}
 
-		this.setState({ loading: true, term });
+		this.setState({ loading: true, term, location });
 		this.fetchit(term, location);
 	};
 
