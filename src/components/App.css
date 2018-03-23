@@ -66,7 +66,7 @@ body {
 }
 
 .options {
-	text-align: right;
+	justify-self: end;
 	align-self: end;
 }
 

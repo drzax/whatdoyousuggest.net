@@ -4,6 +4,10 @@ import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
 import { codes as isoCountryCodes } from 'iso-country-codes';
+import Snackbar from 'material-ui/Snackbar';
+import d from 'debug';
+
+const debug = d('wdys:LocationSelector');
 
 const modifiedCountryNames = {
 	US: 'United States of America',
@@ -50,12 +54,15 @@ export default class LocationSelector extends Component {
 	};
 
 	state = {
-		open: false
+		open: false,
+		displayNotification: false
 	};
 
 	handleSelection = (ev, val) => {
+		debug('handleSelection', { ev, val });
 		this.handleRequestClose();
 		this.props.handleLocationChange(val);
+		this.setState({ displayNotification: true });
 	};
 
 	handleClick = event => {
@@ -71,6 +78,12 @@ export default class LocationSelector extends Component {
 	handleRequestClose = () => {
 		this.setState({
 			open: false
+		});
+	};
+
+	handleRequestCloseNotify = () => {
+		this.setState({
+			displayNotification: false
 		});
 	};
 
@@ -99,6 +112,12 @@ export default class LocationSelector extends Component {
 						))}
 					/>
 				</Popover>
+				<Snackbar
+					open={this.state.displayNotification}
+					message={`Location set to ${current.name}`}
+					autoHideDuration={40000}
+					onRequestClose={this.handleRequestCloseNotify}
+				/>
 			</div>
 		);
 	}
