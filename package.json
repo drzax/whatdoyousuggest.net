@@ -13,7 +13,9 @@
 	"eslintConfig": {
 		"extends": "eslint-config-synacor"
 	},
-	"eslintIgnore": ["build/*"],
+	"eslintIgnore": [
+		"build/*"
+	],
 	"devDependencies": {
 		"eslint": "^4.5.0",
 		"eslint-config-synacor": "^1.1.0",
@@ -30,6 +32,7 @@
 		"leven": "^2.1.0",
 		"material-ui": "^0.20.0",
 		"preact": "^8.2.1",
+		"preact-cli-plugin-netlify": "^1.1.0",
 		"preact-compat": "^3.17.0",
 		"react-google-charts": "^1.5.5"
 	}
