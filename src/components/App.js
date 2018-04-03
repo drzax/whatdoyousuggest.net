@@ -92,6 +92,10 @@ export default class App extends Component {
 		}
 	}
 
+	componentDidMount() {
+		this.queryInput.focus();
+	}
+
 	componentWillReceiveProps(newProps) {
 		debug('componentWillReceiveProps', { newProps });
 		this.updateChart(sanitiseTerm(newProps.term), localStorage.location);
@@ -111,6 +115,7 @@ export default class App extends Component {
 						placeholder="Suggest this ..."
 						onInput={this.handleInput}
 						value={input}
+						ref={node => (this.queryInput = node)}
 					/>
 				</div>
 				<div className={cx('chart')}>
