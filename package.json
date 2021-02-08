@@ -36,6 +36,7 @@
 		"preact": "^8.2.1",
 		"preact-cli-plugin-netlify": "^1.1.0",
 		"preact-compat": "^3.17.0",
-		"react-google-charts": "^1.5.5"
+		"react-google-charts": "^1.5.5",
+		"react-helmet": "^6.1.0"
 	}
 }

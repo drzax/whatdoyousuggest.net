@@ -4,6 +4,7 @@ import d from 'debug';
 import debounce from 'debounce';
 import classNames from 'classnames/bind';
 import { route } from 'preact-router';
+import { Helmet } from 'react-helmet';
 import LocationSelector from './LocationSelector';
 import { CubeGrid } from 'better-react-spinkit';
 import WordTree from './WordTree';
@@ -93,6 +94,10 @@ export default class App extends Component {
 		debug('render', { data, term, loading, input, location });
 		return (
 			<div className={cx('container')}>
+				<Helmet>
+					<title>{input}</title>
+					<meta property="og:image" content={`https://fallback-automation.now.sh/api?url=https%3A%2F%2Fwhatdoyousuggest.net%2F${encodeURIComponent(input2url(term))}&amp;selector=svg`}></meta>
+				</Helmet>
 				<h1 className={cx('title')}>WDYS?</h1>
 				<div className={cx('inputContainer')}>
 					<input
