@@ -59,7 +59,7 @@ export default class App extends Component {
 
 	fetchit = debounce((term, location) => {
 		let replacer = new RegExp(`(^|\\B)${term}\\B`);
-		let url = `https://us-central1-whatdoyousugges.cloudfunctions.net/suggestions/?q=${encodeURIComponent(
+		let url = `/.netlify/functions/query?q=${encodeURIComponent(
 			term
 		)}&gl=${location}`;
 
