@@ -21,11 +21,6 @@ const sanitiseTerm = str =>
 		.toLowerCase()
 		.replace(/[.,\\/#!$%\\^&\\*;:{}=\-_`~()\\?]/g, '')
 		.replace(/\+/g, ' ');
-const getUserCountryCode = () =>
-	fetch('https://freegeoip.net/json/')
-		.then(res => res.json())
-		.then(json => json.country_code);
-
 export default class App extends Component {
 	handleInput = ev => {
 		let input = ev.target.value;
@@ -44,7 +39,7 @@ export default class App extends Component {
 
 	currentRequest = null;
 
-	updateChart = (term, location) => {
+	updateChart = (term, location = 'us') => {
 		if (!term || term.length === 0) {
 			return this.setState({ data: null, loading: false });
 		}
@@ -82,14 +77,7 @@ export default class App extends Component {
 		debug('componentWillMount', this.props);
 		let term = sanitiseTerm(this.props.term);
 		this.setState({ input: url2input(term) });
-		if (typeof window !== 'undefined' && window.localStorage.location) {
-			this.updateChart(term, localStorage.location);
-		}
-		else {
-			getUserCountryCode().then(code => {
-				this.updateChart(term, code);
-			});
-		}
+		this.updateChart(term, (typeof window !== 'undefined') ? localStorage.location : undefined);
 	}
 
 	componentDidMount() {
@@ -98,7 +86,7 @@ export default class App extends Component {
 
 	componentWillReceiveProps(newProps) {
 		debug('componentWillReceiveProps', { newProps });
-		this.updateChart(sanitiseTerm(newProps.term), localStorage.location);
+		this.updateChart(sanitiseTerm(newProps.term), (typeof window !== 'undefined') ? localStorage.location : undefined);
 	}
 
 	render(props, { data, term, loading, input, location }) {
