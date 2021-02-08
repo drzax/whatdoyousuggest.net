@@ -10,33 +10,26 @@
 		"dev": "preact watch",
 		"lint": "eslint src"
 	},
-	"eslintConfig": {
-		"extends": "eslint-config-synacor"
-	},
 	"eslintIgnore": [
 		"build/*"
 	],
 	"devDependencies": {
-		"eslint": "^4.5.0",
-		"eslint-config-synacor": "^1.1.0",
-		"firebase-tools": "^6.11.0",
 		"if-env": "^1.0.0",
-		"preact-cli": "^2.2.1"
+		"preact-cli": "^3.0.5",
+		"preact-render-to-string": "^5.1.12"
 	},
 	"dependencies": {
 		"better-react-spinkit": "^2.0.4",
-		"classnames": "^2.2.5",
-		"d3-hierarchy": "^1.1.5",
-		"debounce": "^1.1.0",
-		"debug": "^3.1.0",
-		"got": "^8.3.2",
+		"classnames": "^2.2.6",
+		"debounce": "^1.2.0",
+		"debug": "^4.3.1",
+		"got": "^11.8.1",
 		"iso-country-codes": "0.0.5",
-		"leven": "^2.1.0",
-		"material-ui": "^0.20.0",
-		"preact": "^8.2.1",
-		"preact-cli-plugin-netlify": "^1.1.0",
-		"preact-compat": "^3.17.0",
-		"react-google-charts": "^1.5.5",
+		"leven": "^3.1.0",
+		"material-ui": "^0.20.2",
+		"preact": "^10.5.12",
+		"preact-router": "^3.2.1",
+		"react-google-charts": "^3.0.15",
 		"react-helmet": "^6.1.0"
 	}
 }
