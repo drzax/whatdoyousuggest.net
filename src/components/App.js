@@ -13,7 +13,7 @@ const cx = classNames.bind(styles);
 const debug = d('wdys:App');
 const url2input = str => decodeURIComponent(str).replace(/\+/g, ' ');
 const input2url = str =>
-	str
+	(str || '')
 		.split(' ')
 		.map(encodeURIComponent)
 		.join('+');
