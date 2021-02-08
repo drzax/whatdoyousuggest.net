@@ -98,10 +98,10 @@ export default class App extends Component {
 					<title>{input}</title>
 					<meta name="twitter:card" content="summary_large_image" />
 					<meta name="twitter:site" content="@drzax" />
-					<meta name="og:title" content={`${input} - WDYS?`} />
-					<meta name="og:description" content={`Google suggestions for the search: ${input}`} />
-					<meta name="og:image" content={`https://fallback-automation.now.sh/api?url=https%3A%2F%2Fwhatdoyousuggest.net%2F${encodeURIComponent(input2url(term))}&amp;selector=svg`} />
-					<meta name="twitter:image:alt" content={`A word tree diagram showing Google's search suggestions for: ${input}`} />	
+					<meta name="og:title" content={`What do you suggest?`} />
+					<meta name="og:description" content={`Explore Google's search suggestions.`} />
+					<meta name="og:image" content={`https://elvery.net/drzax/user/files/Screen%20Shot%202018-03-20%20at%2011.27.19%20am.png`} />
+					<meta name="twitter:image:alt" content={`An example word tree diagram showing Google's search suggestions for: what do you suggest`} />	
 				</Helmet>
 				<h1 className={cx('title')}>WDYS?</h1>
 				<div className={cx('inputContainer')}>
