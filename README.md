@@ -8,4 +8,4 @@ It explores the suggestions made by Google's search engine. It's basically just 
 
 ## Deployment
 
-This is deployed using [firebase functions](https://firebase.google.com/docs/functions/?authuser=0) and [Netlify](https://www.netlify.com/) (which is awesome, btw).
+This is deployed using [Netlify](https://www.netlify.com/).

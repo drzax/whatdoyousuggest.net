@@ -8,8 +8,7 @@
 		"build": "preact build",
 		"serve": "preact build && preact serve",
 		"dev": "preact watch",
-		"lint": "eslint src",
-		"deploy": "firebase deploy --only functions"
+		"lint": "eslint src"
 	},
 	"eslintConfig": {
 		"extends": "eslint-config-synacor"
@@ -30,6 +29,7 @@
 		"d3-hierarchy": "^1.1.5",
 		"debounce": "^1.1.0",
 		"debug": "^3.1.0",
+		"got": "^8.3.2",
 		"iso-country-codes": "0.0.5",
 		"leven": "^2.1.0",
 		"material-ui": "^0.20.0",
