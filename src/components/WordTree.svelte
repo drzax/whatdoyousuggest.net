@@ -1,7 +1,7 @@
 <script lang="ts">
   import { scaleLinear } from "d3-scale";
   import unique from "reduce-unique";
-  import Node from "$components/Node.svelte";
+  import Branch from "$components/Branch.svelte";
   export let suggestions: string[];
   export let term: string;
 
@@ -94,10 +94,8 @@
   $: tree = createTree(suggestions, term);
   $: console.log("tree :>> ", tree);
 
-  const textHeight = 18;
-  const maxFontSize = textHeight * 2;
   $: scale = scaleLinear()
-    .range([textHeight, maxFontSize])
+    .range([24, 40])
     .domain([1, tree.root.phrases.length]);
   let width: number;
 
@@ -107,17 +105,13 @@
 </script>
 
 <div bind:clientWidth={width} style="position:relative">
-  <div class="nodes">
-    <Node node={tree.root} {scale} />
+  <div class="tree">
+    <Branch node={tree.root} {scale} />
   </div>
 </div>
 
 <style lang="scss">
-  .root {
-    font-weight: bold;
-    text-anchor: middle;
-  }
-  .nodes {
+  .tree {
     position: absolute;
     top: 0;
     left: 0;

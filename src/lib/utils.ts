@@ -2,12 +2,6 @@ import { writable } from "svelte/store";
 
 export const location = writable("us");
 
-// export const url2input = (str: string) =>
-//   decodeURIComponent(str).replace(/\+/g, " ");
-
-// export const input2url = (str: string) =>
-//   str.split(" ").map(encodeURIComponent).join("+");
-
 export const sanitiseTerm = (str: string) =>
   str
     .toLowerCase()
@@ -19,10 +13,8 @@ export const endpoint = (term: string, location: string) =>
 
 export const splitOutRootTerms = (suggestions: string[], phrase: string) => {
   const replacer = new RegExp(`(^|\\b)${phrase}(\\B)`);
-  return suggestions.map((d) => d.replace(replacer, phrase + " ⇢ "));
+  return suggestions.map((d) => d.replace(replacer, phrase + " ⇢"));
 };
-
-// export const getRootTerm = (input: string) => ;
 
 // Slug format: words+separated+by+plus+sign
 // Each individual term has been url encoded
