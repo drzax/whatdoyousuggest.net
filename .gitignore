@@ -1,7 +1,5 @@
+.DS_Store
 node_modules
-build
-*.log
-.env
-size-plugin.json
-# Local Netlify folder
-.netlify
+/.svelte
+/build
+/functions
