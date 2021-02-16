@@ -1,21 +1,59 @@
 <script lang="ts">
+  // Imports!
   import { linkHorizontal } from "d3-shape";
+  import { xMaxLeft, xMaxRight } from "$lib/stores";
+
+  // Exports / props
   export let node: WordTreeNode;
   export let scale;
-  export let parentX: number;
-  export let parentY: number;
+  export let parentTextLength: number = 0;
+  export let parentDistanceFromRoot: number = 0;
   export let y = 0;
 
-  let width: number;
+  // Constants / settings
+  const lineHeight: number = 45;
+  const linkDistance: number = 100;
+  const link = linkHorizontal();
 
-  const lineHeight: number = 40;
+  // Bound vars
+  let width: number = 0;
 
+  // Reactive vars
   $: fontSize = scale(node.phrases.length);
   $: before = node.before;
   $: after = node.after;
   $: level = node.level;
+  $: isRoot = node.isRoot;
 
-  const link = linkHorizontal();
+  // Calculate x-axis positioning
+  let xDistanceFromRoot: number;
+  let textLength: number;
+  let xDirection: "right" | "left"; // confusingly, this is a CSS text direction, so nodes to the left of the root have a xDirection of 'right'
+
+  // The length of the text to account for in the layout
+  $: textLength = isRoot ? width / 2 : width;
+
+  // CSS props
+  $: xDirection = level < 0 ? "right" : "left";
+  $: xDistance = isRoot
+    ? Math.max(width / 2, $xMaxRight) + 30
+    : parentTextLength + linkDistance;
+  $: xUnit = isRoot ? "px" : "px";
+  $: xStyle = `${xDirection}:${xDistance}${xUnit}`;
+
+  // Record the cumulative distance of this branch from the root node
+  $: xDistanceFromRoot =
+    parentDistanceFromRoot + parentTextLength + (isRoot ? 0 : linkDistance);
+
+  // Update the maximum extent of all branches in this direction
+  $: (xDirection === "left" ? xMaxLeft : xMaxRight).update((v) => {
+    return Math.max(xDistanceFromRoot + textLength + 30, v);
+  });
+
+  // $: if (isRoot && textLength > 0) xMaxRight.set(textLength);
+  // $: if (isRoot && textLength > 0) xMaxLeft.set(textLength);
+
+  // Calculate y-axis positioning
 
   const caluclateChildYPositions = (children) => {
     const positions = [];
@@ -33,35 +71,24 @@
   $: beforeYPositions = caluclateChildYPositions(before);
   $: afterYPositions = caluclateChildYPositions(after);
 
-  $: xDirection = level < 0 ? "right" : "left";
-  $: xDistance = level === 0 ? 50 : parentX + 100;
-  $: xUnit = level === 0 ? "%" : "px";
-  $: xStyle = `${xDirection}:${xDistance}${xUnit};`;
-
   $: yDistance = y + (node.phrases.length * lineHeight) / 2;
   $: yStyle = `top: ${yDistance}px`;
 
   $: afterHeight = after.reduce(heightReducer, 0);
   $: beforeHeight = before.reduce(heightReducer, 0);
-
-  const getY = (child) => {
-    if (level === 0) {
-      return (lineHeight * node.phrases.length) / 2;
-    }
-
-    return 0;
-  };
 </script>
 
 <div
-  class={`node ${level < 0 ? "left" : level > 0 ? "right" : "root"}`}
-  style={`font-size: ${fontSize}px; ${xStyle} ${yStyle}`}
+  class={`node ${isRoot ? "root" : level < 0 ? "left" : "right"}`}
+  style={`font-size: ${fontSize}px; ${xStyle}; ${yStyle}; opacity: ${
+    width ? 1 : 1
+  }`}
 >
   <!-- term -->
   <div class="term" bind:clientWidth={width}>{node.term}</div>
 
   <!-- link -->
-  {#if level !== 0}
+  {#if !isRoot}
     <svg
       class={`${level < 0 ? "left" : "right"} ${yDistance < 0 ? "up" : "down"}`}
       width={100}
@@ -89,8 +116,8 @@
       <svelte:self
         {node}
         {scale}
-        parentX={level === 0 ? width / 2 : width}
-        parentY={yDistance}
+        parentTextLength={textLength}
+        parentDistanceFromRoot={xDistanceFromRoot}
         y={-afterHeight / 2 + afterYPositions[i]}
       />
     {/each}
@@ -101,8 +128,8 @@
       <svelte:self
         {node}
         {scale}
-        parentX={level === 0 ? width / 2 : width}
-        parentY={yDistance}
+        parentTextLength={textLength}
+        parentDistanceFromRoot={xDistanceFromRoot}
         y={-beforeHeight / 2 + beforeYPositions[i]}
       />
     {/each}
@@ -142,10 +169,8 @@
   }
   .node {
     position: absolute;
-  }
-  .next,
-  .prev {
-    position: absolute;
+    transition: opacity 0.2s;
+    opacity: 0;
   }
 
   .right {

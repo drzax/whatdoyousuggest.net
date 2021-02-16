@@ -7,7 +7,6 @@
     const res = await fetch(endpoint(phrase, "US"));
     const raw = await res.json();
     const suggestions: string[] = splitOutRootTerms(raw, phrase);
-
     return { props: { phrase, term, slug, suggestions } };
   }
 </script>

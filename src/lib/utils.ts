@@ -23,3 +23,14 @@ export const inputsFromSlug = (slug: string) => {
   const term = phrase.trim().split(" ").pop();
   return [phrase, term, slug];
 };
+
+export const inputsFromForm = (text: string) => {
+  const phrase = sanitiseTerm(text);
+  const term = phrase.trim().split(" ").pop();
+  const slug = phrase
+    .trim()
+    .split(" ")
+    .map((d) => encodeURIComponent(d))
+    .join("+");
+  return [phrase, term, slug];
+};

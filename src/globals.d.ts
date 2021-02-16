@@ -63,10 +63,11 @@ type WordTreeData = {
 };
 
 type WordTreeNode = {
+  key: string;
   term: string;
   level: number;
   after: WordTreeNode[];
   before: WordTreeNode[];
   phrases: { text: string; index: number }[];
-  width?: number;
+  isRoot: boolean;
 };

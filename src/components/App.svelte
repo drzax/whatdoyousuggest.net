@@ -1,26 +1,38 @@
 <script lang="ts">
   import LocationSelector from "$components/LocationSelector.svelte";
-  import { endpoint, splitOutRootTerms } from "$lib/utils";
+  import Spinner from "$components/Spinner.svelte";
+  import WordTree from "$components/WordTree.svelte";
+  import { endpoint, inputsFromForm, splitOutRootTerms } from "$lib/utils";
   import debounce from "debounce";
-  import WordTree from "./WordTree.svelte";
   export let phrase: string;
   export let term: string;
   export let slug: string;
   export let suggestions: string[] = [];
 
-  const sanitiseTerm = (str: string) =>
-    str
-      .toLowerCase()
-      .replace(/[.,\\/#!$%\\^&\\*;:{}=\-_`~()\\?]/g, "")
-      .replace(/\+/g, " ");
+  let input = phrase || "";
 
   let loading: boolean = false;
   let current: string;
-  const updateSuggestions = async () => {
-    if (phrase.length === 0) {
-      history.pushState(null, `What do you suggest?`, `/`);
+  const updateSuggestions = async (input: string) => {
+    // Bail if we're on the server
+    if (typeof fetch === "undefined") return;
+
+    // Don't bother searching if there is no input
+    if (input.length === 0) {
+      phrase = undefined;
+      term = undefined;
+      slug = undefined;
+      history && history.pushState(null, `What do you suggest?`, `/`);
       return;
     }
+
+    const inputs = inputsFromForm(input);
+
+    // Bail if the new input is functionally identical
+    if (inputs[0] === phrase) return;
+
+    [phrase, term, slug] = inputs;
+
     loading = true;
     // todo figure out how to incorporate location
     const url = endpoint(phrase, "US");
@@ -35,14 +47,15 @@
     }
   };
 
-  const handleSubmit = () => updateSuggestions();
   const handleInput = debounce(updateSuggestions, 300);
+
+  $: handleInput(input);
 
   let location: { name: string; code: string };
 </script>
 
 <svelte:head>
-  <title>{phrase} - What do you suggest?</title>
+  <title>{phrase ? `${phrase} - ` : ""}What do you suggest?</title>
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@drzax" />
   <meta name="og:title" content="What do you suggest?" />
@@ -59,25 +72,33 @@
 </svelte:head>
 
 <main class="container">
-  <h1 class="title">WDYS?</h1>
+  <h1 class="title">
+    <a href="/"
+      ><img
+        class="logo"
+        src="/noun_arrow scratch_1195136.svg"
+        alt="A wiggly arrow ultimately pointing to the right"
+      /> WDYS?</a
+    >
+  </h1>
 
   <div class="inputContainer">
-    <form on:submit|preventDefault={handleSubmit}>
-      <input
-        class="input"
-        type="text"
-        placeholder="Suggest this ..."
-        on:keyup={handleInput}
-        bind:value={phrase}
-      />
-    </form>
+    <input
+      class={`input ${phrase && term && slug ? "used" : "empty"}`}
+      type="text"
+      placeholder="Suggest this ..."
+      bind:value={input}
+    />
   </div>
-
   <div class="chart">
-    {#if loading}
-      loading...
-    {:else}
-      <WordTree {suggestions} {term} />
+    {#if phrase && term && slug}
+      {#if loading}
+        <Spinner />
+      {:else if suggestions.length}
+        <WordTree {suggestions} {term} />
+      {:else}
+        <p class="no-suggestions">No suggestions!</p>
+      {/if}
     {/if}
   </div>
   <div class="attribution">
@@ -90,6 +111,12 @@
       </a>{" "}
       | <a href="https://elvery.net/drzax/tag/wdys">explanation</a>).
     </p>
+    <p>
+      Icon by Carol van Waart from <a
+        href="https://thenounproject.com/term/arrow-scratch/1195136/"
+        >the Noun Project</a
+      >
+    </p>
   </div>
   <div class="options">
     <LocationSelector bind:selection={location} />
@@ -101,11 +128,22 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   }
+
+  :global(body) {
+    margin: 0;
+    padding: 0;
+  }
+
   .title {
     font-size: 1rem;
+    margin-top: 3rem;
     text-align: center;
     grid-column-start: 1;
     grid-column-end: 3;
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
   }
 
   .chart {
@@ -139,5 +177,33 @@
     box-sizing: border-box;
     text-align: center;
     max-width: 90vw;
+    transition: margin 0.3s linear, font-size 0.3s linear;
+    &.used {
+      font-size: 1.5rem;
+      margin: 1rem auto;
+    }
+  }
+  .no-suggestions {
+    color: #aaa;
+    text-align: center;
+    font-size: 2rem;
+  }
+
+  .logo {
+    width: 70px;
+    height: auto;
+    display: inline-block;
+    vertical-align: middle;
+  }
+
+  .options {
+    align-self: end;
+    padding: 1rem;
+  }
+
+  .attribution {
+    font-size: 0.8rem;
+    line-height: 1.1;
+    padding: 0 1rem;
   }
 </style>
