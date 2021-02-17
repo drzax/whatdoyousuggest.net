@@ -1,10 +1,12 @@
 <script lang="ts">
+  import { onMount } from "svelte";
   import LocationSelector from "$components/LocationSelector.svelte";
   import Spinner from "$components/Spinner.svelte";
   import WordTree from "$components/WordTree.svelte";
   import { endpoint, inputsFromForm, splitOutRootTerms } from "$lib/utils";
   import debounce from "debounce";
   export let phrase: string;
+  export let location: string = null;
   export let term: string;
   export let slug: string;
   export let suggestions: string[] = [];
@@ -12,46 +14,72 @@
   let input = phrase || "";
 
   let loading: boolean = false;
-  let current: string;
-  const updateSuggestions = async (input: string) => {
-    // Bail if we're on the server
-    if (typeof fetch === "undefined") return;
+  let current: string = endpoint(phrase, location);
 
-    // Don't bother searching if there is no input
-    if (input.length === 0) {
-      phrase = undefined;
-      term = undefined;
-      slug = undefined;
-      history && history.pushState(null, `What do you suggest?`, `/`);
-      return;
+  onMount(async () => {
+    if (!location) {
+      try {
+        const res = await fetch(
+          "http://api.ipstack.com/check?access_key=91246e1a4ce26b50d45c058b2adc30eb"
+        );
+        const locationData = await res.json();
+        location = locationData.country_code;
+      } catch (e) {
+        location = "AU";
+      }
     }
 
-    const inputs = inputsFromForm(input);
+    window.onpopstate = () => {
+      const [l, s] = window.location.pathname.substr(1).split("/");
+      location = l.toUpperCase();
+      input = s;
+    };
+  });
 
-    // Bail if the new input is functionally identical
-    if (inputs[0] === phrase) return;
+  const updateSuggestions = debounce(
+    async (input: string, location: string) => {
+      // Bail if we're on the server
+      if (typeof fetch === "undefined") return;
 
-    [phrase, term, slug] = inputs;
+      // Don't bother searching if there is no input
+      if (input.length === 0) {
+        phrase = undefined;
+        term = undefined;
+        slug = undefined;
+        history &&
+          history.pushState(
+            null,
+            `What do you suggest?`,
+            `/${location}`.toLocaleLowerCase()
+          );
+        return;
+      }
 
-    loading = true;
-    // todo figure out how to incorporate location
-    const url = endpoint(phrase, "US");
-    current = url;
-    const res = await fetch(url);
-    const sug = await res.json();
-    if (current === url) {
-      loading = false;
-      // todo: this should probably live somewhere else: WordTree component or own function or server route
-      suggestions = splitOutRootTerms(sug, phrase);
-      history.pushState(null, `${phrase} - What do you suggest?`, `/${slug}`);
-    }
-  };
+      [phrase, term, slug] = inputsFromForm(input);
 
-  const handleInput = debounce(updateSuggestions, 300);
+      const url = endpoint(phrase, location);
 
-  $: handleInput(input);
+      // Bail if this is what we already have
+      if (url === current) return;
 
-  let location: { name: string; code: string };
+      loading = true;
+      current = url;
+      const res = await fetch(url);
+      const sug = await res.json();
+      if (current === url) {
+        loading = false;
+        // todo: this should probably live somewhere else: WordTree component or own function or server route
+        suggestions = splitOutRootTerms(sug, phrase);
+        history.pushState(
+          null,
+          `${phrase} - What do you suggest?`,
+          `/${location}/${slug}`.toLocaleLowerCase()
+        );
+      }
+    },
+    300
+  );
+  $: updateSuggestions(input, location);
 </script>
 
 <svelte:head>
@@ -119,7 +147,7 @@
     </p>
   </div>
   <div class="options">
-    <LocationSelector bind:selection={location} />
+    {#if location}<LocationSelector bind:selection={location} />{/if}
   </div>
 </main>
 

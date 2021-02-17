@@ -1,12 +1,12 @@
 <script type="typescript">
+  // imports
   import Button from "$components/Button.svelte";
   import lookup from "country-code-lookup";
-  const modifiedCountryNames = {
-    US: "United States of America",
-    GB: "United Kingdom",
-    RU: "Russia",
-  };
 
+  // exports / props
+  export let selection = "AU";
+
+  // constants
   const g20 = [
     "AR",
     "AU",
@@ -29,18 +29,18 @@
     "US",
   ];
 
-  export let selection = lookup.byIso("US");
+  // state
   let open: boolean = false;
 </script>
 
 <div class="menu">
-  <Button on:click={() => (open = !open)}>{selection.iso2}</Button>
+  <Button on:click={() => (open = !open)}>{selection}</Button>
   {#if open}
     <ul class="pop">
       {#each g20 as code}
         <li
           on:click={() => {
-            selection = lookup.byIso(code);
+            selection = code;
             open = false;
           }}
         >
