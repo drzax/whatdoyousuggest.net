@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
-    "build": "svelte-kit build && npx svelte-kit adapt",
+    "build": "not-svelte-kit build && not-svelte-kit adapt",
+    "build:lambda": "netlify-lambda build functions-src",
     "start": "svelte-kit start"
   },
   "devDependencies": {
@@ -20,7 +21,9 @@
     "d3-shape": "^2.0.0",
     "debounce": "^1.2.0",
     "got": "^11.8.1",
+    "netlify-lambda": "^2.0.3",
     "node-html-parser": "^2.1.0",
+    "not-svelte-kit": "0.0.6-next.34",
     "reduce-unique": "^2.0.1",
     "sass": "^1.32.7",
     "svelte": "^3.32.3",
