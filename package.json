@@ -22,6 +22,7 @@
     "d3-shape": "^2.0.0",
     "debounce": "^1.2.0",
     "got": "^11.8.1",
+    "node-html-parser": "^2.1.0",
     "reduce-unique": "^2.0.1",
     "sass": "^1.0.0",
     "svelte": "^3.29.0",
