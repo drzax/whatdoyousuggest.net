@@ -6,6 +6,7 @@
   // Exports / props
   export let node: WordTreeNode;
   export let scale;
+  export let scaleLinks;
   export let parentTextLength: number = 0;
   export let parentDistanceFromRoot: number = 0;
   export let y = 0;
@@ -50,9 +51,6 @@
     return Math.max(xDistanceFromRoot + textLength + 30, v);
   });
 
-  // $: if (isRoot && textLength > 0) xMaxRight.set(textLength);
-  // $: if (isRoot && textLength > 0) xMaxLeft.set(textLength);
-
   // Calculate y-axis positioning
 
   const caluclateChildYPositions = (children) => {
@@ -76,12 +74,46 @@
 
   $: afterHeight = after.reduce(heightReducer, 0);
   $: beforeHeight = before.reduce(heightReducer, 0);
+
+  const calculateLinks = (node) => {
+    if (node.isRoot) return [];
+
+    const source = level < 0 ? node.after[0] : node.before[0];
+    const target = node;
+
+    const sourceLinksCount = source.phrases.length;
+    const targetLinksCount = target.phrases.length;
+
+    const sourcePhrases = source.phrases.map((d) => d.text);
+    const targetPhrases = target.phrases.map((d) => d.text);
+
+    return targetPhrases.map((phrase) => {
+      const targetIndex = targetPhrases.indexOf(phrase);
+      const sourceIndex = sourcePhrases.indexOf(phrase);
+
+      const sourceY =
+        (yDistance < 0 ? Math.abs(yDistance) : 0) +
+        5 * sourceIndex -
+        (5 * sourceLinksCount) / 2;
+
+      const targetY =
+        (yDistance > 0 ? Math.abs(yDistance) : 0) +
+        5 * targetIndex -
+        (5 * targetLinksCount) / 2;
+
+      const source: [number, number] = [5, sourceY + 23];
+      const target: [number, number] = [linkDistance - 5, targetY + 23];
+      return { source, target };
+    });
+  };
+  var links: { source: [number, number]; target: [number, number] }[];
+  $: links = calculateLinks(node);
 </script>
 
 <div
   class={`node ${isRoot ? "root" : level < 0 ? "left" : "right"}`}
   style={`font-size: ${fontSize}px; ${xStyle}; ${yStyle}; opacity: ${
-    width ? 1 : 1
+    width ? 1 : 0
   }`}
 >
   <!-- term -->
@@ -94,19 +126,14 @@
       width={100}
       height={Math.abs(yDistance) + 40}
     >
-      <path
-        class="link"
-        d={link({
-          source: [
-            level < 0 ? 95 : 5,
-            (yDistance > 0 ? 0 : Math.abs(yDistance)) + 20,
-          ],
-          target: [
-            level < 0 ? 5 : 95,
-            (yDistance > 0 ? Math.abs(yDistance) : 0) + 20,
-          ],
-        })}
-      />
+      {#each node.phrases as phrase, i}
+        <path
+          data-phrase={phrase.text}
+          class="link"
+          style={`stroke: ${scaleLinks(String(phrase.text))};`}
+          d={link(links[i])}
+        />
+      {/each}
     </svg>
   {/if}
 
@@ -116,6 +143,7 @@
       <svelte:self
         {node}
         {scale}
+        {scaleLinks}
         parentTextLength={textLength}
         parentDistanceFromRoot={xDistanceFromRoot}
         y={-afterHeight / 2 + afterYPositions[i]}
@@ -128,6 +156,7 @@
       <svelte:self
         {node}
         {scale}
+        {scaleLinks}
         parentTextLength={textLength}
         parentDistanceFromRoot={xDistanceFromRoot}
         y={-beforeHeight / 2 + beforeYPositions[i]}
@@ -145,6 +174,7 @@
 
     &.left {
       left: 0;
+      transform: scaleX(-1);
     }
 
     &.up {

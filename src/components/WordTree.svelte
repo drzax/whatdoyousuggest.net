@@ -1,6 +1,8 @@
 <script lang="ts">
   // Imports
-  import { scaleLinear } from "d3-scale";
+  import { scaleLinear, scaleOrdinal } from "d3-scale";
+  import { schemeCategory10 } from "d3-scale-chromatic";
+
   import unique from "reduce-unique";
   import { xMaxLeft, xMaxRight } from "$lib/stores";
 
@@ -121,17 +123,19 @@
 
   // todo: handle no suggestions
   let root: WordTreeNode;
+  let scaleLinks = scaleOrdinal<string>(schemeCategory10);
   $: root = createTree(suggestions, term).root;
   $: scale = scaleLinear().range([24, 40]).domain([1, root.phrases.length]);
+  $: scaleLinks.domain(root.phrases.map((d) => String(d.index)));
   const lineHeight = 45;
-  $: console.log("root :>> ", root);
+
   $: treeHeight = root.phrases.length * lineHeight + 50;
   $: treeWidth = $xMaxLeft + $xMaxRight + 60;
 </script>
 
 <div class="container">
   <div class="tree" style={`width: ${treeWidth}px; height:${treeHeight}px`}>
-    <Branch node={root} {scale} />
+    <Branch node={root} {scale} {scaleLinks} />
   </div>
 </div>
 
