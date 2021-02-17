@@ -1,14 +1,14 @@
 import got from "got";
 
 export const get = async ({ query }) => {
-  const q = query.get("q");
-  const gl = query.get("gl");
+  const q: string = query.get("q");
+  const gl: string = query.get("gl");
   const res = await got("http://google.com/complete/search", {
     responseType: "json",
     searchParams: { client: "chrome", q, gl },
   });
-  const suggestions = res.body[1].filter(
-    (d, i) => res.body[4]["google:suggesttype"][i] === "QUERY"
+  const suggestions: string[] = res.body[1].filter(
+    (_, i: number): boolean => res.body[4]["google:suggesttype"][i] === "QUERY"
   );
 
   return {
