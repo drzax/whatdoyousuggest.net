@@ -47,6 +47,7 @@
         term = undefined;
         slug = undefined;
         history &&
+          location &&
           history.pushState(
             null,
             `What do you suggest?`,
