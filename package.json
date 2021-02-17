@@ -3,15 +3,15 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "svelte-kit dev",
-    "build": "not-svelte-kit build && not-svelte-kit adapt",
+    "build": "svelte-kit build && svelte-kit adapt",
     "build:lambda": "netlify-lambda build functions-src",
     "start": "svelte-kit start"
   },
   "devDependencies": {
     "@snowpack/plugin-typescript": "^1.0.0",
     "@sveltejs/adapter-netlify": "^1.0.0-next.0",
-    "@sveltejs/kit": "^1.0.0-next.34",
-    "@sveltejs/snowpack-config": "^1.0.0-next.3",
+    "@sveltejs/kit": "^1.0.0-next.31",
+    "@sveltejs/snowpack-config": "^1.0.0-next.1",
     "@types/d3-scale": "^3.2.2",
     "@types/d3-scale-chromatic": "^2.0.0",
     "@types/d3-shape": "^2.0.0",
@@ -23,7 +23,6 @@
     "got": "^11.8.1",
     "netlify-lambda": "^2.0.3",
     "node-html-parser": "^2.1.0",
-    "not-svelte-kit": "0.0.6-next.34",
     "reduce-unique": "^2.0.1",
     "sass": "^1.32.7",
     "svelte": "^3.32.3",
