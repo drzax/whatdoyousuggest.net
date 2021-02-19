@@ -1,4 +1,4 @@
-export type EngineName = "b" | "g";
+export type EngineName = "b" | "g" | "d";
 export type LocationName =
   | "ar"
   | "au"
@@ -44,7 +44,7 @@ export const locations: LocationName[] = [
   "us",
 ];
 
-export const engines: EngineName[] = ["g", "b"];
+export const engines: EngineName[] = ["g", "b", "d"];
 
 export const defaultOptions: Options = {
   location: "au",

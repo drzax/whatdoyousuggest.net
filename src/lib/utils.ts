@@ -62,3 +62,28 @@ export const pathToProps = (
   const { location, engine } = optionsStringToObject(optionsString);
   return { slug, location, engine };
 };
+
+export const getLangByLocation = (location: LocationName) => {
+  const langs = {
+    ar: "es",
+    au: "en",
+    br: "pt",
+    ca: "en",
+    cn: "zh",
+    fr: "fr",
+    de: "de",
+    in: "en",
+    id: "id",
+    it: "it",
+    jp: "jp",
+    mx: "es",
+    ru: "ru",
+    sa: "en",
+    za: "en",
+    kr: "ko",
+    tr: "tr",
+    gb: "en",
+    us: "us",
+  };
+  return langs[location];
+};

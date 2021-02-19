@@ -1,17 +1,22 @@
-import got from "got";
-import { parse } from "node-html-parser";
-import { getLangByLocation } from "$lib/utils";
+import { validateLocation, getLangByLocation } from "$lib/utils";
 import type { LocationName } from "$lib/constants";
 
+import got from "got";
+
 export const get = async ({ query }) => {
-  const qry: string = query.get("q");
-  const l: LocationName = query.get("l");
-  const res = await got("https://www.bing.com/AS/Suggestions", {
-    responseType: "text",
-    searchParams: { cvid: "a", qry, mkt: `${getLangByLocation(l)}-${l}` },
+  const q: string = query.get("q");
+  const l: LocationName = validateLocation(query.get("l"));
+  const res = await got("https://duckduckgo.com/ac/", {
+    responseType: "json",
+    searchParams: {
+      q,
+      kl: `${l}-${getLangByLocation(l)}`,
+    },
   });
-  const dom = parse(res.body);
-  const suggestions = dom.querySelectorAll(".sa_tm").map((d) => d.text);
+
+  const suggestions = Array.isArray(res.body)
+    ? res.body.map((d) => d.phrase)
+    : [];
 
   return {
     statusCode: 200,

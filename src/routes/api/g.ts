@@ -1,4 +1,5 @@
 import got from "got";
+import type { LocationName } from "$lib/constants";
 
 export const get = async ({ query }) => {
   const q: string = query.get("q");
