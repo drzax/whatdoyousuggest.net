@@ -81,13 +81,15 @@
   $: afterHeight = after.reduce(heightReducer, 0);
   $: beforeHeight = before.reduce(heightReducer, 0);
 
-  const calculateLinks = (node) => {
+  const calculateLinks = (node: WordTreeNode) => {
     if (node.isRoot) return [];
 
     const source = level < 0 ? node.after[0] : node.before[0];
     const target = node;
 
-    const sourceLinksCount = source.phrases.length;
+    const sourceLinksCount = source.phrases.filter(
+      (p) => level > 0 || p.text.indexOf(source.term) !== 0
+    ).length;
     const targetLinksCount = target.phrases.length;
 
     const sourcePhrases = source.phrases.map((d) => d.text);
@@ -114,6 +116,7 @@
   };
   var links: { source: [number, number]; target: [number, number] }[];
   $: links = calculateLinks(node);
+  $: words = node.term.split(" ");
 </script>
 
 <div
@@ -123,7 +126,11 @@
   }`}
 >
   <!-- term -->
-  <div class="term" bind:clientWidth={width}>{node.term}</div>
+  <div class="term" bind:clientWidth={width}>
+    {#each words as word, i}
+      {#if i === words.length - 1 && isRoot}<strong>{word}</strong>{:else}{word}
+      {/if}{/each}
+  </div>
 
   <!-- link -->
   {#if !isRoot}

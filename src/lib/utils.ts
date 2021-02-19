@@ -60,7 +60,7 @@ export const pathToProps = (
 ): { slug: string; location: LocationName; engine: EngineName } => {
   const [slug, optionsString] = path.split("/").filter((d) => !!d);
   const { location, engine } = optionsStringToObject(optionsString);
-  return { slug, location, engine };
+  return { slug: slug.split("+").join(" "), location, engine };
 };
 
 export const getLangByLocation = (location: LocationName) => {

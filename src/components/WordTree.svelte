@@ -72,7 +72,9 @@
       nodesArray.find((d) => d.key.indexOf("-1-") === 0);
     root.isRoot = true;
 
-    const consolidator = (direction: string) => (node) => {
+    const consolidator = (direction: "before" | "after") => (
+      node: WordTreeNode
+    ) => {
       while (
         node[direction].length === 1 &&
         typeof node.phrases.find(
