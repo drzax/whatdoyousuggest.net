@@ -2,6 +2,7 @@
   // Imports!
   import { linkHorizontal } from "d3-shape";
   import { xMaxLeft, xMaxRight } from "$lib/stores";
+  import { onMount } from "svelte";
 
   // Exports / props
   export let node: WordTreeNode;
@@ -15,6 +16,11 @@
   const lineHeight: number = 45;
   const linkDistance: number = 100;
   const link = linkHorizontal();
+  let shouldFade: boolean = false;
+
+  onMount(() => {
+    shouldFade = true;
+  });
 
   // Bound vars
   let width: number = 0;
@@ -113,7 +119,7 @@
 <div
   class={`node ${isRoot ? "root" : level < 0 ? "left" : "right"}`}
   style={`font-size: ${fontSize}px; ${xStyle}; ${yStyle}; opacity: ${
-    width ? 1 : 0
+    width || !shouldFade ? 1 : 0
   }`}
 >
   <!-- term -->

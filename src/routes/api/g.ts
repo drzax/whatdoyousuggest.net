@@ -2,7 +2,7 @@ import got from "got";
 
 export const get = async ({ query }) => {
   const q: string = query.get("q");
-  const gl: string = query.get("gl");
+  const gl: LocationName = query.get("l");
   const res = await got("http://google.com/complete/search", {
     responseType: "json",
     searchParams: { client: "chrome", q, gl },

@@ -2,45 +2,26 @@
   // imports
   import Button from "$components/Button.svelte";
   import lookup from "country-code-lookup";
+  import { locations } from "$lib/constants";
+  import type { LocationName } from "$lib/constants";
 
   // exports / props
-  export let selection = "AU";
-
-  // constants
-  const g20 = [
-    "AR",
-    "AU",
-    "BR",
-    "CA",
-    "CN",
-    "FR",
-    "DE",
-    "IN",
-    "ID",
-    "IT",
-    "JP",
-    "MX",
-    "RU",
-    "SA",
-    "ZA",
-    "KR",
-    "TR",
-    "GB",
-    "US",
-  ];
+  export let selection: LocationName;
 
   // state
   let open: boolean = false;
 </script>
 
 <div class="menu">
-  <Button on:click={() => (open = !open)}>{selection}</Button>
+  <Button on:click={() => (open = !open)}>{selection.toUpperCase()}</Button>
   {#if open}
     <ul class="pop">
-      {#each g20 as code}
+      {#each locations as code}
         <li
           on:click={() => {
             selection = code;
+            // TODO: this should be handled in App
+            localStorage.location = code;
             open = false;
           }}
         >

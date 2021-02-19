@@ -25,7 +25,7 @@ const langs = {
 
 export const get = async ({ query }) => {
   const qry: string = query.get("q");
-  const loc: string = query.get("gl").toLowerCase();
+  const loc: LocationName = query.get("l");
   const res = await got("https://www.bing.com/AS/Suggestions", {
     responseType: "text",
     searchParams: { cvid: "a", qry, mkt: `${langs[loc]}-${loc}` },

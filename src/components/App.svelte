@@ -3,42 +3,61 @@
   import LocationSelector from "$components/LocationSelector.svelte";
   import Spinner from "$components/Spinner.svelte";
   import WordTree from "$components/WordTree.svelte";
-  import { endpoint, inputsFromForm, splitOutRootTerms } from "$lib/utils";
+  import {
+    endpoint,
+    inputsFromForm,
+    pathToProps,
+    splitOutRootTerms,
+    validateLocation,
+  } from "$lib/utils";
   import debounce from "debounce";
+  import { defaultOptions } from "$lib/constants";
+  import type { LocationName, EngineName } from "$lib/constants";
   export let phrase: string;
-  export let location: string = null;
+  export let location: LocationName = null;
   export let term: string;
   export let slug: string;
+  export let engine: EngineName = defaultOptions.engine;
   export let suggestions: string[] = [];
 
   let input = phrase || "";
 
   let loading: boolean = false;
-  let current: string = endpoint(phrase, location);
+  let current: string = endpoint(phrase, location, engine);
 
   onMount(async () => {
     if (!location) {
-      try {
-        const res = await fetch(
-          "http://api.ipstack.com/check?access_key=91246e1a4ce26b50d45c058b2adc30eb"
-        );
-        const locationData = await res.json();
-        location = locationData.country_code;
-      } catch (e) {
-        location = "AU";
+      let l = localStorage.location;
+
+      if (!l) {
+        try {
+          const res = await fetch(
+            "https://api.ipstack.com/check?access_key=91246e1a4ce26b50d45c058b2adc30eb"
+          );
+          const locationData = await res.json();
+          l = locationData.country_code.toLowerCase();
+        } catch (e) {
+          l = defaultOptions.location;
+        }
       }
+      location = validateLocation(l);
     }
 
     window.onpopstate = () => {
-      const [l, s] = window.location.pathname.substr(1).split("/");
-      location = l.toUpperCase();
+      const { slug: s, location: l, engine: e } = pathToProps(
+        window.location.pathname
+      );
+
       input = s;
+      location = l;
+      engine = e;
     };
   });
 
   const updateSuggestions = debounce(
-    async (input: string, location: string) => {
+    async (input: string, location: LocationName, engine: EngineName) => {
       // Bail if we're on the server
+      // TODO: find out properly avoid running this for SSR
       if (typeof fetch === "undefined") return;
 
       // Don't bother searching if there is no input
@@ -46,19 +65,12 @@
         phrase = undefined;
         term = undefined;
         slug = undefined;
-        history &&
-          location &&
-          history.pushState(
-            null,
-            `What do you suggest?`,
-            `/${location}`.toLocaleLowerCase()
-          );
         return;
       }
 
       [phrase, term, slug] = inputsFromForm(input);
 
-      const url = endpoint(phrase, location);
+      const url = endpoint(phrase, location, engine);
 
       // Bail if this is what we already have
       if (url === current) return;
@@ -74,13 +86,13 @@
         history.pushState(
           null,
           `${phrase} - What do you suggest?`,
-          `/${location}/${slug}`.toLocaleLowerCase()
+          `/${slug}/${location}:${engine}`
         );
       }
     },
     300
   );
-  $: updateSuggestions(input, location);
+  $: updateSuggestions(input, location, engine);
 </script>
 
 <svelte:head>

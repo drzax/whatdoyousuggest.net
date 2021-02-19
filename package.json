@@ -4,12 +4,11 @@
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build && svelte-kit adapt",
-    "build:lambda": "netlify-lambda build functions-src",
     "start": "svelte-kit start"
   },
   "devDependencies": {
     "@snowpack/plugin-typescript": "^1.0.0",
-    "@sveltejs/adapter-netlify": "^1.0.0-next.0",
+    "@sveltejs/adapter-netlify": "^1.0.0-next.1",
     "@sveltejs/kit": "^1.0.0-next.31",
     "@sveltejs/snowpack-config": "^1.0.0-next.1",
     "@types/d3-scale": "^3.2.2",
