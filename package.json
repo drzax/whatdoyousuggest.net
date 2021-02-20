@@ -7,6 +7,7 @@
     "start": "svelte-kit start"
   },
   "devDependencies": {
+    "@bugsnag/js": "^7.7.0",
     "@snowpack/plugin-typescript": "^1.0.0",
     "@sveltejs/adapter-netlify": "^1.0.0-next.1",
     "@sveltejs/kit": "^1.0.0-next.31",

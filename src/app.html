@@ -10,6 +10,13 @@
 		<meta name="msapplication-TileColor" content="#da532c">
 		<meta name="theme-color" content="#eefdff">
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<script>
+			if (localStorage.bugReportOptOut !== 'true') {
+				import('https://cdn.jsdelivr.net/npm/@bugsnag/browser@7.7.0/dist/bugsnag.min.js').then(() => {
+					Bugsnag.start({ apiKey: '85507ac85c195f70b8be68b919e60fa2' });
+				});
+			}
+		</script>
 		%svelte.head%
 	</head>
 	<body>

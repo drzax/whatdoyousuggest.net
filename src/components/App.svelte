@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import LocationSelector from "$components/LocationSelector.svelte";
   import Spinner from "$components/Spinner.svelte";
+  import Header from "$components/Header.svelte";
   import WordTree from "$components/WordTree.svelte";
   import {
     endpoint,
@@ -113,15 +114,7 @@
 </svelte:head>
 
 <main class="container">
-  <h1 class="title">
-    <a href="/"
-      ><img
-        class="logo"
-        src="/noun_arrow scratch_1195136.svg"
-        alt="A wiggly arrow ultimately pointing to the right"
-      /> WDYS?</a
-    >
-  </h1>
+  <Header />
 
   <div class="inputContainer">
     <input
@@ -165,28 +158,6 @@
 </main>
 
 <style lang="scss">
-  :root {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-  }
-
-  :global(body) {
-    margin: 0;
-    padding: 0;
-  }
-
-  .title {
-    font-size: 1rem;
-    margin-top: 3rem;
-    text-align: center;
-    grid-column-start: 1;
-    grid-column-end: 3;
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-  }
-
   .chart {
     grid-column-start: 1;
     grid-column-end: 3;
@@ -228,13 +199,6 @@
     color: #aaa;
     text-align: center;
     font-size: 2rem;
-  }
-
-  .logo {
-    width: 70px;
-    height: auto;
-    display: inline-block;
-    vertical-align: middle;
   }
 
   .options {
