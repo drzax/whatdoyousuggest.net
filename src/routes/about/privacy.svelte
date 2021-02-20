@@ -71,21 +71,6 @@
       ></label
     >
   {/if}
-  <h2>Suggestions</h2>
-  <p>
-    The following details about the phrases entered and suggestions generated
-    are stored:
-  </p>
-  <ul>
-    <li>suggestions generated</li>
-    <li>the search engine used to generate them</li>
-    <li>the country setting used to generate them</li>
-    <li>the phrased used to generate them</li>
-    <li>the time and date suggestions were generated</li>
-  </ul>
-  <p>
-    No identifying information of any kind is saved or linked to these records.
-  </p>
   <h2>Questions?</h2>
   <p>
     Feel free to <a href="https://elvery.net/drzax/about">get in touch</a> if you
