@@ -1,9 +1,9 @@
 "use strict";
 
-import { URLSearchParams } from "url";
-import { render } from "./app.cjs"; // eslint-disable-line import/no-unresolved
+const { URLSearchParams } = require("url");
+const { render } = require("./app.cjs"); // eslint-disable-line import/no-unresolved
 
-export async function handler(event) {
+module.exports = async function handler(event) {
   const {
     path,
     httpMethod,
@@ -41,4 +41,4 @@ export async function handler(event) {
     statusCode: 404,
     body: "Not found",
   };
-}
+};
