@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 import { defaultOptions, locations, engines } from "$lib/constants";
-import type { LocationName, EngineName, Options } from "$lib/constants";
+import type { LocationName, EngineId, Options } from "$lib/constants";
 
 export const location = writable("us");
 
@@ -13,7 +13,7 @@ export const sanitiseTerm = (str: string) =>
 export const endpoint = (
   term: string,
   location: LocationName,
-  engine: EngineName
+  engine: EngineId
 ) => `/api/${engine}?q=${encodeURIComponent(term)}&l=${location}`;
 
 export const splitOutRootTerms = (suggestions: string[], phrase: string) => {
@@ -51,13 +51,13 @@ export const validateLocation = (location: unknown): LocationName => {
   return locations.find((d) => d === location) || null;
 };
 
-export const validateEngine = (engine: unknown) => {
-  return engines.find((d) => d === engine) || defaultOptions.engine;
+export const validateEngine = (engineId: unknown) => {
+  return engines.find((d) => d.id === engineId)?.id || defaultOptions.engine;
 };
 
 export const pathToProps = (
   path: string
-): { slug: string; location: LocationName; engine: EngineName } => {
+): { slug: string; location: LocationName; engine: EngineId } => {
   const [slug, optionsString] = path.split("/").filter((d) => !!d);
   const { location, engine } = optionsStringToObject(optionsString);
   return { slug: slug.split("+").join(" "), location, engine };

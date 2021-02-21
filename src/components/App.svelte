@@ -13,12 +13,13 @@
   } from "$lib/utils";
   import debounce from "debounce";
   import { defaultOptions } from "$lib/constants";
-  import type { LocationName, EngineName } from "$lib/constants";
+  import type { LocationName, EngineId } from "$lib/constants";
+  import EngineSelector from "./EngineSelector.svelte";
   export let phrase: string;
   export let location: LocationName = null;
   export let term: string;
   export let slug: string;
-  export let engine: EngineName = defaultOptions.engine;
+  export let engine: EngineId = defaultOptions.engine;
   export let suggestions: string[] = [];
 
   let input = phrase || "";
@@ -56,7 +57,7 @@
   });
 
   const updateSuggestions = debounce(
-    async (input: string, location: LocationName, engine: EngineName) => {
+    async (input: string, location: LocationName, engine: EngineId) => {
       // Bail if we're on the server
       // TODO: find out properly avoid running this for SSR
       if (typeof fetch === "undefined") return;
@@ -80,6 +81,7 @@
       current = url;
       const res = await fetch(url);
       const sug = await res.json();
+
       if (current === url) {
         loading = false;
         // todo: this should probably live somewhere else: WordTree component or own function or server route
@@ -117,12 +119,10 @@
   <Header />
 
   <div class="inputContainer">
-    <input
-      class={`input ${phrase && term && slug ? "used" : "empty"}`}
-      type="text"
-      placeholder="Suggest this ..."
-      bind:value={input}
-    />
+    <div class={`input ${phrase && term && slug ? "used" : "empty"}`}>
+      <input type="text" placeholder="Suggest this ..." bind:value={input} />
+      <EngineSelector bind:engine />
+    </div>
   </div>
   <div class="chart">
     {#if phrase && term && slug}
@@ -180,19 +180,26 @@
   .input {
     transition: margin 0.3s ease-in-out, font-size 0.3s ease-in-out;
     margin: 6rem auto;
-    display: block;
-    font-size: 3rem;
-    padding: 0.3em;
-    border: 1px solid #ccc;
-    border-radius: 0.2em;
-    max-width: 100%;
-    box-sizing: border-box;
-    text-align: center;
-    max-width: 90vw;
     transition: margin 0.3s linear, font-size 0.3s linear;
     &.used {
-      font-size: 1.5rem;
       margin: 1rem auto;
+
+      input {
+        font-size: 1.5rem;
+      }
+    }
+
+    input {
+      margin: 0 auto;
+      display: block;
+      font-size: 3rem;
+      padding: 0.3em;
+      border: 1px solid #ccc;
+      border-radius: 0.2em;
+      max-width: 100%;
+      box-sizing: border-box;
+      text-align: center;
+      max-width: 90vw;
     }
   }
   .no-suggestions {

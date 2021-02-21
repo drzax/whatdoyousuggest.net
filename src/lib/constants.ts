@@ -1,4 +1,5 @@
-export type EngineName = "b" | "g" | "d";
+export type EngineId = "b" | "g" | "d" | "y";
+export type Engine = { id: EngineId; name: string };
 export type LocationName =
   | "ar"
   | "au"
@@ -20,7 +21,7 @@ export type LocationName =
   | "gb"
   | "us";
 
-export type Options = { location: LocationName; engine: EngineName };
+export type Options = { location: LocationName; engine: EngineId };
 
 export const locations: LocationName[] = [
   "ar",
@@ -44,7 +45,12 @@ export const locations: LocationName[] = [
   "us",
 ];
 
-export const engines: EngineName[] = ["g", "b", "d"];
+export const engines: { id: EngineId; name: string }[] = [
+  { id: "g", name: "Google" },
+  { id: "b", name: "Bing" },
+  { id: "y", name: "Yahoo" },
+  { id: "d", name: "DuckDuckGo" },
+];
 
 export const defaultOptions: Options = {
   location: "au",

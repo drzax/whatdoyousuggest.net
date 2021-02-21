@@ -5,7 +5,7 @@
     inputsFromSlug,
     optionsStringToObject,
   } from "$lib/utils";
-  import type { LocationName, EngineName } from "$lib/constants";
+  import type { LocationName, EngineId } from "$lib/constants";
   export async function load({ page, fetch }) {
     let optionsString: string | undefined;
     let slug: string;
@@ -28,7 +28,7 @@
   export let term: string;
   export let slug: string;
   export let location: LocationName;
-  export let engine: EngineName;
+  export let engine: EngineId;
   export let suggestions: string[];
 </script>
 
