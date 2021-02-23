@@ -58,9 +58,12 @@
 
   const updateSuggestions = debounce(
     async (input: string, location: LocationName, engine: EngineId) => {
+      // TODO: this should really be done with `goto` but the navigation results in the input losing focus.
+      // goto(`/${input}/${location}:${engine}`, { noscroll: true });
+
       // Bail if we're on the server
       // TODO: find out properly avoid running this for SSR
-      if (typeof fetch === "undefined") return;
+      if (typeof window === "undefined") return;
 
       // Don't bother searching if there is no input
       if (input.length === 0) {

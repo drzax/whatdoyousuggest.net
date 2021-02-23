@@ -14,11 +14,14 @@
     const { location, engine } = optionsStringToObject(optionsString);
 
     const [phrase, term] = inputsFromSlug(slug);
-    // todo: figure out how to get the user's selected location here
     const res = await fetch(endpoint(phrase, location, engine));
+
     const raw = await res.json();
     const suggestions: string[] = splitOutRootTerms(raw, phrase);
     return { props: { phrase, term, slug, suggestions, location, engine } };
+    // } catch (e) {
+    //   return {};
+    // }
   }
 </script>
 

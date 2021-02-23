@@ -16,11 +16,6 @@
   const lineHeight: number = 45;
   const linkDistance: number = 100;
   const link = linkHorizontal();
-  let shouldFade: boolean = false;
-
-  onMount(() => {
-    shouldFade = true;
-  });
 
   // Bound vars
   let width: number = 0;
@@ -117,13 +112,12 @@
   var links: { source: [number, number]; target: [number, number] }[];
   $: links = calculateLinks(node);
   $: words = node.term.split(" ");
+  $: opacity = width || !(typeof window === "undefined") ? 1 : 0;
 </script>
 
 <div
   class={`node ${isRoot ? "root" : level < 0 ? "left" : "right"}`}
-  style={`font-size: ${fontSize}px; ${xStyle}; ${yStyle}; opacity: ${
-    width || !shouldFade ? 1 : 0
-  }`}
+  style={`font-size: ${fontSize}px; ${xStyle}; ${yStyle}; opacity: ${opacity}`}
 >
   <!-- term -->
   <div class="term" bind:clientWidth={width}>

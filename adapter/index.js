@@ -1,13 +1,13 @@
 "use strict";
 
-const { existsSync, readFileSync, copyFileSync, writeFileSync } = require("fs");
-const { dirname, resolve } = require("path");
-const toml = require("toml");
-const { fileURLToPath } = require("url");
+import { existsSync, readFileSync, copyFileSync, writeFileSync } from "fs";
+import { dirname, resolve } from "path";
+import toml from "toml";
+import { fileURLToPath } from "url";
 
 // const __dirname = dirname(fileURLToPath(import.meta.url));
 
-module.exports = async function adapter(builder) {
+export async function adapter(builder) {
   let netlify_config;
 
   if (existsSync("netlify.toml")) {
@@ -55,4 +55,4 @@ module.exports = async function adapter(builder) {
   await builder.prerender({
     dest: publish,
   });
-};
+}
