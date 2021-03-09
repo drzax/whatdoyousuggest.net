@@ -1,12 +1,13 @@
 import fetch from "node-fetch";
+import { obj2search } from "src/lib/utils";
 import type { LocationName } from "../../lib/constants";
 
 export const get = async ({ query }) => {
   const q: string = query.get("q");
   const gl: LocationName = query.get("l");
-  const params = new URLSearchParams({ client: "chrome", q, gl });
   const res = await fetch(
-    "http://google.com/complete/search?" + params.toString()
+    "http://google.com/complete/search?" +
+      obj2search({ client: "chrome", q, gl })
   ).then((res) => {
     return res.json();
   });

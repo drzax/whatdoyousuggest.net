@@ -87,3 +87,8 @@ export const getLangByLocation = (location: LocationName) => {
   };
   return langs[location];
 };
+
+export const obj2search = (obj) =>
+  Object.keys(obj)
+    .map((key) => `${key}=${obj[key]}`)
+    .join("&");

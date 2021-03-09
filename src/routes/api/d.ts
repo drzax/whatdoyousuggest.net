@@ -1,16 +1,20 @@
-import { validateLocation, getLangByLocation } from "../../lib/utils";
+import {
+  validateLocation,
+  getLangByLocation,
+  obj2search,
+} from "../../lib/utils";
 import type { LocationName } from "../../lib/constants";
 import fetch from "node-fetch";
 
 export const get = async ({ query }) => {
   const q: string = query.get("q");
   const l: LocationName = validateLocation(query.get("l"));
-  const params = new URLSearchParams({
-    q,
-    kl: `${l}-${getLangByLocation(l)}`,
-  });
   const res = await fetch(
-    "https://duckduckgo.com/ac/?" + params.toString()
+    "https://duckduckgo.com/ac/?" +
+      obj2search({
+        q,
+        kl: `${l}-${getLangByLocation(l)}`,
+      })
   ).then((res) => res.json());
 
   const suggestions = Array.isArray(res) ? res.map((d) => d.phrase) : [];

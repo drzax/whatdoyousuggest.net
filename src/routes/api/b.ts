@@ -1,18 +1,18 @@
 import fetch from "node-fetch";
 import HTMLParser from "node-html-parser";
-import { getLangByLocation } from "../../lib/utils";
+import { getLangByLocation, obj2search } from "../../lib/utils";
 import type { LocationName } from "../../lib/constants";
 
 export const get = async ({ query }) => {
   const qry: string = query.get("q");
   const l: LocationName = query.get("l");
-  const params = new URLSearchParams({
-    cvid: "a",
-    qry,
-    mkt: `${getLangByLocation(l)}-${l}`,
-  });
   const res = await fetch(
-    "https://www.bing.com/AS/Suggestions?" + params.toString()
+    "https://www.bing.com/AS/Suggestions?" +
+      obj2search({
+        cvid: "a",
+        qry,
+        mkt: `${getLangByLocation(l)}-${l}`,
+      })
   ).then((res) => res.text());
   const dom = HTMLParser(res);
 

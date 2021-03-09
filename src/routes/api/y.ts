@@ -1,4 +1,8 @@
-import { validateLocation, getLangByLocation } from "../../lib/utils";
+import {
+  validateLocation,
+  getLangByLocation,
+  obj2search,
+} from "../../lib/utils";
 import type { LocationName } from "../../lib/constants";
 
 import fetch from "node-fetch";
@@ -6,14 +10,13 @@ import fetch from "node-fetch";
 export const get = async ({ query }) => {
   const q: string = query.get("q");
   const l: LocationName = validateLocation(query.get("l"));
-  const params = new URLSearchParams({
-    nresults: "10",
-    output: "sd1",
-    command: q,
-  });
   const res = await fetch(
     `https://${l}.search.yahoo.com/sugg/gossip/gossip-${l}-ura/?` +
-      params.toString()
+      obj2search({
+        nresults: "10",
+        output: "sd1",
+        command: q,
+      })
   ).then((res) => res.json());
 
   const suggestions = res.hasOwnProperty("r") ? res.r.map((d) => d.k) : [];
