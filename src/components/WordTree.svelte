@@ -1,13 +1,13 @@
 <script lang="ts">
   // Imports
-  import { scaleLinear, scaleOrdinal } from "d3-scale";
-  import { schemeCategory10 } from "d3-scale-chromatic";
+  import { scaleLinear, scaleOrdinal } from 'd3-scale';
+  import { schemeCategory10 } from 'd3-scale-chromatic';
 
-  import unique from "reduce-unique";
-  import { xMaxLeft, xMaxRight } from "$lib/stores";
+  import unique from 'reduce-unique';
+  import { xMaxLeft, xMaxRight } from '../lib/stores';
 
   // Components
-  import Branch from "$components/Branch.svelte";
+  import Branch from '$components/Branch.svelte';
 
   // exports / props
   export let suggestions: string[]; // An array of phrases
@@ -25,11 +25,11 @@
     const nodes = new Map();
     suggestions.forEach((phrase, phraseIndex) => {
       let parent: null | WordTreeNode = null;
-      let key = "";
-      phrase.split(" ").forEach((term, i, arr) => {
+      let key = '';
+      phrase.split(' ').forEach((term, i, arr) => {
         const level = i - arr.indexOf(rootTerm);
         const isRoot = level === 0;
-        if (isRoot) key = "";
+        if (isRoot) key = '';
         key += `-${level}-${term}`;
         const termNode: WordTreeNode = nodes.has(key)
           ? nodes.get(key)
@@ -45,9 +45,7 @@
 
         nodes.set(key, termNode);
 
-        if (
-          termNode.phrases.find((d) => d.index === phraseIndex) === undefined
-        ) {
+        if (termNode.phrases.find(d => d.index === phraseIndex) === undefined) {
           termNode.phrases.push({ text: phrase, index: phraseIndex });
         }
 
@@ -64,15 +62,15 @@
       });
     });
     const nodesArray: WordTreeNode[] = Array.from(nodes.entries()).map(
-      (d) => d[1]
+      d => d[1]
     );
 
     const root =
-      nodesArray.find((d) => d.isRoot) ||
-      nodesArray.find((d) => d.key.indexOf("-1-") === 0);
+      nodesArray.find(d => d.isRoot) ||
+      nodesArray.find(d => d.key.indexOf('-1-') === 0);
     root.isRoot = true;
 
-    const consolidator = (direction: "before" | "after") => (
+    const consolidator = (direction: 'before' | 'after') => (
       node: WordTreeNode
     ) => {
       while (
@@ -80,17 +78,17 @@
         typeof node.phrases.find(
           ({ text }) =>
             text.lastIndexOf(node.term) === text.length - node.term.length
-        ) === "undefined"
+        ) === 'undefined'
       ) {
         const next = node[direction][0];
         node.term =
-          direction === "after"
+          direction === 'after'
             ? `${node.term} ${next.term}`
             : `${next.term} ${node.term}`;
         node[direction] = next[direction];
-        next.phrases.forEach((d) => {
+        next.phrases.forEach(d => {
           if (
-            typeof node.phrases.find((f) => f.index === d.index) === "undefined"
+            typeof node.phrases.find(f => f.index === d.index) === 'undefined'
           ) {
             node.phrases.push(d);
           }
@@ -102,17 +100,17 @@
       node[direction].forEach(consolidator(direction));
     };
 
-    root.after.forEach(consolidator("after"));
-    root.before.forEach(consolidator("before"));
+    root.after.forEach(consolidator('after'));
+    root.before.forEach(consolidator('before'));
 
-    const splits: [string, string][] = suggestions.map((d) => {
+    const splits: [string, string][] = suggestions.map(d => {
       const split = d.split(rootTerm);
       const prefix = split.shift().trim();
       const suffix = split.join(rootTerm).trim();
       return [prefix, suffix];
     });
-    const prefixes = splits.map((d) => d[0]);
-    const suffixes = splits.map((d) => d[1]);
+    const prefixes = splits.map(d => d[0]);
+    const suffixes = splits.map(d => d[1]);
 
     return {
       nodes: nodesArray,
@@ -128,7 +126,7 @@
   let scaleLinks = scaleOrdinal<string>(schemeCategory10);
   $: root = createTree(suggestions, term).root;
   $: scale = scaleLinear().range([24, 40]).domain([1, root.phrases.length]);
-  $: scaleLinks.domain(root.phrases.map((d) => String(d.index)));
+  $: scaleLinks.domain(root.phrases.map(d => String(d.index)));
   const lineHeight = 45;
 
   $: treeHeight = root.phrases.length * lineHeight + 50;

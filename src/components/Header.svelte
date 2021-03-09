@@ -1,3 +1,8 @@
+<script lang="ts">
+  const blank = "";
+</script>
+
+{blank}
 <h1 class="title">
   <a href="/"
     ><img

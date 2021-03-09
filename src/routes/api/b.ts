@@ -1,16 +1,21 @@
-import got from "got";
+import fetch from "node-fetch";
 import { parse } from "node-html-parser";
-import { getLangByLocation } from "$lib/utils";
-import type { LocationName } from "$lib/constants";
+import { getLangByLocation } from "../../lib/utils";
+import type { LocationName } from "../../lib/constants";
 
 export const get = async ({ query }) => {
   const qry: string = query.get("q");
   const l: LocationName = query.get("l");
-  const res = await got("https://www.bing.com/AS/Suggestions", {
-    responseType: "text",
-    searchParams: { cvid: "a", qry, mkt: `${getLangByLocation(l)}-${l}` },
+  const params = new URLSearchParams({
+    cvid: "a",
+    qry,
+    mkt: `${getLangByLocation(l)}-${l}`,
   });
-  const dom = parse(res.body);
+  const res = await fetch(
+    "https://www.bing.com/AS/Suggestions?" + params.toString()
+  ).then((res) => res.text());
+  const dom = parse(res);
+
   const suggestions = dom.querySelectorAll(".sa_tm").map((d) => d.text);
 
   return {

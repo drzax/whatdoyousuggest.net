@@ -1,9 +1,9 @@
 <script type="typescript">
   // imports
-  import Button from "$components/Button.svelte";
-  import lookup from "country-code-lookup";
-  import { locations } from "$lib/constants";
-  import type { LocationName } from "$lib/constants";
+  import Button from '$components/Button.svelte';
+  import lookup from 'country-code-lookup';
+  import { locations } from '../lib/constants';
+  import type { LocationName } from '../lib/constants';
 
   // exports / props
   export let selection: LocationName;

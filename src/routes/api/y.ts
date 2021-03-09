@@ -1,26 +1,22 @@
-import { validateLocation, getLangByLocation } from "$lib/utils";
-import type { LocationName } from "$lib/constants";
+import { validateLocation, getLangByLocation } from "../../lib/utils";
+import type { LocationName } from "../../lib/constants";
 
-import got from "got";
+import fetch from "node-fetch";
 
 export const get = async ({ query }) => {
   const q: string = query.get("q");
   const l: LocationName = validateLocation(query.get("l"));
-  const res = await got(
-    `https://${l}.search.yahoo.com/sugg/gossip/gossip-${l}-ura/`,
-    {
-      responseType: "json",
-      searchParams: {
-        nresults: 10,
-        output: "sd1",
-        command: q,
-      },
-    }
-  );
+  const params = new URLSearchParams({
+    nresults: "10",
+    output: "sd1",
+    command: q,
+  });
+  const res = await fetch(
+    `https://${l}.search.yahoo.com/sugg/gossip/gossip-${l}-ura/?` +
+      params.toString()
+  ).then((res) => res.json());
 
-  const suggestions = res.body.hasOwnProperty("r")
-    ? res.body["r"].map((d) => d.k)
-    : [];
+  const suggestions = res.hasOwnProperty("r") ? res.r.map((d) => d.k) : [];
 
   return {
     statusCode: 200,

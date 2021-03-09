@@ -1,22 +1,19 @@
-import { validateLocation, getLangByLocation } from "$lib/utils";
-import type { LocationName } from "$lib/constants";
-
-import got from "got";
+import { validateLocation, getLangByLocation } from "../../lib/utils";
+import type { LocationName } from "../../lib/constants";
+import fetch from "node-fetch";
 
 export const get = async ({ query }) => {
   const q: string = query.get("q");
   const l: LocationName = validateLocation(query.get("l"));
-  const res = await got("https://duckduckgo.com/ac/", {
-    responseType: "json",
-    searchParams: {
-      q,
-      kl: `${l}-${getLangByLocation(l)}`,
-    },
+  const params = new URLSearchParams({
+    q,
+    kl: `${l}-${getLangByLocation(l)}`,
   });
+  const res = await fetch(
+    "https://duckduckgo.com/ac/?" + params.toString()
+  ).then((res) => res.json());
 
-  const suggestions = Array.isArray(res.body)
-    ? res.body.map((d) => d.phrase)
-    : [];
+  const suggestions = Array.isArray(res) ? res.map((d) => d.phrase) : [];
 
   return {
     statusCode: 200,

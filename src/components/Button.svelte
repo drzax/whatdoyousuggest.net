@@ -1,3 +1,8 @@
+<script lang="ts">
+  const blank = '';
+</script>
+
+{blank}
 <button on:click>
   <slot />
 </button>

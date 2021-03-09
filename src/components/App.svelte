@@ -1,20 +1,20 @@
 <script lang="ts">
-  import { onMount } from "svelte";
-  import LocationSelector from "$components/LocationSelector.svelte";
-  import Spinner from "$components/Spinner.svelte";
-  import Header from "$components/Header.svelte";
-  import WordTree from "$components/WordTree.svelte";
+  import { onMount } from 'svelte';
+  import LocationSelector from '$components/LocationSelector.svelte';
+  import Spinner from '$components/Spinner.svelte';
+  import Header from '$components/Header.svelte';
+  import WordTree from '$components/WordTree.svelte';
   import {
     endpoint,
     inputsFromForm,
     pathToProps,
     splitOutRootTerms,
     validateLocation,
-  } from "$lib/utils";
-  import debounce from "debounce";
-  import { defaultOptions } from "$lib/constants";
-  import type { LocationName, EngineId } from "$lib/constants";
-  import EngineSelector from "./EngineSelector.svelte";
+  } from '../lib/utils';
+  import debounce from 'debounce';
+  import { defaultOptions } from '../lib/constants';
+  import type { LocationName, EngineId } from '../lib/constants';
+  import EngineSelector from './EngineSelector.svelte';
   export let phrase: string;
   export let location: LocationName = null;
   export let term: string;
@@ -22,7 +22,7 @@
   export let engine: EngineId = defaultOptions.engine;
   export let suggestions: string[] = [];
 
-  let input = phrase || "";
+  let input = phrase || '';
 
   let loading: boolean = false;
   let current: string = endpoint(phrase, location, engine);
@@ -34,7 +34,7 @@
       if (!l) {
         try {
           const res = await fetch(
-            "https://api.ipstack.com/check?access_key=91246e1a4ce26b50d45c058b2adc30eb"
+            'https://api.ipstack.com/check?access_key=91246e1a4ce26b50d45c058b2adc30eb'
           );
           const locationData = await res.json();
           l = locationData.country_code.toLowerCase();
@@ -63,7 +63,7 @@
 
       // Bail if we're on the server
       // TODO: find out properly avoid running this for SSR
-      if (typeof window === "undefined") return;
+      if (typeof window === 'undefined') return;
 
       // Don't bother searching if there is no input
       if (input.length === 0) {
@@ -102,7 +102,7 @@
 </script>
 
 <svelte:head>
-  <title>{phrase ? `${phrase} - ` : ""}What do you suggest?</title>
+  <title>{phrase ? `${phrase} - ` : ''}What do you suggest?</title>
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@drzax" />
   <meta name="og:title" content="What do you suggest?" />
@@ -122,7 +122,7 @@
   <Header />
 
   <div class="inputContainer">
-    <div class={`input ${phrase && term && slug ? "used" : "empty"}`}>
+    <div class={`input ${phrase && term && slug ? 'used' : 'empty'}`}>
       <input type="text" placeholder="Suggest this ..." bind:value={input} />
       <EngineSelector bind:engine />
     </div>
@@ -140,12 +140,12 @@
   </div>
   <div class="attribution">
     <p>
-      {"A resurrected experiment by "}
+      {'A resurrected experiment by '}
       <a href="https://twitter.com/drzax"> drzax </a> (<a
         href="https://github.com/drzax/whatdoyousuggest.net"
       >
         code
-      </a>{" "}
+      </a>{' '}
       | <a href="https://elvery.net/drzax/tag/wdys">explanation</a>).
     </p>
     <p>

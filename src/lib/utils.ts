@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
-import { defaultOptions, locations, engines } from "$lib/constants";
-import type { LocationName, EngineId, Options } from "$lib/constants";
+import { defaultOptions, locations, engines } from "../lib/constants";
+import type { LocationName, EngineId, Options } from "../lib/constants";
 
 export const location = writable("us");
 

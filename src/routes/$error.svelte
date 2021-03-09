@@ -2,7 +2,6 @@
   import Header from "$components/Header.svelte";
   export let error: Error;
   export let status: number;
-  console.log("error :>> ", error);
 </script>
 
 <Header />
