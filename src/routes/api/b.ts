@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { parse } from "node-html-parser";
+import HTMLParser from "node-html-parser";
 import { getLangByLocation } from "../../lib/utils";
 import type { LocationName } from "../../lib/constants";
 
@@ -14,7 +14,7 @@ export const get = async ({ query }) => {
   const res = await fetch(
     "https://www.bing.com/AS/Suggestions?" + params.toString()
   ).then((res) => res.text());
-  const dom = parse(res);
+  const dom = HTMLParser(res);
 
   const suggestions = dom.querySelectorAll(".sa_tm").map((d) => d.text);
 
