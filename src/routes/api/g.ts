@@ -1,5 +1,5 @@
 import fetch from "node-fetch";
-import { obj2search } from "src/lib/utils";
+import { obj2search } from "../../lib/utils";
 import type { LocationName } from "../../lib/constants";
 
 export const get = async ({ query }) => {
