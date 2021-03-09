@@ -29,6 +29,7 @@
     "d3-scale-chromatic": "^2.0.0",
     "d3-shape": "^2.0.0",
     "debounce": "^1.2.0",
+    "encoding": "^0.1.13",
     "got": "^11.8.2",
     "node-fetch": "^2.6.1",
     "node-html-parser": "^3.0.4",
