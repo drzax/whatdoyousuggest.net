@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+import fetch from "isomorphic-unfetch";
 import { obj2search } from "../../lib/utils";
 import type { LocationName } from "../../lib/constants";
 

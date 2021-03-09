@@ -5,7 +5,7 @@ import {
 } from "../../lib/utils";
 import type { LocationName } from "../../lib/constants";
 
-import fetch from "node-fetch";
+import fetch from "isomorphic-unfetch";
 
 export const get = async ({ query }) => {
   const q: string = query.get("q");
