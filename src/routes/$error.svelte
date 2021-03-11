@@ -1,7 +1,9 @@
 <script lang="ts">
-  import Header from "$components/Header.svelte";
+  import Header from '$components/Header.svelte';
   export let error: Error;
   export let status: number;
+
+  console.error(error);
 </script>
 
 <Header />

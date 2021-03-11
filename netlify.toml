@@ -1,4 +1,4 @@
 [build]
   functions = "functions/"
   publish = "build/"
-  command = "npm run build-netlify"
+  command = "npm run build"
