@@ -1,6 +1,7 @@
 <script lang="ts">
   import Header from "$components/Header.svelte";
   import { onMount } from "svelte";
+  export const prerender = true;
   let bugReportOptOut: boolean | undefined;
   onMount(() => {
     bugReportOptOut = localStorage.bugReportOptOut === "true";
