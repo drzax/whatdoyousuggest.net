@@ -5,7 +5,7 @@
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
     "start": "svelte-kit start",
-    "build-netlify": "svelte-kit build; npm i @sveltejs/kit@next -P; netlify-lambda build functions/render; mv functions/*.js functions/render/"
+    "build-netlify": "svelte-kit build; netlify-lambda build functions/render; mv functions/*.js functions/render/"
   },
   "devDependencies": {
     "@sveltejs/adapter-netlify": "next",
@@ -21,7 +21,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">= 12.17.0"
+    "node": ">= 14"
   },
   "dependencies": {
     "country-code-lookup": "0.0.19",

@@ -1,8 +1,4 @@
-import {
-  validateLocation,
-  getLangByLocation,
-  obj2search,
-} from "../../lib/utils";
+import { validateLocation, obj2search } from "../../lib/utils";
 import type { LocationName } from "../../lib/constants";
 
 import fetch from "isomorphic-unfetch";
