@@ -1,8 +1,7 @@
 <script lang="ts">
   // Imports!
-  import { linkHorizontal } from 'd3-shape';
-  import { xMaxLeft, xMaxRight } from '../lib/stores';
-  import { onMount } from 'svelte';
+  import { linkHorizontal } from "d3-shape";
+  import { xMaxLeft, xMaxRight } from "../lib/stores";
 
   // Exports / props
   export let node: WordTreeNode;
@@ -30,17 +29,17 @@
   // Calculate x-axis positioning
   let xDistanceFromRoot: number;
   let textLength: number;
-  let xDirection: 'right' | 'left'; // confusingly, this is a CSS text direction, so nodes to the left of the root have a xDirection of 'right'
+  let xDirection: "right" | "left"; // confusingly, this is a CSS text direction, so nodes to the left of the root have a xDirection of 'right'
 
   // The length of the text to account for in the layout
   $: textLength = isRoot ? width / 2 : width;
 
   // CSS props
-  $: xDirection = level < 0 ? 'right' : 'left';
+  $: xDirection = level < 0 ? "right" : "left";
   $: xDistance = isRoot
     ? Math.max(width / 2, $xMaxRight) + 30
     : parentTextLength + linkDistance;
-  $: xUnit = isRoot ? 'px' : 'px';
+  $: xUnit = isRoot ? "px" : "px";
   $: xStyle = `${xDirection}:${xDistance}${xUnit}`;
 
   // Record the cumulative distance of this branch from the root node
@@ -48,16 +47,16 @@
     parentDistanceFromRoot + parentTextLength + (isRoot ? 0 : linkDistance);
 
   // Update the maximum extent of all branches in this direction
-  $: (xDirection === 'left' ? xMaxLeft : xMaxRight).update(v => {
+  $: (xDirection === "left" ? xMaxLeft : xMaxRight).update((v) => {
     return Math.max(xDistanceFromRoot + textLength + 30, v);
   });
 
   // Calculate y-axis positioning
 
-  const caluclateChildYPositions = children => {
+  const caluclateChildYPositions = (children) => {
     const positions = [];
     let y = 0;
-    children.forEach(child => {
+    children.forEach((child) => {
       positions.push(y);
       y += child.phrases.length * lineHeight;
     });
@@ -83,14 +82,14 @@
     const target = node;
 
     const sourceLinksCount = source.phrases.filter(
-      p => level > 0 || p.text.indexOf(source.term) !== 0
+      (p) => level > 0 || p.text.indexOf(source.term) !== 0
     ).length;
     const targetLinksCount = target.phrases.length;
 
-    const sourcePhrases = source.phrases.map(d => d.text);
-    const targetPhrases = target.phrases.map(d => d.text);
+    const sourcePhrases = source.phrases.map((d) => d.text);
+    const targetPhrases = target.phrases.map((d) => d.text);
 
-    return targetPhrases.map(phrase => {
+    return targetPhrases.map((phrase) => {
       const targetIndex = targetPhrases.indexOf(phrase);
       const sourceIndex = sourcePhrases.indexOf(phrase);
 
@@ -111,12 +110,12 @@
   };
   var links: { source: [number, number]; target: [number, number] }[];
   $: links = calculateLinks(node);
-  $: words = node.term.split(' ');
-  $: opacity = width || !(typeof window === 'undefined') ? 1 : 0;
+  $: words = node.term.split(" ");
+  $: opacity = width || !(typeof window === "undefined") ? 1 : 0;
 </script>
 
 <div
-  class={`node ${isRoot ? 'root' : level < 0 ? 'left' : 'right'}`}
+  class={`node ${isRoot ? "root" : level < 0 ? "left" : "right"}`}
   style={`font-size: ${fontSize}px; ${xStyle}; ${yStyle}; opacity: ${opacity}`}
 >
   <!-- term -->
@@ -129,7 +128,7 @@
   <!-- link -->
   {#if !isRoot}
     <svg
-      class={`${level < 0 ? 'left' : 'right'} ${yDistance < 0 ? 'up' : 'down'}`}
+      class={`${level < 0 ? "left" : "right"} ${yDistance < 0 ? "up" : "down"}`}
       width={100}
       height={Math.abs(yDistance) + 40}
     >
