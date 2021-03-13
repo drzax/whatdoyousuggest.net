@@ -111,7 +111,7 @@
   <meta name="og:description" content="Explore Google's search suggestions." />
   <meta
     name="og:image"
-    content="https://fallback-automation.now.sh/api?url={domain}/test/au:d&selector=.tree&width=500"
+    content="https://fallback-automation.now.sh/api?url={domain}/{slug}/au:d&selector=.tree&width=500"
   />
   <meta
     name="twitter:image:alt"
