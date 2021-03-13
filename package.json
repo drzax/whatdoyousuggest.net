@@ -30,7 +30,7 @@
     "d3-shape": "^2.1.0",
     "debounce": "^1.2.1",
     "encoding": "^0.1.13",
-    "isomorphic-unfetch": "^3.1.0",
+    "node-fetch": "^2.6.1",
     "node-html-parser": "^3.0.4",
     "reduce-unique": "^2.0.1"
   }

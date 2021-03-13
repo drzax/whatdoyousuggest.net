@@ -4,7 +4,7 @@ import {
   obj2search,
 } from "../../lib/utils";
 import type { LocationName } from "../../lib/constants";
-import fetch from "isomorphic-unfetch";
+import fetch from "node-fetch";
 
 export const get = async ({ query }) => {
   const q: string = query.get("q");
