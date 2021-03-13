@@ -7,7 +7,7 @@
   <a href="/"
     ><img
       class="logo"
-      src="/noun_arrow scratch_1195136.svg"
+      src="/logo.svg"
       alt="A wiggly arrow ultimately pointing to the right"
     /> WDYS?</a
   >
