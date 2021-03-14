@@ -1,5 +1,4 @@
 import fetch from "node-fetch";
-import HTMLParser from "node-html-parser";
 import { getLangByLocation, obj2search } from "../../lib/utils";
 import type { LocationName } from "../../lib/constants";
 
@@ -14,9 +13,10 @@ export const get = async ({ query }) => {
         mkt: `${getLangByLocation(l)}-${l}`,
       })
   ).then((res) => res.text());
-  const dom = HTMLParser(res);
 
-  const suggestions = dom.querySelectorAll(".sa_tm").map((d) => d.text);
+  const suggestions = Array.from(
+    res.matchAll(/<li[^>]*>(.+?)<\/li>/g)
+  ).map((d) => d[1].replace(/<.+?>/g, ""));
 
   return {
     statusCode: 200,

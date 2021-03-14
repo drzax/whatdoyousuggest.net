@@ -4,21 +4,19 @@
   "scripts": {
     "dev": "svelte-kit dev",
     "build": "svelte-kit build",
-    "start": "svelte-kit start",
-    "build-netlify": "svelte-kit build; netlify-lambda build functions/render; mv functions/*.js functions/render/"
+    "start": "svelte-kit start"
   },
   "devDependencies": {
     "@sveltejs/adapter-netlify": "next",
     "@sveltejs/adapter-node": "next",
     "@sveltejs/kit": "next",
     "@types/debounce": "^1.2.0",
+    "country-code-lookup": "0.0.19",
     "d3-scale": "^3.2.3",
     "d3-scale-chromatic": "^2.0.0",
     "d3-shape": "^2.1.0",
     "debounce": "^1.2.1",
     "encoding": "^0.1.13",
-    "netlify-lambda": "^2.0.3",
-    "node-html-parser": "^3.0.4",
     "reduce-unique": "^2.0.1",
     "sass": "^1.32.8",
     "svelte": "^3.35.0",
@@ -32,7 +30,6 @@
     "node": ">= 14"
   },
   "dependencies": {
-    "country-code-lookup": "0.0.19",
     "node-fetch": "^2.6.1"
   }
 }
