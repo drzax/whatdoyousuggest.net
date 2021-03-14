@@ -1,18 +1,19 @@
 dependencies:
+  node-fetch: 2.6.1
+devDependencies:
+  '@sveltejs/adapter-netlify': 1.0.0-next.3
+  '@sveltejs/adapter-node': 1.0.0-next.7
+  '@sveltejs/kit': 1.0.0-next.46_svelte@3.35.0+vite@2.0.5
+  '@types/debounce': 1.2.0
   country-code-lookup: 0.0.19
   d3-scale: 3.2.3
   d3-scale-chromatic: 2.0.0
   d3-shape: 2.1.0
   debounce: 1.2.1
   encoding: 0.1.13
-  node-fetch: 2.6.1
+  netlify-lambda: 2.0.3
   node-html-parser: 3.0.4
   reduce-unique: 2.0.1
-devDependencies:
-  '@sveltejs/adapter-netlify': 1.0.0-next.2
-  '@sveltejs/adapter-node': 1.0.0-next.6
-  '@sveltejs/kit': 1.0.0-next.45_svelte@3.35.0+vite@2.0.5
-  netlify-lambda: 2.0.3
   sass: 1.32.8
   svelte: 3.35.0
   svelte-preprocess: 4.6.9_3267835ea6c3508f3743accbc37c06ef
@@ -990,17 +991,17 @@ packages:
       rollup: ^1.20.0||^2.0.0
     resolution:
       integrity: sha512-TrBhfJkFxA+ER+ew2U2/fHbebhLT/l/2pRk0hfj9KusXUuRXd2v0R58AfaZK9VXDQ4TogOSEmICVrQAA3zFnHQ==
-  /@sveltejs/adapter-netlify/1.0.0-next.2:
+  /@sveltejs/adapter-netlify/1.0.0-next.3:
     dependencies:
       toml: 3.0.0
     dev: true
     resolution:
-      integrity: sha512-u69qaCeHj+FFxyNnoFr8YxTmHVgdiZNPuHJUuKO0hXGtXCw9IuTKh3oxY4t1DEyuRGLJahmXV9G+DkZgR1iK6g==
-  /@sveltejs/adapter-node/1.0.0-next.6:
+      integrity: sha512-wlQmSlujoh1BM1Shh/xsSOUPTudypyKfg4ssCV05o+2An4SBHO8PIiFqgWxMBnvFyTJu2VGHu1Ruxzf1yoaQqA==
+  /@sveltejs/adapter-node/1.0.0-next.7:
     dev: true
     resolution:
-      integrity: sha512-WtRLhxyRRgROy5SMG8akLUXbtL7fLnjrlZTsq3o5fKY8gQ4s2hmhPoj8n7t6Xfzpnz2yic1n7+CBbHeF8VnEwA==
-  /@sveltejs/kit/1.0.0-next.45_svelte@3.35.0+vite@2.0.5:
+      integrity: sha512-5lwBlZZcmrD0g2Ta3hbv9YxOLsngEC2c5Ce8zgpTFcHjuBdKXIBV3djJbrfFkSIUKuOG4057WzlLGlk0wWS14w==
+  /@sveltejs/kit/1.0.0-next.46_svelte@3.35.0+vite@2.0.5:
     dependencies:
       '@sveltejs/vite-plugin-svelte': 1.0.0-next.3_svelte@3.35.0+vite@2.0.5
       '@svitejs/vite-plugin-svelte': 0.10.0_svelte@3.35.0+vite@2.0.5
@@ -1014,7 +1015,7 @@ packages:
       svelte: ^3.32.1
       vite: ^2.0.4
     resolution:
-      integrity: sha512-GghGUxszjgMJMf3j3FifoUB62dLDFWmy6eL6LxDj1VvpcpIx2PnJLbRbbyzzWNEKS4N41b8pQIi4uF+HYSVQ/w==
+      integrity: sha512-/X7qdGf7w5ft6f61RO5nABa6SFGm8nMr1BpluQABFRP2nc+NfAzpKz3dWd74U8CNTWL9xhUoXA/PdxxQsGUpbg==
   /@sveltejs/vite-plugin-svelte/1.0.0-next.3_svelte@3.35.0+vite@2.0.5:
     dependencies:
       '@rollup/pluginutils': 4.1.0
@@ -1052,6 +1053,10 @@ packages:
       vite: ^2.0.5
     resolution:
       integrity: sha512-gttcMIZvLwanYbkfkl77o8mkPKxnYGoqz0xOfz4ZPrzJdan+DzH9b2PEQbpWb53klFKANB7FPBDr7bCaixIT5Q==
+  /@types/debounce/1.2.0:
+    dev: true
+    resolution:
+      integrity: sha512-bWG5wapaWgbss9E238T0R6bfo5Fh3OkeoSt245CM7JJwVwpw6MEBCbIxLq5z8KzsE3uJhzcIuQkyiZmzV3M/Dw==
   /@types/json-schema/7.0.7:
     dev: true
     resolution:
@@ -1479,7 +1484,7 @@ packages:
     resolution:
       integrity: sha512-dhEPs72UPbDnAQJ9ZKMNTP6ptJaionhP5cBb541nXPlW60Jepo9RV/a4fX4XWW9CuFNK22krhrj1+rgzifNCsw==
   /boolbase/1.0.0:
-    dev: false
+    dev: true
     resolution:
       integrity: sha1-aN/1++YMUes3cl6p4+0xDcwed24=
   /brace-expansion/1.1.11:
@@ -1885,7 +1890,7 @@ packages:
     resolution:
       integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
   /country-code-lookup/0.0.19:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-lpvgdPyj8RuP0CSZhACNf5ueKlLbv/IQUAQfg7yr/qJbFrdcWV7Y+aDN9K/u/bx3MXRfcsjuW+TdIc0AEj7kDw==
   /create-ecdh/4.0.4:
@@ -1939,11 +1944,11 @@ packages:
       domhandler: 4.0.0
       domutils: 2.5.0
       nth-check: 2.0.0
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-qmss1EihSuBNWNNhHjxzxSfJoFBM/lERB/Q4EnsJQQC62R2evJDW481091oAdOr9uh46/0n4nrg0It5cAnj1RA==
   /css-what/4.0.0:
-    dev: false
+    dev: true
     engines:
       node: '>= 6'
     resolution:
@@ -1955,32 +1960,32 @@ packages:
   /d3-array/2.12.0:
     dependencies:
       internmap: 1.0.1
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-T6H/qNldyD/1OlRkJbonb3u3MPhNwju8OPxYv0YSjDb/B2RUeeBEHzIpNrYiinwpmz8+am+puMrpcrDWgY9wRg==
   /d3-color/2.0.0:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-SPXi0TSKPD4g9tw0NMZFnR95XVgUZiBH+uUTqQuDu1OsE2zomHU7ho0FISciaPvosimixwHFl3WHLGabv6dDgQ==
   /d3-format/2.0.0:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-Ab3S6XuE/Q+flY96HXT0jOXcM4EAClYFnRGY5zsjRGNy6qCYrQsMffs7cV5Q9xejb35zxW5hf/guKw34kvIKsA==
   /d3-interpolate/2.0.1:
     dependencies:
       d3-color: 2.0.0
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-c5UhwwTs/yybcmTpAVqwSFl6vrQ8JZJoT5F7xNFK9pymv5C0Ymcc9/LIJHtYIggg/yS9YHw8i8O8tgb9pupjeQ==
   /d3-path/2.0.0:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-ZwZQxKhBnv9yHaiWd6ZU4x5BtCQ7pXszEV9CU6kRgwIQVQGLMv1oiL4M+MK/n79sYzsj+gcgpPQSctJUsLN7fA==
   /d3-scale-chromatic/2.0.0:
     dependencies:
       d3-color: 2.0.0
       d3-interpolate: 2.0.1
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-LLqy7dJSL8yDy7NRmf6xSlsFZ6zYvJ4BcWFE4zBrOPnQERv9zj24ohnXKRbyi9YHnYV+HN1oEO3iFK971/gkzA==
   /d3-scale/3.2.3:
@@ -1990,27 +1995,27 @@ packages:
       d3-interpolate: 2.0.1
       d3-time: 2.0.0
       d3-time-format: 3.0.0
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-8E37oWEmEzj57bHcnjPVOBS3n4jqakOeuv1EDdQSiSrYnMCBdMd3nc4HtKk7uia8DUHcY/CGuJ42xxgtEYrX0g==
   /d3-shape/2.1.0:
     dependencies:
       d3-path: 2.0.0
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-PnjUqfM2PpskbSLTJvAzp2Wv4CZsnAgTfcVRTwW03QR3MkXF8Uo7B1y/lWkAsmbKwuecto++4NlsYcvYpXpTHA==
   /d3-time-format/3.0.0:
     dependencies:
       d3-time: 2.0.0
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-UXJh6EKsHBTjopVqZBhFysQcoXSv/5yLONZvkQ5Kk3qbwiUYkdX17Xa1PT6U1ZWXGGfB1ey5L8dKMlFq2DO0Ag==
   /d3-time/2.0.0:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-2mvhstTFcMvwStWd9Tj3e6CEqtOivtD8AUiHT8ido/xmzrI9ijrUUihZ6nHuf/vsScRBonagOdj0Vv+SEL5G3Q==
   /debounce/1.2.1:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==
   /debug/2.6.9:
@@ -2115,7 +2120,7 @@ packages:
       domelementtype: 2.1.0
       domhandler: 4.0.0
       entities: 2.2.0
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-n6kZFH/KlCrqs/1GHMOd5i2fd/beQHuehKdWvNNffbGHTr/almdhuVvTVFb3V7fglz+nC50fFusu3lY33h12pA==
   /domain-browser/1.2.0:
@@ -2126,13 +2131,13 @@ packages:
     resolution:
       integrity: sha512-jnjyiM6eRyZl2H+W8Q/zLMA481hzi0eszAaBUzIVnmYVDBbnLxVNnfu1HgEBvCbL+71FrxMl3E6lpKH7Ge3OXA==
   /domelementtype/2.1.0:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-LsTgx/L5VpD+Q8lmsXSHW2WpA+eBlZ9HPf3erD1IoPF00/3JKHZ3BknUVA2QGDNu69ZNmyFmCWBSO45XjYKC5w==
   /domhandler/4.0.0:
     dependencies:
       domelementtype: 2.1.0
-    dev: false
+    dev: true
     engines:
       node: '>= 4'
     resolution:
@@ -2142,7 +2147,7 @@ packages:
       dom-serializer: 1.2.0
       domelementtype: 2.1.0
       domhandler: 4.0.0
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-Ho16rzNMOFk2fPwChGh3D2D9OEHAfG19HgmRR2l+WLSsIstNsAYBzePH412bL0y5T44ejABIVfTHQ8nqi/tBCg==
   /duplexify/3.7.1:
@@ -2189,7 +2194,7 @@ packages:
   /encoding/0.1.13:
     dependencies:
       iconv-lite: 0.6.2
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-ETBauow1T35Y/WZMkio9jiM0Z5xjHHmJ4XmjZOq1l/dXz3lr2sRn87nJy20RupqSh1F2m3HHPSp8ShIPQJrJ3A==
   /end-of-stream/1.4.4:
@@ -2209,7 +2214,7 @@ packages:
     resolution:
       integrity: sha512-Nv9m36S/vxpsI+Hc4/ZGRs0n9mXqSWGGq49zxb/cJfPAQMbUtttJAlNPS4AQzaBdw/pKskw5bMbekT/Y7W/Wlg==
   /entities/2.2.0:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==
   /errno/0.1.8:
@@ -2738,7 +2743,7 @@ packages:
     resolution:
       integrity: sha512-taOaskGt4z4SOANNseOviYDvjEJinIkRgmp7LbKP2YTTmVxWBl87s/uzK9r+44BclBSp2X7K1hqeNfz9JbBeXA==
   /he/1.2.0:
-    dev: false
+    dev: true
     hasBin: true
     resolution:
       integrity: sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
@@ -2789,7 +2794,7 @@ packages:
   /iconv-lite/0.6.2:
     dependencies:
       safer-buffer: 2.1.2
-    dev: false
+    dev: true
     engines:
       node: '>=0.10.0'
     resolution:
@@ -2838,7 +2843,7 @@ packages:
     resolution:
       integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==
   /internmap/1.0.1:
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-lDB5YccMydFBtasVtxnZ3MRBHuaoE8GKsppq+EchKL2U4nK/DmEpPHNH8MZe5HkMtpSiTSOZwfN0tzYjO/lJEw==
   /ipaddr.js/1.9.1:
@@ -3437,7 +3442,7 @@ packages:
     dependencies:
       css-select: 3.1.2
       he: 1.2.0
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-ak6DtofMLXnXHZZ0aAst1gX5+S5mYru9QhVQZoAZ0S8b7HrtaEHVsZoNsMfrN1WeEe4iUUblzhOZy05w8Sz7Tg==
   /node-libs-browser/2.2.1:
@@ -3490,7 +3495,7 @@ packages:
   /nth-check/2.0.0:
     dependencies:
       boolbase: 1.0.0
-    dev: false
+    dev: true
     resolution:
       integrity: sha512-i4sc/Kj8htBrAiH1viZ0TgU8Y5XqCaV/FziYK6TBczxmeKm3AEFWqqF3195yKudrarqy7Zu80Ra5dobFjn9X/Q==
   /object-assign/4.1.1:
@@ -3911,7 +3916,7 @@ packages:
     resolution:
       integrity: sha512-cMhu7c/8rdhkHXWsY+osBhfSy0JikwpHK/5+imo+LpeasTF8ouErHrlYkwT0++njiyuDvc7OFY5T3ukvZ8qmFQ==
   /reduce-unique/2.0.1:
-    dev: false
+    dev: true
     engines:
       node: '>=6'
     resolution:
@@ -4075,6 +4080,7 @@ packages:
     resolution:
       integrity: sha1-QKNmnzsHfR6UPURinhV91IAjvy4=
   /safer-buffer/2.1.2:
+    dev: true
     resolution:
       integrity: sha512-YZo3K82SD7Riyi0E1EQPojLz7kpepnSQI9IyPbHHg1XXXevb5dJI7tpyN2ADxGcQbHG7vcyRHk0cbwqcQriUtg==
   /sass/1.32.8:
@@ -4817,6 +4823,7 @@ specifiers:
   '@sveltejs/adapter-netlify': next
   '@sveltejs/adapter-node': next
   '@sveltejs/kit': next
+  '@types/debounce': ^1.2.0
   country-code-lookup: 0.0.19
   d3-scale: ^3.2.3
   d3-scale-chromatic: ^2.0.0

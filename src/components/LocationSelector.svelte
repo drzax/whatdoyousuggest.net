@@ -1,6 +1,7 @@
 <script type="typescript">
   // imports
   import Button from "$components/Button.svelte";
+  import lookup from "country-code-lookup";
   import { locations } from "../lib/constants";
   import type { LocationName } from "../lib/constants";
 
@@ -24,7 +25,7 @@
             open = false;
           }}
         >
-          {code.toUpperCase()}
+          {lookup.byIso(code).country}
         </li>
       {/each}
     </ul>

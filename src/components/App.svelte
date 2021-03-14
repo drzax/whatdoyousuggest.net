@@ -55,7 +55,7 @@
       engine = e;
     };
 
-    domain = `https://${document.location.host}`;
+    domain = document.location.host;
   });
 
   const updateSuggestions = debounce(
