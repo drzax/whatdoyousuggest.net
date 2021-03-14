@@ -23,7 +23,7 @@
   export let suggestions: string[] = [];
 
   let input = phrase || "";
-  let domain = "";
+  let domain = "deploy-preview-24--laughing-euclid-388e47.netlify.app";
   let loading: boolean = false;
   let current: string = endpoint(phrase, location, engine);
 
@@ -111,7 +111,8 @@
   <meta name="og:description" content="Explore Google's search suggestions." />
   <meta
     name="og:image"
-    content="https://fallback-automation.now.sh/api?url={domain}/{slug}/au:d&selector=.tree&width=500"
+    content="https://fallback-automation.now.sh/api?url={domain}/{slug ||
+      'what-do-you-suggest'}/au:d&selector=.tree&width=500"
   />
   <meta
     name="twitter:image:alt"
