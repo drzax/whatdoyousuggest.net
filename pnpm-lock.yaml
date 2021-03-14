@@ -1,11 +1,11 @@
 dependencies:
+  country-code-lookup: 0.0.19
   node-fetch: 2.6.1
 devDependencies:
   '@sveltejs/adapter-netlify': 1.0.0-next.3
   '@sveltejs/adapter-node': 1.0.0-next.7
   '@sveltejs/kit': 1.0.0-next.46_svelte@3.35.0+vite@2.0.5
   '@types/debounce': 1.2.0
-  country-code-lookup: 0.0.19
   d3-scale: 3.2.3
   d3-scale-chromatic: 2.0.0
   d3-shape: 2.1.0
@@ -1890,7 +1890,7 @@ packages:
     resolution:
       integrity: sha1-tf1UIgqivFq1eqtxQMlAdUUDwac=
   /country-code-lookup/0.0.19:
-    dev: true
+    dev: false
     resolution:
       integrity: sha512-lpvgdPyj8RuP0CSZhACNf5ueKlLbv/IQUAQfg7yr/qJbFrdcWV7Y+aDN9K/u/bx3MXRfcsjuW+TdIc0AEj7kDw==
   /create-ecdh/4.0.4:
