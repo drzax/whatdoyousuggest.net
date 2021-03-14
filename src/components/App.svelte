@@ -101,6 +101,11 @@
     300
   );
   $: updateSuggestions(input, location, engine);
+  $: ogImage = encodeURI(
+    `https://fallback-automation.now.sh/api?url=https://${domain}/${
+      slug || "what-do-you-suggest"
+    }/${location}:${engine}&amp;selector=.tree&amp;width=500`
+  );
 </script>
 
 <svelte:head>
@@ -108,12 +113,11 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@drzax" />
   <meta name="og:title" content="What do you suggest?" />
-  <meta name="og:description" content="Explore Google's search suggestions." />
   <meta
-    name="og:image"
-    content="https://fallback-automation.now.sh/api?url={domain}/{slug ||
-      'what-do-you-suggest'}/au:d&selector=.tree&width=500"
+    name="og:description"
+    content="Explore the suggestions offered by search engines including Google, Bing, Yahoo and DuckDuckGo."
   />
+  <meta name="og:image" content={ogImage} />
   <meta
     name="twitter:image:alt"
     content="Search suggestions for the phrase: {phrase}"
