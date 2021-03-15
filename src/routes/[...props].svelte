@@ -14,17 +14,16 @@
     const { location, engine } = optionsStringToObject(optionsString);
 
     const [phrase, term] = inputsFromSlug(slug);
+    let suggestions: string[] = [];
+    const end = endpoint(phrase, location, engine);
+
     try {
-      const end = endpoint(phrase, location, engine);
-      const res = await fetch(end);
-      const raw = await res.json();
-      const suggestions: string[] = splitOutRootTerms(raw, phrase);
-      return { props: { phrase, term, slug, suggestions, location, engine } };
+      const res = await fetch(end).then((r) => r.json());
+      suggestions = splitOutRootTerms(res, phrase);
     } catch (e) {
       console.error(e);
-      return {};
     }
-    return {};
+    return { props: { phrase, term, slug, suggestions, location, engine } };
   }
 </script>
 
