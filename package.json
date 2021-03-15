@@ -11,6 +11,7 @@
     "@sveltejs/adapter-node": "next",
     "@sveltejs/kit": "next",
     "@types/debounce": "^1.2.0",
+    "@types/node-fetch": "^2.5.8",
     "sass": "^1.32.8",
     "svelte": "^3.35.0",
     "svelte-preprocess": "^4.6.9",
