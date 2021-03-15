@@ -103,7 +103,7 @@
   $: ogImage = encodeURI(
     `https://fallback-automation.now.sh/api?url=https://${domain}/${
       slug || "what-do-you-suggest"
-    }/${location}:${engine}&amp;selector=.tree&amp;width=500`
+    }/${location}:${engine}&selector=.tree&width=500`
   );
 </script>
 
