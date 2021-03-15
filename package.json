@@ -11,13 +11,7 @@
     "@sveltejs/adapter-node": "next",
     "@sveltejs/kit": "next",
     "@types/debounce": "^1.2.0",
-    "country-code-lookup": "0.0.19",
-    "d3-scale": "^3.2.3",
-    "d3-scale-chromatic": "^2.0.0",
-    "d3-shape": "^2.1.0",
     "debounce": "^1.2.1",
-    "encoding": "^0.1.13",
-    "reduce-unique": "^2.0.1",
     "sass": "^1.32.8",
     "svelte": "^3.35.0",
     "svelte-preprocess": "^4.6.9",
@@ -30,6 +24,12 @@
     "node": ">= 14"
   },
   "dependencies": {
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "country-code-lookup": "0.0.19",
+    "d3-scale": "^3.2.3",
+    "d3-scale-chromatic": "^2.0.0",
+    "d3-shape": "^2.1.0",
+    "encoding": "^0.1.13",
+    "reduce-unique": "^2.0.1"
   }
 }

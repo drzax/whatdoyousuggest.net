@@ -3,7 +3,7 @@
 </script>
 
 <script type="typescript">
-  import App from "$components/App.svelte";
+  import App from "$lib/App.svelte";
 </script>
 
 <App />

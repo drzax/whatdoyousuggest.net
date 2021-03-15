@@ -4,10 +4,10 @@
   import { schemeCategory10 } from "d3-scale-chromatic";
 
   import unique from "reduce-unique";
-  import { xMaxLeft, xMaxRight } from "../lib/stores";
+  import { xMaxLeft, xMaxRight } from "$lib/stores";
 
   // Components
-  import Branch from "$components/Branch.svelte";
+  import Branch from "$lib/Branch.svelte";
 
   // exports / props
   export let suggestions: string[]; // An array of phrases

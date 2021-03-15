@@ -1,6 +1,5 @@
 import fetch from "node-fetch";
-import { getLangByLocation, obj2search } from "../../lib/utils";
-import type { LocationName } from "../../lib/constants";
+import { getLangByLocation, obj2search } from "$lib/utils";
 
 export const get = async ({ query }) => {
   const qry: string = query.get("q");

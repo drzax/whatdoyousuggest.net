@@ -1,6 +1,5 @@
 <script lang="ts">
-  import type { EngineId } from '../lib/constants';
-  import { engines } from '../lib/constants';
+  import { engines } from "$lib/constants";
   export let engine: EngineId;
 </script>
 
@@ -23,7 +22,7 @@
     font-weight: normal;
     background-color: transparent;
     cursor: pointer;
-    &[aria-checked='true'] {
+    &[aria-checked="true"] {
       text-decoration: underline;
     }
   }

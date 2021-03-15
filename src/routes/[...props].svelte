@@ -4,8 +4,8 @@
     splitOutRootTerms,
     inputsFromSlug,
     optionsStringToObject,
-  } from '../lib/utils';
-  import type { LocationName, EngineId } from '../lib/constants';
+  } from "$lib/utils";
+
   export async function load({ page, fetch }) {
     let optionsString: string | undefined;
     let slug: string;
@@ -29,7 +29,7 @@
 </script>
 
 <script lang="ts">
-  import App from '$components/App.svelte';
+  import App from "$lib/App.svelte";
   export let phrase: string;
   export let term: string;
   export let slug: string;

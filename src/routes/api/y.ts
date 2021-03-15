@@ -1,5 +1,4 @@
-import { validateLocation, obj2search } from "../../lib/utils";
-import type { LocationName } from "../../lib/constants";
+import { validateLocation, obj2search } from "$lib/utils";
 
 import fetch from "node-fetch";
 

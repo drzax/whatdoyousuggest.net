@@ -1,7 +1,7 @@
 <script lang="ts">
   // Imports!
   import { linkHorizontal } from "d3-shape";
-  import { xMaxLeft, xMaxRight } from "../lib/stores";
+  import { xMaxLeft, xMaxRight } from "$lib/stores";
 
   // Exports / props
   export let node: WordTreeNode;

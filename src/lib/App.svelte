@@ -1,19 +1,18 @@
 <script lang="ts">
   import { onMount } from "svelte";
-  import LocationSelector from "$components/LocationSelector.svelte";
-  import Spinner from "$components/Spinner.svelte";
-  import Header from "$components/Header.svelte";
-  import WordTree from "$components/WordTree.svelte";
+  import LocationSelector from "$lib/LocationSelector.svelte";
+  import Spinner from "$lib/Spinner.svelte";
+  import Header from "$lib/Header.svelte";
+  import WordTree from "$lib/WordTree.svelte";
   import {
     endpoint,
     inputsFromForm,
     pathToProps,
     splitOutRootTerms,
     validateLocation,
-  } from "../lib/utils";
+  } from "$lib/utils";
+  import { defaultOptions } from "$lib/constants";
   import debounce from "debounce";
-  import { defaultOptions } from "../lib/constants";
-  import type { LocationName, EngineId } from "../lib/constants";
   import EngineSelector from "./EngineSelector.svelte";
   export let phrase: string;
   export let location: LocationName = null;

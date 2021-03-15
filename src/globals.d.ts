@@ -7,8 +7,8 @@
 		import Component from './Component.svelte';
 	 ```
  */
-declare module '*.svelte' {
-	export { SvelteComponent as default } from 'svelte';
+declare module "*.svelte" {
+  export { SvelteComponent as default } from "svelte";
 }
 //#endregion
 
@@ -23,36 +23,35 @@ declare module '*.svelte' {
 	 ```
  */
 declare module "*.gif" {
-	const value: string;
-	export = value;
+  const value: string;
+  export = value;
 }
 
 declare module "*.jpg" {
-	const value: string;
-	export = value;
+  const value: string;
+  export = value;
 }
 
 declare module "*.jpeg" {
-	const value: string;
-	export = value;
+  const value: string;
+  export = value;
 }
 
 declare module "*.png" {
-	const value: string;
-	export = value;
+  const value: string;
+  export = value;
 }
 
 declare module "*.svg" {
-	const value: string;
-	export = value;
+  const value: string;
+  export = value;
 }
 
 declare module "*.webp" {
-	const value: string;
-	export = value;
+  const value: string;
+  export = value;
 }
 //#endregion
-
 
 type WordTreeData = {
   nodes: WordTreeNode[];
@@ -71,3 +70,28 @@ type WordTreeNode = {
   phrases: { text: string; index: number }[];
   isRoot: boolean;
 };
+
+type EngineId = "b" | "g" | "d" | "y";
+type Engine = { id: EngineId; name: string };
+type LocationName =
+  | "ar"
+  | "au"
+  | "br"
+  | "ca"
+  | "cn"
+  | "fr"
+  | "de"
+  | "in"
+  | "id"
+  | "it"
+  | "jp"
+  | "mx"
+  | "ru"
+  | "sa"
+  | "za"
+  | "kr"
+  | "tr"
+  | "gb"
+  | "us";
+
+type Options = { location: LocationName; engine: EngineId };

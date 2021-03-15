@@ -3,7 +3,7 @@
 </script>
 
 <script lang="ts">
-  import Header from "$components/Header.svelte";
+  import Header from "$lib/Header.svelte";
   import { onMount } from "svelte";
 
   let bugReportOptOut: boolean | undefined;
