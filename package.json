@@ -7,9 +7,8 @@
     "start": "svelte-kit start"
   },
   "devDependencies": {
-    "@sveltejs/adapter-netlify": "next",
-    "@sveltejs/adapter-node": "next",
-    "@sveltejs/kit": "next",
+    "@sveltejs/adapter-netlify": "^1.0.0-next.4",
+    "@sveltejs/kit": "^1.0.0-next.54",
     "@types/debounce": "^1.2.0",
     "@types/node-fetch": "^2.5.8",
     "sass": "^1.32.8",

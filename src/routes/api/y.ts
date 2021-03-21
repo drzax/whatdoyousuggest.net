@@ -1,4 +1,5 @@
 import { validateLocation, obj2search } from "$lib/utils";
+import type { LocationName } from "../../types";
 
 import fetch from "node-fetch";
 

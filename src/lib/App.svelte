@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { LocationName, EngineId } from "../types";
   import { onMount } from "svelte";
   import LocationSelector from "$lib/LocationSelector.svelte";
   import Spinner from "$lib/Spinner.svelte";
