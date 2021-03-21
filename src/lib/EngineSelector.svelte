@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { EngineId } from "../types";
   import { engines } from "$lib/constants";
   export let engine: EngineId;
 </script>

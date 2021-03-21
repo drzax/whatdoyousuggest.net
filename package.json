@@ -9,7 +9,7 @@
   "devDependencies": {
     "@sveltejs/adapter-netlify": "next",
     "@sveltejs/adapter-node": "next",
-    "@sveltejs/adapter-vercel": "^1.0.0-next.5",
+    "@sveltejs/adapter-vercel": "next",
     "@sveltejs/kit": "next",
     "@types/debounce": "^1.2.0",
     "@types/node-fetch": "^2.5.8",

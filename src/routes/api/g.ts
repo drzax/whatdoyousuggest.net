@@ -1,6 +1,6 @@
 import fetch from "node-fetch";
 import { obj2search } from "$lib/utils";
-
+import type { LocationName } from "../../types";
 export const get = async ({ query }) => {
   const q: string = query.get("q");
   const gl: LocationName = query.get("l");

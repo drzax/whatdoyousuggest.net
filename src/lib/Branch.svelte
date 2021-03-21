@@ -2,6 +2,7 @@
   // Imports!
   import { linkHorizontal } from "d3-shape";
   import { xMaxLeft, xMaxRight } from "$lib/stores";
+  import type { WordTreeNode } from "../types";
 
   // Exports / props
   export let node: WordTreeNode;

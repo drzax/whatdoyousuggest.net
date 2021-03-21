@@ -13,7 +13,6 @@
     let slug: string;
     [slug, optionsString] = page.params.props.split("/");
 
-    console.log("slug, optionsString :>> ", slug, optionsString);
     const { location, engine } = optionsStringToObject(optionsString);
 
     const [phrase, term] = inputsFromSlug(slug);

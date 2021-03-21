@@ -1,5 +1,6 @@
 <script type="typescript">
   // imports
+  import type { LocationName } from "../types";
   import Button from "$lib/Button.svelte";
   import { byIso } from "country-code-lookup";
   import { locations } from "$lib/constants";

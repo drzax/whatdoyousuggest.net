@@ -1,5 +1,6 @@
 <script lang="ts">
   // Imports
+  import type { WordTreeNode, WordTreeData } from "../types";
   import { scaleLinear, scaleOrdinal } from "d3-scale";
   import { schemeCategory10 } from "d3-scale-chromatic";
 

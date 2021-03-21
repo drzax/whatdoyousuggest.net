@@ -1,5 +1,6 @@
 import { validateLocation, getLangByLocation, obj2search } from "$lib/utils";
 import fetch from "node-fetch";
+import type { LocationName } from "../../types";
 
 export const get = async ({ query }) => {
   const q: string = query.get("q");
