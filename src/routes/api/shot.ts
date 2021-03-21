@@ -1,6 +1,6 @@
 import { getScreenshot } from "./_chromium";
 import Jimp from "jimp";
-const isDev = process.env.NODE_ENV === "development";
+const isDev = !process.env.AWS_REGION;
 export const get = async ({ query }) => {
   const ttl = 86400;
   try {

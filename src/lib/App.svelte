@@ -101,7 +101,7 @@
   );
   $: updateSuggestions(input, location, engine);
   $: ogImage = encodeURI(
-    `https://fallback-automation.now.sh/api?url=https://${domain}/${
+    `/api/shot?url=https://${domain}/${
       slug || "what-do-you-suggest"
     }/${location}:${engine}&selector=.tree&width=500`
   );
