@@ -146,19 +146,8 @@
   </div>
   <div class="attribution">
     <p>
-      {"A resurrected experiment by "}
-      <a href="https://twitter.com/drzax"> drzax </a> (<a
-        href="https://github.com/drzax/whatdoyousuggest.net"
-      >
-        code
-      </a>{" "}
-      | <a href="https://elvery.net/drzax/tag/wdys">explanation</a>).
-    </p>
-    <p>
-      Icon by Carol van Waart from <a
-        href="https://thenounproject.com/term/arrow-scratch/1195136/"
-        >the Noun Project</a
-      >
+      <a href="/about">What is this?</a> |
+      <a href="/about/privacy">Privacy Policy</a>
     </p>
   </div>
   <div class="options">
@@ -226,5 +215,7 @@
     font-size: 0.8rem;
     line-height: 1.1;
     padding: 0 1rem;
+    display: flex;
+    align-items: center;
   }
 </style>
