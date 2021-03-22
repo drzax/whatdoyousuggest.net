@@ -5,6 +5,7 @@
   import Spinner from "$lib/Spinner.svelte";
   import Header from "$lib/Header.svelte";
   import WordTree from "$lib/WordTree.svelte";
+  import { browser } from "$app/env";
   import {
     endpoint,
     inputsFromForm,
@@ -56,50 +57,52 @@
     };
 
     domain = document.location.host;
+
+    updateSuggestions = debounce(updateSuggestions, 300);
   });
 
-  const updateSuggestions = debounce(
-    async (input: string, location: LocationName, engine: EngineId) => {
-      // TODO: this should really be done with `goto` but the navigation results in the input losing focus.
-      // goto(`/${input}/${location}:${engine}`, { noscroll: true });
+  let updateSuggestions = async (
+    input: string,
+    location: LocationName,
+    engine: EngineId
+  ) => {
+    // Bail if we're on the server
+    if (!browser) return;
 
-      // Bail if we're on the server
-      // TODO: find out properly avoid running this for SSR
-      if (typeof window === "undefined") return;
+    // TODO: this should really be done with `goto` but the navigation results in the input losing focus.
+    // goto(`/${input}/${location}:${engine}`, { noscroll: true });
 
-      // Don't bother searching if there is no input
-      if (input.length === 0) {
-        phrase = undefined;
-        term = undefined;
-        slug = undefined;
-        return;
-      }
+    // Don't bother searching if there is no input
+    if (input.length === 0) {
+      phrase = undefined;
+      term = undefined;
+      slug = undefined;
+      return;
+    }
 
-      [phrase, term, slug] = inputsFromForm(input);
+    [phrase, term, slug] = inputsFromForm(input);
 
-      const url = endpoint(phrase, location, engine);
+    const url = endpoint(phrase, location, engine);
 
-      // Bail if this is what we already have
-      if (url === current) return;
+    // Bail if this is what we already have
+    if (url === current) return;
 
-      loading = true;
-      current = url;
-      const res = await fetch(url);
-      const sug = await res.json();
+    loading = true;
+    current = url;
+    const res = await fetch(url);
+    const sug = await res.json();
 
-      if (current === url) {
-        loading = false;
-        // todo: this should probably live somewhere else: WordTree component or own function or server route
-        suggestions = splitOutRootTerms(sug, phrase);
-        history.pushState(
-          null,
-          `${phrase} - What do you suggest?`,
-          `/${slug}/${location}:${engine}`
-        );
-      }
-    },
-    300
-  );
+    if (current === url) {
+      loading = false;
+      // todo: this should probably live somewhere else: WordTree component or own function or server route
+      suggestions = splitOutRootTerms(sug, phrase);
+      history.pushState(
+        null,
+        `${phrase} - What do you suggest?`,
+        `/${slug}/${location}:${engine}`
+      );
+    }
+  };
   $: updateSuggestions(input, location, engine);
   $: ogImage = encodeURI(
     `https://fallback-automation.now.sh/api?url=https://${domain}/${

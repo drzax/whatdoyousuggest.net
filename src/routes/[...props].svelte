@@ -9,7 +9,7 @@
   export async function load({ page, fetch }) {
     let optionsString: string | undefined;
     let slug: string;
-    [slug, optionsString] = page.params.props;
+    [slug, optionsString] = page.params.props.split("/");
 
     const { location, engine } = optionsStringToObject(optionsString);
 
@@ -29,6 +29,7 @@
 
 <script lang="ts">
   import App from "$lib/App.svelte";
+  import type { LocationName, EngineId } from "../types";
   export let phrase: string;
   export let term: string;
   export let slug: string;
