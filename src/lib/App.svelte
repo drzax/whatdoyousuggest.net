@@ -30,7 +30,7 @@
 
   onMount(async () => {
     if (!location) {
-      let l = localStorage.location.toLowerCase();
+      let l = localStorage.location;
 
       if (!l) {
         try {
@@ -43,7 +43,7 @@
           l = defaultOptions.location;
         }
       }
-      location = validateLocation(l);
+      location = validateLocation(l.toLowerCase());
     }
 
     window.onpopstate = () => {
