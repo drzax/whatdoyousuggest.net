@@ -1,6 +1,8 @@
+.DS_Store
 node_modules
-build
-*.log
-.env
-# Local Netlify folder
+/.svelte
+/build
+/functions
+/functions-esm
 .netlify
+.envrc
