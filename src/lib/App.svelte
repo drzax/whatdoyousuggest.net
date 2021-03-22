@@ -30,7 +30,7 @@
 
   onMount(async () => {
     if (!location) {
-      let l = localStorage.location;
+      let l = localStorage.location.toLowerCase();
 
       if (!l) {
         try {

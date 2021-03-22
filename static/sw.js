@@ -1,4 +1,5 @@
 // TODO: Eventually remove this.
+// From: https://github.com/NekR/self-destroying-sw
 self.addEventListener("install", function (e) {
   self.skipWaiting();
 });
