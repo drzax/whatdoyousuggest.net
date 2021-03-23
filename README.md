@@ -1,39 +1,11 @@
-# create-svelte
+# What do you suggest?
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte);
+This is an old experiment which has now gone through a few different incarnations. The code here is the latest version. [See it live](https://whatdoyousuggest.net).
 
-## Creating a project
+It explores the suggestions made by search engines including Google, Yahoo, Bing and DuckDuckGo. It's basically just some fun with words and the zeitgeist (and how it's mediated by search).
 
-If you're seeing this, you've probably already done this step. Congrats!
+![Visualisation of Google suggestions for the search phrase 'what do you suggest'](https://user-images.githubusercontent.com/596563/112072094-d050c980-8bbc-11eb-911b-1ed804eada77.png)
 
-```bash
-# create a new project in the current directory
-npm init svelte@next
+## Development
 
-# create a new project in my-app
-npm init svelte@next my-app
-```
-
-> Note: the `@next` is temporary
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-Svelte apps are built with _adapters_, which optimise your project for deployment to different environments, like [Begin](https://begin.com), [Netlify](https://www.netlify.com), [Vercel](https://vercel.com) and so on. (You can also create your own adapter — instructions TODO.)
-
-By default, `npm run build` will generate a Node app that you can run with `node build`. To use a different adapter, install it and update your `svelte.config.cjs` accordingly. The following official adapters are available:
-
-- [@sveltejs/adapter-node](https://github.com/sveltejs/kit/tree/master/packages/adapter-node)
-- [@sveltejs/adapter-static](https://github.com/sveltejs/kit/tree/master/packages/adapter-static)
-- [@sveltejs/adapter-netlify](https://github.com/sveltejs/kit/tree/master/packages/adapter-netlify)
-- ...more soon
+This is deployed to [Netlify](https://www.netlify.com/) and uses [Svelte Kit](https://kit.svelte.dev/) under the hood.
