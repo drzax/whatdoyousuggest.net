@@ -3,7 +3,7 @@ import fetch from "node-fetch";
 import type { LocationName } from "../../types";
 
 export const get = async ({ query }) => {
-  const q: string = query.get("q");
+  const q: string = encodeURIComponent(query.get("q"));
   const l: LocationName = validateLocation(query.get("l"));
   const res = await fetch(
     "https://duckduckgo.com/ac/?" +
@@ -16,7 +16,7 @@ export const get = async ({ query }) => {
   const suggestions = Array.isArray(res) ? res.map((d) => d.phrase) : [];
 
   return {
-    statusCode: 200,
+    status: 200,
     headers: {
       // Netlify, doesn't currently use query strings in the cache key: https://community.netlify.com/t/netlify-function-with-query-strings-ignores-custom-cache-control-header/15390/20
       // 'Cache-Control': 'public, max-age=604800, s-maxage=604800',

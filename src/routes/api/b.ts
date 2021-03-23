@@ -1,9 +1,10 @@
 import fetch from "node-fetch";
-import { getLangByLocation, obj2search } from "$lib/utils";
+import { getLangByLocation, obj2search, validateLocation } from "$lib/utils";
 import type { LocationName } from "../../types";
+
 export const get = async ({ query }) => {
-  const qry: string = query.get("q");
-  const l: LocationName = query.get("l");
+  const qry: string = encodeURIComponent(query.get("q"));
+  const l: LocationName = validateLocation(query.get("l"));
   const res = await fetch(
     "https://www.bing.com/AS/Suggestions?" +
       obj2search({

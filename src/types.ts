@@ -37,6 +37,7 @@ export type LocationName =
   | "kr"
   | "tr"
   | "gb"
-  | "us";
+  | "us"
+  | "sg";
 
 export type Options = { location: LocationName; engine: EngineId };

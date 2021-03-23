@@ -32,11 +32,7 @@ export const inputsFromSlug = (slug: string) => {
 export const inputsFromForm = (text: string) => {
   const phrase = sanitiseTerm(text);
   const term = phrase.trim().split(" ").pop();
-  const slug = phrase
-    .trim()
-    .split(" ")
-    .map((d) => encodeURIComponent(d))
-    .join("+");
+  const slug = phrase.trim().split(" ").map(encodeURIComponent).join("+");
   return [phrase, term, slug];
 };
 
@@ -47,20 +43,22 @@ export const optionsStringToObject = (str: string = ""): Options => {
   return { location, engine };
 };
 
-export const validateLocation = (location: unknown): LocationName => {
-  return locations.find((d) => d === location) || null;
-};
+export const validateLocation = (location: unknown): LocationName =>
+  locations.find((d) => d === location) || null;
 
-export const validateEngine = (engineId: unknown) => {
-  return engines.find((d) => d.id === engineId)?.id || defaultOptions.engine;
-};
+export const validateEngine = (engineId: unknown) =>
+  engines.find((d) => d.id === engineId)?.id || defaultOptions.engine;
 
 export const pathToProps = (
   path: string
 ): { slug: string; location: LocationName; engine: EngineId } => {
   const [slug, optionsString] = path.split("/").filter((d) => !!d);
   const { location, engine } = optionsStringToObject(optionsString);
-  return { slug: slug.split("+").join(" "), location, engine };
+  return {
+    slug: slug.split("+").map(decodeURIComponent).join(" "),
+    location,
+    engine,
+  };
 };
 
 export const getLangByLocation = (location: LocationName) => {
