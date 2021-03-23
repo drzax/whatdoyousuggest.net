@@ -1,9 +1,10 @@
 import fetch from "node-fetch";
-import { obj2search } from "$lib/utils";
+import { obj2search, validateLocation } from "$lib/utils";
 import type { LocationName } from "../../types";
+
 export const get = async ({ query }) => {
-  const q: string = query.get("q");
-  const gl: LocationName = query.get("l");
+  const q: string = encodeURIComponent(query.get("q"));
+  const gl: LocationName = validateLocation(query.get("l"));
   const res = await fetch(
     "http://google.com/complete/search?" +
       obj2search({ client: "chrome", q, gl })
@@ -16,7 +17,7 @@ export const get = async ({ query }) => {
   );
 
   return {
-    statusCode: 200,
+    status: 200,
     headers: {
       // Netlify, doesn't currently use query strings in the cache key: https://community.netlify.com/t/netlify-function-with-query-strings-ignores-custom-cache-control-header/15390/20
       // 'Cache-Control': 'public, max-age=604800, s-maxage=604800',
