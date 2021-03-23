@@ -46,19 +46,32 @@
       location = validateLocation(l.toLowerCase());
     }
 
-    window.onpopstate = () => {
-      const { slug: s, location: l, engine: e } = pathToProps(
-        window.location.pathname
-      );
+    // Because we're handling our own history, hack around sveltekit's popstate handler
+    history.replaceState(false, document.title, document.location.href);
 
-      input = s;
-      location = l;
-      engine = e;
+    const handlePopState = (ev: PopStateEvent) => {
+      if (window.location.pathname === "/") {
+        input = "";
+      } else {
+        const { slug: s, location: l, engine: e } = pathToProps(
+          window.location.pathname
+        );
+
+        input = s;
+        location = l;
+        engine = e;
+      }
     };
+
+    addEventListener("popstate", handlePopState);
 
     domain = document.location.host;
 
     updateSuggestions = debounce(updateSuggestions, 300);
+
+    return () => {
+      removeEventListener("popstate", handlePopState);
+    };
   });
 
   let updateSuggestions = async (
@@ -96,11 +109,10 @@
       loading = false;
       // todo: this should probably live somewhere else: WordTree component or own function or server route
       suggestions = splitOutRootTerms(sug, phrase);
-      history.pushState(
-        null,
-        `${phrase} - What do you suggest?`,
-        `/${slug}/${location}:${engine}`
-      );
+
+      const newPath = `/${slug}/${location}:${engine}`;
+      newPath !== document.location.pathname &&
+        history.pushState(false, `${phrase} - What do you suggest?`, newPath);
     }
   };
   $: updateSuggestions(input, location, engine);
