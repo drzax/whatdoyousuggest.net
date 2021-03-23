@@ -47,13 +47,11 @@ export const optionsStringToObject = (str: string = ""): Options => {
   return { location, engine };
 };
 
-export const validateLocation = (location: unknown): LocationName => {
-  return locations.find((d) => d === location) || null;
-};
+export const validateLocation = (location: unknown): LocationName =>
+  locations.find((d) => d === location) || null;
 
-export const validateEngine = (engineId: unknown) => {
-  return engines.find((d) => d.id === engineId)?.id || defaultOptions.engine;
-};
+export const validateEngine = (engineId: unknown) =>
+  engines.find((d) => d.id === engineId)?.id || defaultOptions.engine;
 
 export const pathToProps = (
   path: string
