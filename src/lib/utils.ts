@@ -32,11 +32,7 @@ export const inputsFromSlug = (slug: string) => {
 export const inputsFromForm = (text: string) => {
   const phrase = sanitiseTerm(text);
   const term = phrase.trim().split(" ").pop();
-  const slug = phrase
-    .trim()
-    .split(" ")
-    .map((d) => encodeURIComponent(d))
-    .join("+");
+  const slug = phrase.trim().split(" ").map(encodeURIComponent).join("+");
   return [phrase, term, slug];
 };
 
@@ -58,7 +54,11 @@ export const pathToProps = (
 ): { slug: string; location: LocationName; engine: EngineId } => {
   const [slug, optionsString] = path.split("/").filter((d) => !!d);
   const { location, engine } = optionsStringToObject(optionsString);
-  return { slug: slug.split("+").join(" "), location, engine };
+  return {
+    slug: slug.split("+").map(decodeURIComponent).join(" "),
+    location,
+    engine,
+  };
 };
 
 export const getLangByLocation = (location: LocationName) => {
