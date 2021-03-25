@@ -72,7 +72,7 @@ export const inputsFromSlug = (slug: string) => {
 export const inputsFromForm = (text: string) => {
   const phrase = sanitiseTerm(text);
   const term = phrase.trim().split(" ").pop();
-  const slug = phrase.trim().split(" ").map(encodeURIComponent).join("+");
+  const slug = phrase.split(" ").map(encodeURIComponent).join("+");
   return [phrase, term, slug];
 };
 
@@ -92,7 +92,7 @@ export const validateEngine = (engineId: unknown) =>
 export const pathToProps = (
   path: string
 ): { slug: string; location: LocationName; engine: EngineId } => {
-  const [slug, optionsString] = path.split("/").filter((d) => !!d);
+  const [slug, optionsString] = path.split("/");
   const { location, engine } = optionsStringToObject(optionsString);
   return {
     slug: slug.split("+").map(decodeURIComponent).join(" "),
