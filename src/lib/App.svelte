@@ -16,6 +16,8 @@
   import { defaultOptions } from "$lib/constants";
   import debounce from "debounce";
   import EngineSelector from "./EngineSelector.svelte";
+
+  const DOMAIN = "whatdoyousuggest.net";
   export let phrase: string;
   export let location: LocationName = null;
   export let term: string;
@@ -24,7 +26,6 @@
   export let suggestions: string[] = [];
 
   let input = phrase || "";
-  let domain = "deploy-preview-24--laughing-euclid-388e47.netlify.app";
   let loading: boolean = false;
   let current: string = endpoint(phrase, location, engine);
 
@@ -64,9 +65,6 @@
     };
 
     addEventListener("popstate", handlePopState);
-
-    domain = document.location.host;
-
     updateSuggestions = debounce(updateSuggestions, 300);
 
     return () => {
@@ -117,7 +115,7 @@
   };
   $: updateSuggestions(input, location, engine);
   $: ogImage = encodeURI(
-    `https://fallback-automation.now.sh/api?url=https://${domain}/${
+    `https://fallback-automation.now.sh/api?url=https://${DOMAIN}/${
       slug || "what+do+you+suggest"
     }/${location}:${engine}&selector=.tree&width=500`
   );
