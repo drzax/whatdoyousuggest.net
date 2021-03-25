@@ -17,8 +17,48 @@ export const endpoint = (
 ) => `/api/${engine}?q=${encodeURIComponent(term)}&l=${location}`;
 
 export const splitOutRootTerms = (suggestions: string[], phrase: string) => {
-  const replacer = new RegExp(`(^|\\b)${phrase}(\\B)`);
-  return suggestions.map((d) => d.replace(replacer, phrase + " ⇢"));
+  const hasRootTermFilter = (t: string) => t.split(" ").indexOf(phrase) > -1;
+  const noRootTermFilter = (t: string) => t.split(" ").indexOf(phrase) === -1;
+
+  let hasRootTerm = suggestions.filter(hasRootTermFilter);
+  let remainingPhrases = suggestions.filter(noRootTermFilter);
+  let modified: string[] = [];
+
+  // Simple prefixes
+  const prefixReplacer = new RegExp(`(^|\\b)${phrase}(\\B)`);
+  modified = remainingPhrases.map((d) =>
+    d.replace(prefixReplacer, phrase + " ⇢")
+  );
+  hasRootTerm = hasRootTerm.concat(modified.filter(hasRootTermFilter));
+  remainingPhrases = modified.filter(noRootTermFilter);
+
+  // Apostrophe
+  const apostropheReplacer = new RegExp(`(^|\\b)${phrase}'`);
+  modified = remainingPhrases.map((d) =>
+    d.replace(apostropheReplacer, phrase + " ⇢'")
+  );
+  hasRootTerm = hasRootTerm.concat(modified.filter(hasRootTermFilter));
+  remainingPhrases = modified.filter(noRootTermFilter);
+
+  // Simple suffixes
+  const suffixReplacer = new RegExp(`(\\B)${phrase}(\\b|$)`);
+  modified = remainingPhrases.map((d) =>
+    d.replace(suffixReplacer, "⇢ " + phrase)
+  );
+  hasRootTerm = hasRootTerm.concat(modified.filter(hasRootTermFilter));
+  remainingPhrases = modified.filter(noRootTermFilter);
+
+  // Middle
+  const middleReplacer = new RegExp(`(\\B)${phrase}(\\B)`);
+  modified = remainingPhrases.map((d) =>
+    d.replace(middleReplacer, "⇢ " + phrase + " ⇢")
+  );
+  hasRootTerm = hasRootTerm.concat(modified.filter(hasRootTermFilter));
+  remainingPhrases = modified.filter(noRootTermFilter);
+
+  // TODO: log the remaining terms and figure out how to display them
+
+  return hasRootTerm;
 };
 
 // Slug format: words+separated+by+plus+sign

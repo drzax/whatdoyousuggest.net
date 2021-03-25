@@ -117,7 +117,7 @@
     if (current === url) {
       loading = false;
       // todo: this should probably live somewhere else: WordTree component or own function or server route
-      suggestions = splitOutRootTerms(sug, phrase);
+      suggestions = splitOutRootTerms(sug, term);
 
       const newPath = `/${slug}/${location}:${engine}`;
 

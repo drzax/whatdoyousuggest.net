@@ -26,12 +26,17 @@
     const nodes = new Map();
     suggestions.forEach((phrase, phraseIndex) => {
       let parent: null | WordTreeNode = null;
-      let key = "";
       phrase.split(" ").forEach((term, i, arr) => {
-        const level = i - arr.indexOf(rootTerm);
+        const rootIndex = arr.indexOf(rootTerm);
+        const level = i - rootIndex;
         const isRoot = level === 0;
-        if (isRoot) key = "";
-        key += `-${level}-${term}`;
+        const key =
+          level < 0
+            ? arr.slice(rootIndex + level, rootIndex + 1).join("-")
+            : level === 0
+            ? term
+            : arr.slice(rootIndex, rootIndex + level + 1).join("-");
+
         const termNode: WordTreeNode = nodes.has(key)
           ? nodes.get(key)
           : {
@@ -68,16 +73,21 @@
       (d) => d[1]
     );
 
-    const root =
-      nodesArray.find((d) => d.isRoot) ||
-      nodesArray.find((d) => d.key.indexOf("-1-") === 0);
-    root.isRoot = true;
+    const root = nodesArray.find((d) => d.isRoot);
+
+    if (typeof root === "undefined") {
+      throw new Error(
+        "No root term found. This function should only be passed suggestions which contain the root term."
+      );
+    }
 
     const consolidator = (direction: "before" | "after") => (
       node: WordTreeNode
     ) => {
       while (
+        // There is only a single link so maybe it can be consolidated
         node[direction].length === 1 &&
+        // But not if this term is the last term in one or more of its phrases
         typeof node.phrases.find(
           ({ text }) =>
             text.lastIndexOf(node.term) === text.length - node.term.length
@@ -116,7 +126,7 @@
     const suffixes = splits.map((d) => d[1]);
 
     return {
-      nodes: nodesArray,
+      nodes: nodesArray, // TODO: this isn't really used anywhere, but it also contains nodes that were discarded during consolidation
       root,
       suffixCount: suffixes.reduce(unique).length,
       prefixCount: prefixes.reduce(unique).length,
