@@ -19,8 +19,10 @@
     const end = endpoint(phrase, location, engine);
 
     try {
-      const res = (await fetch(end).then((r) => r.body.json())) as string[];
-      suggestions = splitOutRootTerms(res, phrase);
+      // the fetch response object appears to be mistyped
+      // @ts-expect-error
+      const res = (await fetch(end).then((r) => r.json())) as string[];
+      suggestions = splitOutRootTerms(res, term);
     } catch (e) {
       console.error(e);
     }
