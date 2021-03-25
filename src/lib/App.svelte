@@ -18,15 +18,25 @@
   import EngineSelector from "./EngineSelector.svelte";
 
   const DOMAIN = "whatdoyousuggest.net";
+
+  // The sanitised phrase actually sent to search engines
   export let phrase: string;
-  export let location: LocationName = null;
-  export let term: string;
+
+  // URL friendly representation of the phrase
   export let slug: string;
+
+  // The part of the phrase used as the root term for the visualisation
+  export let term: string;
+
+  export let location: LocationName = null;
   export let engine: EngineId = defaultOptions.engine;
   export let suggestions: string[] = [];
 
+  // The value in the input element on the page
   let input = phrase || "";
   let loading: boolean = false;
+
+  // URL endpoint for what's currently being show so going back to the API unnecessarily can be avoided.
   let current: string = endpoint(phrase, location, engine);
 
   onMount(async () => {
@@ -103,14 +113,17 @@
     const res = await fetch(url);
     const sug = await res.json();
 
+    // Make sure results from a superseded response aren't used.
     if (current === url) {
       loading = false;
       // todo: this should probably live somewhere else: WordTree component or own function or server route
       suggestions = splitOutRootTerms(sug, phrase);
 
       const newPath = `/${slug}/${location}:${engine}`;
-      newPath !== document.location.pathname &&
+
+      if (newPath !== document.location.pathname) {
         history.pushState(false, `${phrase} - What do you suggest?`, newPath);
+      }
     }
   };
   $: updateSuggestions(input, location, engine);
@@ -141,7 +154,7 @@
   <Header />
 
   <div class="inputContainer">
-    <div class={`input ${phrase && term && slug ? "used" : "empty"}`}>
+    <div class:used={phrase && term && slug} class="input">
       <input type="text" placeholder="Suggest this ..." bind:value={input} />
       <EngineSelector bind:engine />
     </div>
