@@ -10,10 +10,16 @@
   export const load: Load = async ({ page, fetch }) => {
     let optionsString: string | undefined;
     let slug: string;
-    [slug, optionsString] = page.params.props.split("/");
+    let more: string;
+    [slug, optionsString, more] = page.params.props.split("/");
+
+    // This route should only match urls with two segments so fall through otherwise.
+    // TODO: This should fall through rather than return an error, but sveltekit doesn't like that for some reason.
+    if (more) return { status: 404, error: new Error("Not found") };
+
+    // TODO: ideally a missing optionsString would result in a server redirect here, but location, as it's currently used can't be determined here because the default is detected on the client and selected user pref is stored in local storage.
 
     const { location, engine } = optionsStringToObject(optionsString);
-
     const [phrase, term] = inputsFromSlug(slug);
     let suggestions: string[] = [];
     const end = endpoint(phrase, location, engine);

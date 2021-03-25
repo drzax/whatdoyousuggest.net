@@ -1,5 +1,5 @@
 <script lang="ts">
-  // TODO: Import bugsnag here instead of in app.html
+  // TODO: Import bugsnag here instead of in app.html. Can't do this while opt out user pref is stored in localStorage
   // import Bugsnag from "@bugsnag/js";
   // Bugsnag.start({ apiKey: "85507ac85c195f70b8be68b919e60fa2" });
 </script>
