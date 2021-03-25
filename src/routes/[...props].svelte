@@ -32,7 +32,10 @@
     } catch (e) {
       console.error(e);
     }
-    return { props: { phrase, term, slug, suggestions, location, engine } };
+    return {
+      maxage: 86400, // 24 hrs
+      props: { phrase, term, slug, suggestions, location, engine },
+    };
   };
 </script>
 
