@@ -1,4 +1,5 @@
 <script context="module" lang="ts">
+  import type { Load } from "@sveltejs/kit";
   import {
     endpoint,
     splitOutRootTerms,
@@ -6,7 +7,7 @@
     optionsStringToObject,
   } from "$lib/utils";
 
-  export async function load({ page, fetch }) {
+  export const load: Load = async ({ page, fetch }) => {
     let optionsString: string | undefined;
     let slug: string;
     [slug, optionsString] = page.params.props.split("/");
@@ -18,13 +19,13 @@
     const end = endpoint(phrase, location, engine);
 
     try {
-      const res = await fetch(end).then((r) => r.json());
+      const res = (await fetch(end).then((r) => r.body.json())) as string[];
       suggestions = splitOutRootTerms(res, phrase);
     } catch (e) {
       console.error(e);
     }
     return { props: { phrase, term, slug, suggestions, location, engine } };
-  }
+  };
 </script>
 
 <script lang="ts">
