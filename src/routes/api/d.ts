@@ -1,8 +1,9 @@
 import { validateLocation, getLangByLocation, obj2search } from "$lib/utils";
 import fetch from "node-fetch";
 import type { LocationName } from "../../types";
+import type { RequestHandler } from "@sveltejs/kit";
 
-export const get = async ({ query }) => {
+export const get: RequestHandler = async ({ query }) => {
   const q: string = encodeURIComponent(query.get("q"));
   const l: LocationName = validateLocation(query.get("l"));
   const res = await fetch(
