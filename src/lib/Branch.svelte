@@ -115,62 +115,67 @@
   $: opacity = width || !(typeof window === "undefined") ? 1 : 0;
 </script>
 
-<div
-  class={`node ${isRoot ? "root" : level < 0 ? "left" : "right"}`}
-  style={`font-size: ${fontSize}px; ${xStyle}; ${yStyle}; opacity: ${opacity}`}
->
-  <!-- term -->
-  <div class="term" bind:clientWidth={width}>
-    {#each words as word, i}
-      {#if i === words.length - 1 && isRoot}<strong>{word}</strong>{:else}{word}
-      {/if}{/each}
-  </div>
+{#if after.length > 0 || before.length > 0}
+  <div
+    class={`node ${isRoot ? "root" : level < 0 ? "left" : "right"}`}
+    style={`font-size: ${fontSize}px; ${xStyle}; ${yStyle}; opacity: ${opacity}`}
+  >
+    <!-- term -->
+    <div class="term" bind:clientWidth={width}>
+      {#each words as word, i}
+        {#if i === words.length - 1 && isRoot}<strong>{word}</strong
+          >{:else}{word}
+        {/if}{/each}
+    </div>
 
-  <!-- link -->
-  {#if !isRoot}
-    <svg
-      class={`${level < 0 ? "left" : "right"} ${yDistance < 0 ? "up" : "down"}`}
-      width={100}
-      height={Math.abs(yDistance) + 40}
-    >
-      {#each node.phrases as phrase, i}
-        <path
-          data-phrase={phrase.text}
-          class="link"
-          style={`stroke: ${scaleLinks(String(phrase.text))};`}
-          d={link(links[i])}
+    <!-- link -->
+    {#if !isRoot}
+      <svg
+        class={`${level < 0 ? "left" : "right"} ${
+          yDistance < 0 ? "up" : "down"
+        }`}
+        width={100}
+        height={Math.abs(yDistance) + 40}
+      >
+        {#each node.phrases as phrase, i}
+          <path
+            data-phrase={phrase.text}
+            class="link"
+            style={`stroke: ${scaleLinks(String(phrase.text))};`}
+            d={link(links[i])}
+          />
+        {/each}
+      </svg>
+    {/if}
+
+    <!-- children -->
+    {#if level >= 0 && after.length}
+      {#each after as node, i}
+        <svelte:self
+          {node}
+          {scale}
+          {scaleLinks}
+          parentTextLength={textLength}
+          parentDistanceFromRoot={xDistanceFromRoot}
+          y={-afterHeight / 2 + afterYPositions[i]}
         />
       {/each}
-    </svg>
-  {/if}
+    {/if}
 
-  <!-- children -->
-  {#if level >= 0 && after.length}
-    {#each after as node, i}
-      <svelte:self
-        {node}
-        {scale}
-        {scaleLinks}
-        parentTextLength={textLength}
-        parentDistanceFromRoot={xDistanceFromRoot}
-        y={-afterHeight / 2 + afterYPositions[i]}
-      />
-    {/each}
-  {/if}
-
-  {#if level <= 0 && before.length}
-    {#each before as node, i}
-      <svelte:self
-        {node}
-        {scale}
-        {scaleLinks}
-        parentTextLength={textLength}
-        parentDistanceFromRoot={xDistanceFromRoot}
-        y={-beforeHeight / 2 + beforeYPositions[i]}
-      />
-    {/each}
-  {/if}
-</div>
+    {#if level <= 0 && before.length}
+      {#each before as node, i}
+        <svelte:self
+          {node}
+          {scale}
+          {scaleLinks}
+          parentTextLength={textLength}
+          parentDistanceFromRoot={xDistanceFromRoot}
+          y={-beforeHeight / 2 + beforeYPositions[i]}
+        />
+      {/each}
+    {/if}
+  </div>
+{/if}
 
 <style lang="scss">
   svg {

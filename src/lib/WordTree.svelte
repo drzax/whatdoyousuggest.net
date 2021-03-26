@@ -24,10 +24,17 @@
     rootTerm: string
   ): WordTreeData => {
     const nodes = new Map();
+    const unconnected: string[] = [];
     suggestions.forEach((phrase, phraseIndex) => {
+      const terms = phrase.split(" ");
+      const rootIndex = terms.indexOf(rootTerm);
+      if (rootIndex === -1) {
+        unconnected.push(phrase);
+        return;
+      }
+
       let parent: null | WordTreeNode = null;
-      phrase.split(" ").forEach((term, i, arr) => {
-        const rootIndex = arr.indexOf(rootTerm);
+      terms.forEach((term, i, arr) => {
         const level = i - rootIndex;
         const isRoot = level === 0;
         const key =
@@ -69,17 +76,20 @@
         parent = termNode;
       });
     });
+
     const nodesArray: WordTreeNode[] = Array.from(nodes.entries()).map(
       (d) => d[1]
     );
 
-    const root = nodesArray.find((d) => d.isRoot);
-
-    if (typeof root === "undefined") {
-      throw new Error(
-        "No root term found. This function should only be passed suggestions which contain the root term."
-      );
-    }
+    const root: WordTreeNode = nodesArray.find((d) => d.isRoot) || {
+      key: "root",
+      term: rootTerm,
+      level: 0,
+      after: [],
+      before: [],
+      phrases: [],
+      isRoot: true,
+    };
 
     const consolidator = (direction: "before" | "after") => (
       node: WordTreeNode
@@ -128,6 +138,7 @@
     return {
       nodes: nodesArray, // TODO: this isn't really used anywhere, but it also contains nodes that were discarded during consolidation
       root,
+      unconnected,
       suffixCount: suffixes.reduce(unique).length,
       prefixCount: prefixes.reduce(unique).length,
       phraseCount: suggestions.length,
@@ -137,7 +148,9 @@
   // todo: handle no suggestions
   let root: WordTreeNode;
   let scaleLinks = scaleOrdinal<string>(schemeCategory10);
-  $: root = createTree(suggestions, term).root;
+  let tree = createTree(suggestions, term);
+  $: root = tree.root;
+  $: unconnected = tree.unconnected;
   $: scale = scaleLinear().range([24, 40]).domain([1, root.phrases.length]);
   $: scaleLinks.domain(root.phrases.map((d) => String(d.index)));
   const lineHeight = 45;
@@ -150,6 +163,14 @@
   <div class="tree" style={`width: ${treeWidth}px; height:${treeHeight}px`}>
     <Branch node={root} {scale} {scaleLinks} />
   </div>
+  {#if unconnected.length}
+    <details class="unconnected">
+      <summary>Suggestions that don't match the search term</summary>
+      <ul>
+        {#each unconnected as phrase}<li>{phrase}</li>{/each}
+      </ul>
+    </details>
+  {/if}
 </div>
 
 <style lang="scss">
@@ -162,5 +183,20 @@
   .tree {
     position: relative;
     margin: 0 auto;
+  }
+  .unconnected {
+    text-align: center;
+    color: #999;
+    ul {
+      margin: 1rem 0;
+      padding: 0;
+    }
+    li {
+      margin: 0.3rem 0;
+      padding: 0;
+      line-height: 1.1;
+      list-style-type: none;
+      font-size: 1.3rem;
+    }
   }
 </style>

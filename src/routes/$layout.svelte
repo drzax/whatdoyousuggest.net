@@ -4,10 +4,6 @@
   // Bugsnag.start({ apiKey: "85507ac85c195f70b8be68b919e60fa2" });
 </script>
 
-<svelte:head>
-  <title>What do you suggest?</title>
-</svelte:head>
-
 <slot />
 
 <style lang="scss">

@@ -1,6 +1,7 @@
 export type WordTreeData = {
   nodes: WordTreeNode[];
   root: WordTreeNode;
+  unconnected: string[];
   suffixCount: number;
   prefixCount: number;
   phraseCount: number;

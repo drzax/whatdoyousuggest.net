@@ -2,8 +2,8 @@
   import type { Load } from "@sveltejs/kit";
   import {
     endpoint,
-    splitOutRootTerms,
-    inputsFromSlug,
+    normaliseSuggestionData,
+    slugToPhrase,
     optionsStringToObject,
   } from "$lib/utils";
 
@@ -20,18 +20,16 @@
     // TODO: ideally a missing optionsString would result in a server redirect here, but location, as it's currently used can't be determined here because the default is detected on the client and selected user pref is stored in local storage.
 
     const { location, engine } = optionsStringToObject(optionsString);
-    const [phrase, term] = inputsFromSlug(slug);
-    let suggestions: string[] = [];
-    const end = endpoint(phrase, location, engine);
+    const phrase = slugToPhrase(slug);
 
-    try {
+    const res = (await fetch(endpoint(phrase, location, engine)).then((r) =>
       // the fetch response object appears to be mistyped
       // @ts-expect-error
-      const res = (await fetch(end).then((r) => r.json())) as string[];
-      suggestions = splitOutRootTerms(res, term);
-    } catch (e) {
-      console.error(e);
-    }
+      r.json()
+    )) as string[];
+
+    const [suggestions, term] = normaliseSuggestionData(res, phrase);
+
     return {
       maxage: 86400, // 24 hrs
       props: { phrase, term, slug, suggestions, location, engine },

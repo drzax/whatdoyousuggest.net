@@ -30,7 +30,6 @@
     "d3-scale": "^3.2.3",
     "d3-scale-chromatic": "^2.0.0",
     "d3-shape": "^2.1.0",
-    "debounce": "^1.2.1",
     "encoding": "^0.1.13",
     "node-fetch": "^2.6.1",
     "reduce-unique": "^2.0.1"

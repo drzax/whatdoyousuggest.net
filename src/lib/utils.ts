@@ -16,64 +16,71 @@ export const endpoint = (
   engine: EngineId
 ) => `/api/${engine}?q=${encodeURIComponent(term)}&l=${location}`;
 
-export const splitOutRootTerms = (suggestions: string[], phrase: string) => {
-  const hasRootTermFilter = (t: string) => t.split(" ").indexOf(phrase) > -1;
-  const noRootTermFilter = (t: string) => t.split(" ").indexOf(phrase) === -1;
+const splitOnRootTerm = (suggestions: string[], rootTerm: string) => {
+  return suggestions.map((suggestion) => {
+    const terms = suggestion.normalize("NFC").split(" ");
 
-  let hasRootTerm = suggestions.filter(hasRootTermFilter);
-  let remainingPhrases = suggestions.filter(noRootTermFilter);
-  let modified: string[] = [];
+    if (typeof terms.find((d) => d === rootTerm) === "undefined") {
+      let start: number;
 
-  // Simple prefixes
-  const prefixReplacer = new RegExp(`(^|\\b)${phrase}(\\B)`);
-  modified = remainingPhrases.map((d) =>
-    d.replace(prefixReplacer, phrase + " ⇢")
-  );
-  hasRootTerm = hasRootTerm.concat(modified.filter(hasRootTermFilter));
-  remainingPhrases = modified.filter(noRootTermFilter);
+      const containsIndex = terms.findIndex(
+        (d) => (start = d.indexOf(rootTerm)) > -1
+      );
+      if (containsIndex > -1) {
+        const term = terms[containsIndex];
 
-  // Apostrophe
-  const apostropheReplacer = new RegExp(`(^|\\b)${phrase}'`);
-  modified = remainingPhrases.map((d) =>
-    d.replace(apostropheReplacer, phrase + " ⇢'")
-  );
-  hasRootTerm = hasRootTerm.concat(modified.filter(hasRootTermFilter));
-  remainingPhrases = modified.filter(noRootTermFilter);
+        let replacements: string[];
 
-  // Simple suffixes
-  const suffixReplacer = new RegExp(`(\\B)${phrase}(\\b|$)`);
-  modified = remainingPhrases.map((d) =>
-    d.replace(suffixReplacer, "⇢ " + phrase)
-  );
-  hasRootTerm = hasRootTerm.concat(modified.filter(hasRootTermFilter));
-  remainingPhrases = modified.filter(noRootTermFilter);
+        if (start === 0) {
+          replacements = [rootTerm, "⇢" + term.substr(rootTerm.length)];
+        } else if (start + rootTerm.length === term.length) {
+          replacements = [term.substr(0, start) + "⇢", rootTerm];
+        } else {
+          replacements = [
+            term.substr(0, start) + "⇢",
+            rootTerm,
+            "⇢" + term.substr(start + rootTerm.length),
+          ];
+        }
+        terms.splice(containsIndex, 1, ...replacements);
+      }
+    }
 
-  // Middle
-  const middleReplacer = new RegExp(`(\\B)${phrase}(\\B)`);
-  modified = remainingPhrases.map((d) =>
-    d.replace(middleReplacer, "⇢ " + phrase + " ⇢")
-  );
-  hasRootTerm = hasRootTerm.concat(modified.filter(hasRootTermFilter));
-  remainingPhrases = modified.filter(noRootTermFilter);
+    return terms;
+  });
+};
 
-  // TODO: log the remaining terms and figure out how to display them
+export const normaliseSuggestionData = (
+  suggestions: string[],
+  phrase: string
+): [string[], string] => {
+  const terms = phrase.normalize("NFC").trim().split(" ");
+  let rootTerm = terms.pop();
+  let splitSuggestions = splitOnRootTerm(suggestions, rootTerm);
 
-  return hasRootTerm;
+  while (
+    terms.length &&
+    splitSuggestions.filter(
+      (d) => typeof d.find((d) => d === rootTerm) !== "undefined"
+    ).length === 0
+  ) {
+    rootTerm = terms.pop();
+    splitSuggestions = splitOnRootTerm(suggestions, rootTerm);
+  }
+
+  return [splitSuggestions.map((d) => d.join(" ")), rootTerm];
 };
 
 // Slug format: words+separated+by+plus+sign
 // Each individual term has been url encoded
-export const inputsFromSlug = (slug: string) => {
-  const phrase = decodeURIComponent(slug).replace(/\+/g, " ").toLowerCase();
-  const term = phrase.trim().split(" ").pop();
-  return [phrase, term, slug];
+export const slugToPhrase = (slug: string) => {
+  return decodeURIComponent(slug).replace(/\+/g, " ").toLowerCase();
 };
 
 export const inputsFromForm = (text: string) => {
   const phrase = sanitiseTerm(text);
-  const term = phrase.trim().split(" ").pop();
   const slug = phrase.split(" ").map(encodeURIComponent).join("+");
-  return [phrase, term, slug];
+  return [phrase, slug];
 };
 
 export const optionsStringToObject = (str: string = ""): Options => {
@@ -92,7 +99,7 @@ export const validateEngine = (engineId: unknown) =>
 export const pathToProps = (
   path: string
 ): { slug: string; location: LocationName; engine: EngineId } => {
-  const [slug, optionsString] = path.split("/");
+  const [, slug, optionsString] = path.split("/");
   const { location, engine } = optionsStringToObject(optionsString);
   return {
     slug: slug.split("+").map(decodeURIComponent).join(" "),

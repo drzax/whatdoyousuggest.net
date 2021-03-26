@@ -10,14 +10,17 @@
     endpoint,
     inputsFromForm,
     pathToProps,
-    splitOutRootTerms,
+    normaliseSuggestionData,
     validateLocation,
   } from "$lib/utils";
   import { defaultOptions } from "$lib/constants";
-  import debounce from "debounce";
   import EngineSelector from "./EngineSelector.svelte";
 
   const DOMAIN = "whatdoyousuggest.net";
+
+  // Search options
+  export let location: LocationName = null;
+  export let engine: EngineId = defaultOptions.engine;
 
   // The sanitised phrase actually sent to search engines
   export let phrase: string;
@@ -28,16 +31,33 @@
   // The part of the phrase used as the root term for the visualisation
   export let term: string;
 
-  export let location: LocationName = null;
-  export let engine: EngineId = defaultOptions.engine;
+  // The list of suggestions to render with WordTree
   export let suggestions: string[] = [];
 
   // The value in the input element on the page
   let input = phrase || "";
   let loading: boolean = false;
+  let error: string | false = false;
+  let requestTimeoutId: number;
 
-  // URL endpoint for what's currently being show so going back to the API unnecessarily can be avoided.
-  let current: string = endpoint(phrase, location, engine);
+  let currentResultsUrl = endpoint(phrase, location, engine);
+
+  // TODO: this should really be done with `goto` but the navigation results in the input losing focus.
+  // goto(`/${slug}/${location}:${engine}`, { noscroll: true });
+  let updateSuggestions = async (
+    phrase: string,
+    location: LocationName,
+    engine: EngineId
+  ): Promise<{
+    suggestions: string[];
+    term: string;
+  }> => {
+    const res = (await fetch(endpoint(phrase, location, engine)).then((res) =>
+      res.json()
+    )) as string[];
+    const [suggestions, term] = normaliseSuggestionData(res, phrase);
+    return { suggestions, term };
+  };
 
   onMount(async () => {
     if (!location) {
@@ -67,7 +87,6 @@
         const { slug: s, location: l, engine: e } = pathToProps(
           window.location.pathname
         );
-
         input = s;
         location = l;
         engine = e;
@@ -75,58 +94,48 @@
     };
 
     addEventListener("popstate", handlePopState);
-    updateSuggestions = debounce(updateSuggestions, 300);
 
     return () => {
       removeEventListener("popstate", handlePopState);
     };
   });
 
-  let updateSuggestions = async (
-    input: string,
-    location: LocationName,
-    engine: EngineId
-  ) => {
-    // Bail if we're on the server
-    if (!browser) return;
+  $: [phrase, slug] = inputsFromForm(input);
 
-    // TODO: this should really be done with `goto` but the navigation results in the input losing focus.
-    // goto(`/${input}/${location}:${engine}`, { noscroll: true });
-
-    // Don't bother searching if there is no input
-    if (input.length === 0) {
-      phrase = undefined;
-      term = undefined;
-      slug = undefined;
-      return;
+  $: if (phrase.length === 0) {
+    term = "";
+    suggestions = [];
+    currentResultsUrl = "";
+    browser && history.pushState(false, `What do you suggest?`, `/`);
+  } else {
+    const updatesUrl = endpoint(phrase, location, engine);
+    if (browser && updatesUrl !== currentResultsUrl) {
+      loading = true;
+      error = false;
+      window.clearTimeout(requestTimeoutId);
+      requestTimeoutId = window.setTimeout(() => {
+        updateSuggestions(phrase, location, engine)
+          .then((updates) => {
+            loading = false;
+            error = false;
+            currentResultsUrl = updatesUrl;
+            const pathname = `/${slug}/${location}:${engine}`;
+            const title = `${
+              phrase.length ? phrase + " - " : ""
+            }What do you suggest?`;
+            if (pathname !== window.location.pathname) {
+              history.pushState(false, title, pathname);
+            }
+            ({ suggestions, term } = updates);
+          })
+          .catch((e) => {
+            loading = false;
+            error = "Error loading suggestions";
+          });
+      }, 300);
     }
+  }
 
-    [phrase, term, slug] = inputsFromForm(input);
-
-    const url = endpoint(phrase, location, engine);
-
-    // Bail if this is what we already have
-    if (url === current) return;
-
-    loading = true;
-    current = url;
-    const res = await fetch(url);
-    const sug = await res.json();
-
-    // Make sure results from a superseded response aren't used.
-    if (current === url) {
-      loading = false;
-      // todo: this should probably live somewhere else: WordTree component or own function or server route
-      suggestions = splitOutRootTerms(sug, term);
-
-      const newPath = `/${slug}/${location}:${engine}`;
-
-      if (newPath !== document.location.pathname) {
-        history.pushState(false, `${phrase} - What do you suggest?`, newPath);
-      }
-    }
-  };
-  $: updateSuggestions(input, location, engine);
   $: ogImage = encodeURI(
     `https://fallback-automation.now.sh/api?url=https://${DOMAIN}/${
       slug || "what+do+you+suggest"
@@ -135,7 +144,7 @@
 </script>
 
 <svelte:head>
-  <title>{phrase ? `${phrase} - ` : ""}What do you suggest?</title>
+  <title>{`${phrase.length ? phrase + " - " : ""}What do you suggest?`}</title>
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:site" content="@drzax" />
   <meta name="og:title" content="What do you suggest?" />
@@ -154,7 +163,7 @@
   <Header />
 
   <div class="inputContainer">
-    <div class:used={phrase && term && slug} class="input">
+    <div class:used={input.length} class="input">
       <input type="text" placeholder="Suggest this ..." bind:value={input} />
       <EngineSelector bind:engine />
     </div>
@@ -163,6 +172,8 @@
     {#if phrase && term && slug}
       {#if loading}
         <Spinner />
+      {:else if error}
+        <p class="no-suggestions">{error}</p>
       {:else if suggestions.length}
         <WordTree {suggestions} {term} />
       {:else}
