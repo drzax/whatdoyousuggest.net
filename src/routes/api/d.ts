@@ -1,5 +1,6 @@
-import { validateLocation, getLangByLocation, obj2search } from "$lib/utils";
 import fetch from "node-fetch";
+import { validateLocation, getLangByLocation, obj2search } from "$lib/utils";
+
 import type { LocationName } from "../../types";
 import type { RequestHandler } from "@sveltejs/kit";
 

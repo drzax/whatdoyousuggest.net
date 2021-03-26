@@ -1,5 +1,7 @@
 import fetch from "node-fetch";
+import { decode } from "html-entities";
 import { getLangByLocation, obj2search, validateLocation } from "$lib/utils";
+
 import type { LocationName } from "../../types";
 import type { RequestHandler } from "@sveltejs/kit";
 
@@ -15,9 +17,9 @@ export const get: RequestHandler = async ({ query }) => {
       })
   ).then((res) => res.text());
 
-  const suggestions = Array.from(
-    res.matchAll(/<li[^>]*>(.+?)<\/li>/g)
-  ).map((d) => d[1].replace(/<.+?>/g, ""));
+  const suggestions = Array.from(res.matchAll(/<li[^>]*>(.+?)<\/li>/g))
+    .map((d) => d[1].replace(/<.+?>/g, ""))
+    .map((d) => decode(d));
 
   return {
     statusCode: 200,
