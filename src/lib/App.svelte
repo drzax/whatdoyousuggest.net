@@ -42,6 +42,8 @@
 
   let currentResultsUrl = endpoint(phrase, location, engine);
 
+  let inputElement: HTMLInputElement;
+
   // TODO: this should really be done with `goto` but the navigation results in the input losing focus.
   // goto(`/${slug}/${location}:${engine}`, { noscroll: true });
   let updateSuggestions = async (
@@ -60,6 +62,8 @@
   };
 
   onMount(async () => {
+    inputElement.focus();
+
     if (!location) {
       let l = localStorage.location;
 
@@ -84,9 +88,11 @@
       if (window.location.pathname === "/") {
         input = "";
       } else {
-        const { slug: s, location: l, engine: e } = pathToProps(
-          window.location.pathname
-        );
+        const {
+          slug: s,
+          location: l,
+          engine: e,
+        } = pathToProps(window.location.pathname);
         input = s;
         location = l;
         engine = e;
@@ -164,7 +170,12 @@
 
   <div class="inputContainer">
     <div class:used={input.length} class="input">
-      <input type="text" placeholder="Suggest this ..." bind:value={input} />
+      <input
+        type="text"
+        placeholder="Suggest this ..."
+        bind:value={input}
+        bind:this={inputElement}
+      />
       <EngineSelector bind:engine />
     </div>
   </div>

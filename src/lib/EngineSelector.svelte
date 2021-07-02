@@ -17,6 +17,7 @@
 <style lang="scss">
   div {
     text-align: center;
+    margin-top: 0.5rem;
   }
   button {
     border: none;
