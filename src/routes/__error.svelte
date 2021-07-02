@@ -3,7 +3,6 @@
   import Header from "$lib/Header.svelte";
   export let error: Error;
   export let status: number;
-  console.error(error);
   if (browser) {
     window?.Bugsnag?.notify(error);
   }

@@ -23,8 +23,6 @@
     const phrase = slugToPhrase(slug);
 
     const res = (await fetch(endpoint(phrase, location, engine)).then((r) =>
-      // the fetch response object appears to be mistyped
-      // @ts-expect-error
       r.json()
     )) as string[];
 
