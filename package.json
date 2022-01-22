@@ -34,7 +34,7 @@
     "country-code-lookup": "0.0.19",
     "encoding": "^0.1.13",
     "html-entities": "^2.1.1",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "reduce-unique": "^2.0.1"
   }
 }
