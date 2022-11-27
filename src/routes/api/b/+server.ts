@@ -1,10 +1,9 @@
-import { json as json$1 } from '@sveltejs/kit';
 import fetch from "node-fetch";
 import { decode } from "html-entities";
 import { getLangByLocation, obj2search, validateLocation } from "$lib/utils";
 
 import type { LocationName } from "../../../types";
-import type { RequestHandler } from "@sveltejs/kit";
+import type { RequestHandler } from "./$types";
 
 export const GET: RequestHandler = async ({ query }) => {
   const qry: string = encodeURIComponent(query.get("q"));
@@ -22,22 +21,9 @@ export const GET: RequestHandler = async ({ query }) => {
     .map((d) => d[1].replace(/<.+?>/g, ""))
     .map((d) => decode(d));
 
-  throw new Error("@migration task: Migrate this return statement (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292701)");
-  // Suggestion (check for correctness before using):
-  // return json$1(suggestions, {
-  //   headers: {
-  //     // Netlify, doesn't currently use query strings in the cache key: https://community.netlify.com/t/netlify-function-with-query-strings-ignores-custom-cache-control-header/15390/20
-  //     // 'Cache-Control': 'public, max-age=604800, s-maxage=604800',
-  //     "Content-Type": "application/json",
-  //   }
-  // });
-  return {
-    statusCode: 200,
+  return new Response(JSON.stringify(suggestions), {
     headers: {
-      // Netlify, doesn't currently use query strings in the cache key: https://community.netlify.com/t/netlify-function-with-query-strings-ignores-custom-cache-control-header/15390/20
-      // 'Cache-Control': 'public, max-age=604800, s-maxage=604800',
-      "Content-Type": "application/json",
+      "content-type": "application/json; charset=utf-8",
     },
-    body: suggestions,
-  };
+  });
 };

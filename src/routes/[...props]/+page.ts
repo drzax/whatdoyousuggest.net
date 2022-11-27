@@ -1,5 +1,5 @@
-import { error } from '@sveltejs/kit';
-import type { PageLoad } from "@sveltejs/kit";
+import { PageLoad } from "./$types";
+import { error } from "@sveltejs/kit";
 import {
   endpoint,
   normaliseSuggestionData,
@@ -7,7 +7,7 @@ import {
   optionsStringToObject,
 } from "$lib/utils";
 
-export const load: PageLoad = async ({ page, fetch }) => {
+export const load: PageLoad = async ({ page, fetch, setHeaders }) => {
   let optionsString: string | undefined;
   let slug: string;
   let more: string;
@@ -27,10 +27,9 @@ export const load: PageLoad = async ({ page, fetch }) => {
   )) as string[];
 
   const [suggestions, term] = normaliseSuggestionData(res, phrase);
+  setHeaders({
+    "cache-control": "public, max-age: 86400",
+  });
 
-  throw new Error("@migration task: Migrate this return statement (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292693)");
-  return {
-    maxage: 86400, // 24 hrs
-    props: { phrase, term, slug, suggestions, location, engine },
-  };
+  return { phrase, term, slug, suggestions, location, engine };
 };
