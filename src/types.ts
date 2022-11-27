@@ -17,7 +17,7 @@ export type WordTreeNode = {
   isRoot: boolean;
 };
 
-export type EngineId = "b" | "g" | "d" | "y";
+export type EngineId = "b" | "g" | "d" | "y" | "yt";
 export type Engine = { id: EngineId; name: string };
 export type LocationName =
   | "ar"

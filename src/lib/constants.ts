@@ -27,6 +27,7 @@ export const engines: { id: EngineId; name: string }[] = [
   { id: "b", name: "Bing" },
   { id: "y", name: "Yahoo" },
   { id: "d", name: "DuckDuckGo" },
+  { id: "yt", name: "YouTube" },
 ];
 
 export const defaultOptions: Options = {

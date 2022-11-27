@@ -4,7 +4,9 @@
   export let error: Error;
   export let status: number;
   if (browser) {
-    window?.Bugsnag?.notify(error);
+    const err =
+      error || new Error(`Missing error object with status: ${status}`);
+    window?.Bugsnag?.notify(err);
   }
 </script>
 
