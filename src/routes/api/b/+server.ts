@@ -1,11 +1,11 @@
+import fetch from "node-fetch";
 import { decode } from "html-entities";
 import { getLangByLocation, obj2search, validateLocation } from "$lib/utils";
 
 import type { LocationName } from "../../../types";
 import type { RequestHandler } from "./$types";
-import { search } from "country-code-lookup";
 
-export const GET: RequestHandler = async ({ fetch, url: { searchParams } }) => {
+export const GET: RequestHandler = async ({ url: { searchParams } }) => {
   const qry: string = encodeURIComponent(searchParams.get("q") || "");
   const l: LocationName = validateLocation(searchParams.get("l"));
   const res = await fetch(
