@@ -28,7 +28,7 @@
   },
   "type": "module",
   "engines": {
-    "node": ">= 12.17.0"
+    "node": ">= 18"
   },
   "dependencies": {
     "content-type": "^1.0.4",
