@@ -5,7 +5,7 @@
   import Spinner from "$lib/Spinner.svelte";
   import Header from "$lib/Header.svelte";
   import WordTree from "$lib/WordTree.svelte";
-  import { browser } from "$app/env";
+  import { browser } from "$app/environment";
   import {
     endpoint,
     inputsFromForm,

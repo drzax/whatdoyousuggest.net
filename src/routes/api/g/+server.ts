@@ -5,9 +5,9 @@ import { obj2search, validateLocation } from "$lib/utils";
 import type { LocationName } from "../../../types";
 import type { RequestHandler } from "./$types";
 
-export const GET: RequestHandler = async ({ query }) => {
-  const q: string = encodeURIComponent(query.get("q"));
-  const gl: LocationName = validateLocation(query.get("l"));
+export const GET: RequestHandler = async ({ url: { searchParams } }) => {
+  const q: string = encodeURIComponent(searchParams.get("q") || "");
+  const gl: LocationName = validateLocation(searchParams.get("l"));
   const res = await fetch(
     "http://google.com/complete/search?" +
       obj2search({ client: "chrome", q, gl })
@@ -16,7 +16,7 @@ export const GET: RequestHandler = async ({ query }) => {
       const ct = res.headers.get("content-type");
       const {
         parameters: { charset },
-      } = parse(ct);
+      } = parse(ct || "text/plain");
       const decoder = new TextDecoder(charset);
       const buffer = await res.arrayBuffer();
       const txt = decoder.decode(buffer);

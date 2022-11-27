@@ -4,10 +4,11 @@ import { getLangByLocation, obj2search, validateLocation } from "$lib/utils";
 
 import type { LocationName } from "../../../types";
 import type { RequestHandler } from "./$types";
+import { search } from "country-code-lookup";
 
-export const GET: RequestHandler = async ({ query }) => {
-  const qry: string = encodeURIComponent(query.get("q"));
-  const l: LocationName = validateLocation(query.get("l"));
+export const GET: RequestHandler = async ({ url: { searchParams } }) => {
+  const qry: string = encodeURIComponent(searchParams.get("q") || "");
+  const l: LocationName = validateLocation(searchParams.get("l"));
   const res = await fetch(
     "https://www.bing.com/AS/Suggestions?" +
       obj2search({

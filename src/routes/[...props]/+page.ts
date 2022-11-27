@@ -1,4 +1,4 @@
-import { PageLoad } from "./$types";
+import type { PageLoad } from "./$types";
 import { error } from "@sveltejs/kit";
 import {
   endpoint,
@@ -7,11 +7,11 @@ import {
   optionsStringToObject,
 } from "$lib/utils";
 
-export const load: PageLoad = async ({ page, fetch, setHeaders }) => {
+export const load: PageLoad = async ({ params, fetch, setHeaders }) => {
   let optionsString: string | undefined;
   let slug: string;
   let more: string;
-  [slug, optionsString, more] = page.params.props.split("/");
+  [slug, optionsString, more] = params.props.split("/");
 
   // This route should only match urls with two segments so fall through otherwise.
   // TODO: This should fall through rather than return an error, but sveltekit doesn't like that for some reason.

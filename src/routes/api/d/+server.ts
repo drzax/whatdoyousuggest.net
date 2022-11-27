@@ -3,10 +3,11 @@ import { validateLocation, getLangByLocation, obj2search } from "$lib/utils";
 
 import type { LocationName } from "../../../types";
 import type { RequestHandler } from "./$types";
+import { search } from "country-code-lookup";
 
-export const GET: RequestHandler = async ({ query }) => {
-  const q: string = encodeURIComponent(query.get("q"));
-  const l: LocationName = validateLocation(query.get("l"));
+export const GET: RequestHandler = async ({ url: { searchParams } }) => {
+  const q: string = encodeURIComponent(searchParams.get("q") || "");
+  const l: LocationName = validateLocation(searchParams.get("l"));
   const res = await fetch(
     "https://duckduckgo.com/ac/?" +
       obj2search({
