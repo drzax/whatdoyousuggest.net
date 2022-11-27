@@ -1,7 +1,3 @@
-<script lang="ts" context="module">
-  export const prerender = true;
-</script>
-
 <h1>What is this?</h1>
 <p>
   <em>What do you Suggest?</em> is an experiment by

@@ -1,43 +1,47 @@
 <script context="module" lang="ts">
-  import type { Load } from "@sveltejs/kit";
-  import {
-    endpoint,
-    normaliseSuggestionData,
-    slugToPhrase,
-    optionsStringToObject,
-  } from "$lib/utils";
+  throw new Error("@migration task: Check code was safely removed (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292722)");
 
-  export const load: Load = async ({ page, fetch }) => {
-    let optionsString: string | undefined;
-    let slug: string;
-    let more: string;
-    [slug, optionsString, more] = page.params.props.split("/");
+  // import type { Load } from "@sveltejs/kit";
+  // import {
+  //   endpoint,
+  //   normaliseSuggestionData,
+  //   slugToPhrase,
+  //   optionsStringToObject,
+  // } from "$lib/utils";
 
-    // This route should only match urls with two segments so fall through otherwise.
-    // TODO: This should fall through rather than return an error, but sveltekit doesn't like that for some reason.
-    if (more) return { status: 404, error: new Error("Not found") };
+  // export const load: Load = async ({ page, fetch }) => {
+  //   let optionsString: string | undefined;
+  //   let slug: string;
+  //   let more: string;
+  //   [slug, optionsString, more] = page.params.props.split("/");
 
-    // TODO: ideally a missing optionsString would result in a server redirect here, but location, as it's currently used can't be determined here because the default is detected on the client and selected user pref is stored in local storage.
+  //   // This route should only match urls with two segments so fall through otherwise.
+  //   // TODO: This should fall through rather than return an error, but sveltekit doesn't like that for some reason.
+  //   if (more) return { status: 404, error: new Error("Not found") };
 
-    const { location, engine } = optionsStringToObject(optionsString);
-    const phrase = slugToPhrase(slug);
+  //   // TODO: ideally a missing optionsString would result in a server redirect here, but location, as it's currently used can't be determined here because the default is detected on the client and selected user pref is stored in local storage.
 
-    const res = (await fetch(endpoint(phrase, location, engine)).then((r) =>
-      r.json()
-    )) as string[];
+  //   const { location, engine } = optionsStringToObject(optionsString);
+  //   const phrase = slugToPhrase(slug);
 
-    const [suggestions, term] = normaliseSuggestionData(res, phrase);
+  //   const res = (await fetch(endpoint(phrase, location, engine)).then((r) =>
+  //     r.json()
+  //   )) as string[];
 
-    return {
-      maxage: 86400, // 24 hrs
-      props: { phrase, term, slug, suggestions, location, engine },
-    };
-  };
+  //   const [suggestions, term] = normaliseSuggestionData(res, phrase);
+
+  //   return {
+  //     maxage: 86400, // 24 hrs
+  //     props: { phrase, term, slug, suggestions, location, engine },
+  //   };
+  // };
 </script>
 
 <script lang="ts">
+  throw new Error("@migration task: Add data prop (https://github.com/sveltejs/kit/discussions/5774#discussioncomment-3292707)");
+
   import App from "$lib/App.svelte";
-  import type { LocationName, EngineId } from "../types";
+  import type { LocationName, EngineId } from "../../types";
   export let phrase: string;
   export let term: string;
   export let slug: string;
