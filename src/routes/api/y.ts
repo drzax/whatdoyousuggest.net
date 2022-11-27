@@ -4,7 +4,7 @@ import { validateLocation, obj2search } from "$lib/utils";
 import type { LocationName } from "../../types";
 import type { RequestHandler } from "@sveltejs/kit";
 
-export const get: RequestHandler = async ({ query }) => {
+export const GET: RequestHandler = async ({ query }) => {
   const q: string = encodeURIComponent(query.get("q"));
   let l: LocationName = validateLocation(query.get("l"));
 

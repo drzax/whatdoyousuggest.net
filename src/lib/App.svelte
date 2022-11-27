@@ -23,19 +23,19 @@
   export let engine: EngineId = defaultOptions.engine;
 
   // The sanitised phrase actually sent to search engines
-  export let phrase: string;
+  export let phrase: string = "";
 
   // URL friendly representation of the phrase
-  export let slug: string;
+  export let slug: string = "";
 
   // The part of the phrase used as the root term for the visualisation
-  export let term: string;
+  export let term: string = "";
 
   // The list of suggestions to render with WordTree
   export let suggestions: string[] = [];
 
   // The value in the input element on the page
-  let input = phrase || "";
+  let input = phrase;
   let loading: boolean = false;
   let error: string | false = false;
   let requestTimeoutId: number;

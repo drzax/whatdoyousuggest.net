@@ -2,13 +2,13 @@
   "name": "svelte-kit-app",
   "version": "0.0.1",
   "scripts": {
-    "dev": "svelte-kit dev",
-    "build": "svelte-kit build",
-    "start": "svelte-kit start"
+    "dev": "vite dev",
+    "build": "vite build",
+    "start": "vite start"
   },
   "devDependencies": {
     "@sveltejs/adapter-netlify": "^1.0.0-next.17",
-    "@sveltejs/kit": "^1.0.0-next.116",
+    "@sveltejs/kit": "^1.0.0-next.405",
     "@types/content-type": "^1.1.3",
     "@types/d3-scale": "^3.3.0",
     "@types/d3-scale-chromatic": "^2.0.0",
@@ -23,7 +23,7 @@
     "svelte-preprocess": "^4.6.9",
     "tslib": "^2.1.0",
     "typescript": "^4.2.3",
-    "vite": "^2.0.5"
+    "vite": "^3.2.4"
   },
   "type": "module",
   "engines": {

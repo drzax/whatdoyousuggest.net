@@ -9,15 +9,6 @@ const config = {
 
   kit: {
     adapter: netlify(),
-    target: "#svelte",
-    vite: {
-      build: {
-        sourcemap: true,
-      },
-      optimizeDeps: {
-        include: ["d3-scale", "d3-shape", "d3-scale-chromatic"],
-      },
-    },
   },
 };
 
