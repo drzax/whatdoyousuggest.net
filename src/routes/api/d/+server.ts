@@ -1,9 +1,8 @@
-import fetch from "node-fetch";
 import { validateLocation, getLangByLocation, obj2search } from "$lib/utils";
 import type { LocationName } from "../../../types";
 import type { RequestHandler } from "./$types";
 
-export const GET: RequestHandler = async ({ url: { searchParams } }) => {
+export const GET: RequestHandler = async ({ fetch, url: { searchParams } }) => {
   const q: string = encodeURIComponent(searchParams.get("q") || "");
   const l: LocationName = validateLocation(searchParams.get("l"));
   const res = await fetch(
