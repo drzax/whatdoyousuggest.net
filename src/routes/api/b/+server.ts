@@ -1,9 +1,8 @@
-import { decode } from "html-entities";
 import { getLangByLocation, obj2search, validateLocation } from "$lib/utils";
-
+import { fromHtml } from "hast-util-from-html";
+import { selectAll } from "hast-util-select";
 import type { LocationName } from "../../../types";
 import type { RequestHandler } from "./$types";
-import { search } from "country-code-lookup";
 
 export const GET: RequestHandler = async ({ fetch, url: { searchParams } }) => {
   const qry: string = encodeURIComponent(searchParams.get("q") || "");
@@ -16,10 +15,9 @@ export const GET: RequestHandler = async ({ fetch, url: { searchParams } }) => {
         mkt: `${getLangByLocation(l)}-${l}`,
       })
   ).then((res) => res.text());
-
-  const suggestions = Array.from(res.matchAll(/<li[^>]*>(.+?)<\/li>/g))
-    .map((d) => d[1].replace(/<.+?>/g, ""))
-    .map((d) => decode(d));
+  const hast = fromHtml(res);
+  const selected = selectAll('[role="option"]', hast);
+  const suggestions = selected.map((d) => d.properties?.query);
 
   return new Response(JSON.stringify(suggestions), {
     headers: {
