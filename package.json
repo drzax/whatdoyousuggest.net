@@ -20,6 +20,8 @@
     "d3-scale-chromatic": "^3.0.0",
     "d3-shape": "^3.1.0",
     "encoding": "^0.1.13",
+    "hast-util-from-html": "^1.0.0",
+    "hast-util-select": "^5.0.2",
     "html-entities": "^2.1.1",
     "reduce-unique": "^2.0.1",
     "sass": "^1.32.8",
