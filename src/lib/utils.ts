@@ -21,25 +21,26 @@ const splitOnRootTerm = (suggestions: string[], rootTerm: string) => {
     const terms = suggestion.normalize("NFC").split(" ");
 
     if (typeof terms.find((d) => d === rootTerm) === "undefined") {
-      let start: number;
+      let start: number = 0;
 
       const containsIndex = terms.findIndex(
         (d) => (start = d.indexOf(rootTerm)) > -1
       );
+
       if (containsIndex > -1) {
         const term = terms[containsIndex];
 
         let replacements: string[];
 
         if (start === 0) {
-          replacements = [rootTerm, "⇢" + term.substr(rootTerm.length)];
+          replacements = [rootTerm, "⇢" + term.substring(rootTerm.length)];
         } else if (start + rootTerm.length === term.length) {
-          replacements = [term.substr(0, start) + "⇢", rootTerm];
+          replacements = [term.substring(0, start) + "⇢", rootTerm];
         } else {
           replacements = [
-            term.substr(0, start) + "⇢",
+            term.substring(0, start) + "⇢",
             rootTerm,
-            "⇢" + term.substr(start + rootTerm.length),
+            "⇢" + term.substring(start + rootTerm.length),
           ];
         }
         terms.splice(containsIndex, 1, ...replacements);

@@ -1,5 +1,6 @@
 import preprocess from "svelte-preprocess";
-import netlify from "@sveltejs/adapter-netlify";
+// import netlify from "@sveltejs/adapter-netlify";
+import adapter from "@sveltejs/adapter-auto";
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -8,16 +9,7 @@ const config = {
   preprocess: [preprocess()],
 
   kit: {
-    adapter: netlify(),
-    target: "#svelte",
-    vite: {
-      build: {
-        sourcemap: true,
-      },
-      optimizeDeps: {
-        include: ["d3-scale", "d3-shape", "d3-scale-chromatic"],
-      },
-    },
+    adapter: adapter(),
   },
 };
 

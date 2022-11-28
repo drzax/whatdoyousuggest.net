@@ -17,15 +17,17 @@
   {#if open}
     <ul class="pop">
       {#each locations as code}
-        <li
-          on:click={() => {
-            selection = code;
-            // TODO: this should be handled in App
-            localStorage.location = code;
-            open = false;
-          }}
-        >
-          {byIso(code).country}
+        <li>
+          <button
+            on:click={() => {
+              selection = code;
+              // TODO: this should be handled in App
+              localStorage.location = code;
+              open = false;
+            }}
+          >
+            {byIso(code)?.country}
+          </button>
         </li>
       {/each}
     </ul>
@@ -54,12 +56,25 @@
       overflow-y: auto;
       li {
         margin: 0;
-        padding: 0.6rem 0.4rem;
+        padding: 0;
         border-bottom: 1px solid #ccc;
         &:last-child {
           border-bottom: 0;
         }
       }
+    }
+  }
+
+  button {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+    padding: 0.6rem 0.4rem;
+    margin: 0;
+    background-color: transparent;
+    &:hover {
+      background: rgb(200, 200, 200);
     }
   }
 </style>
