@@ -5,7 +5,7 @@
 </p>
 <p>
   This is the third major iteration. You can read about <a
-    href="https://elvery.net/tags/wdys/">the original idea</a
+    href="https://elvery.net/tag/wdys/">the original idea</a
   >, if you are wondering why. You can also read
   <a href="https://github.com/drzax/whatdoyousuggest.net/">the code</a>, if
   that's your thing.
