@@ -1,4 +1,4 @@
-<script type="typescript">
+<script lang="ts">
   // imports
   import type { LocationName } from "../types";
   import Button from "$lib/Button.svelte";

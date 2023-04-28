@@ -44,8 +44,7 @@
 
   $: validatedLocation = validateLocation(location);
 
-  let currentResultsUrl: string;
-  $: currentResultsUrl = endpoint(phrase, validatedLocation, engine);
+  let currentResultsUrl: string = endpoint(phrase, validatedLocation, engine);
 
   let inputElement: HTMLInputElement;
 
