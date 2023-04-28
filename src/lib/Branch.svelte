@@ -55,7 +55,7 @@
   // Calculate y-axis positioning
 
   const caluclateChildYPositions = (children) => {
-    const positions = [];
+    const positions: number[] = [];
     let y = 0;
     children.forEach((child) => {
       positions.push(y);

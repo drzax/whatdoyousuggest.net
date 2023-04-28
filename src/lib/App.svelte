@@ -19,7 +19,7 @@
   const DOMAIN = "whatdoyousuggest.net";
 
   // Search options
-  export let location: LocationName = null;
+  export let location: LocationName | null = null;
   export let engine: EngineId = defaultOptions.engine;
 
   // The sanitised phrase actually sent to search engines
@@ -40,7 +40,12 @@
   let error: string | false = false;
   let requestTimeoutId: number;
 
-  let currentResultsUrl = endpoint(phrase, location, engine);
+  let validatedLocation: LocationName;
+
+  $: validatedLocation = validateLocation(location);
+
+  let currentResultsUrl: string;
+  $: currentResultsUrl = endpoint(phrase, validatedLocation, engine);
 
   let inputElement: HTMLInputElement;
 
@@ -52,7 +57,7 @@
     engine: EngineId
   ): Promise<{
     suggestions: string[];
-    term: string;
+    term: string | undefined;
   }> => {
     const res = (await fetch(endpoint(phrase, location, engine)).then((res) =>
       res.json()
@@ -114,13 +119,13 @@
     currentResultsUrl = "";
     browser && history.pushState(false, `What do you suggest?`, `/`);
   } else {
-    const updatesUrl = endpoint(phrase, location, engine);
+    const updatesUrl = endpoint(phrase, validatedLocation, engine);
     if (browser && updatesUrl !== currentResultsUrl) {
       loading = true;
       error = false;
       window.clearTimeout(requestTimeoutId);
       requestTimeoutId = window.setTimeout(() => {
-        updateSuggestions(phrase, location, engine)
+        updateSuggestions(phrase, validatedLocation, engine)
           .then((updates) => {
             loading = false;
             error = false;
@@ -132,7 +137,7 @@
             if (pathname !== window.location.pathname) {
               history.pushState(false, title, pathname);
             }
-            ({ suggestions, term } = updates);
+            ({ suggestions, term = "" } = updates);
           })
           .catch((e) => {
             loading = false;

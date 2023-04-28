@@ -16,9 +16,16 @@ export const endpoint = (
   engine: EngineId
 ) => `/api/${engine}?q=${encodeURIComponent(term)}&l=${location}`;
 
-const splitOnRootTerm = (suggestions: string[], rootTerm: string) => {
+const splitOnRootTerm = (
+  suggestions: string[],
+  rootTerm: string | undefined
+) => {
   return suggestions.map((suggestion) => {
     const terms = suggestion.normalize("NFC").split(" ");
+
+    if (typeof rootTerm === "undefined") {
+      return terms;
+    }
 
     if (typeof terms.find((d) => d === rootTerm) === "undefined") {
       let start: number = 0;
@@ -54,9 +61,10 @@ const splitOnRootTerm = (suggestions: string[], rootTerm: string) => {
 export const normaliseSuggestionData = (
   suggestions: string[],
   phrase: string
-): [string[], string] => {
+): [string[], string | undefined] => {
   const terms = phrase.normalize("NFC").trim().split(" ");
   let rootTerm = terms.pop();
+
   let splitSuggestions = splitOnRootTerm(suggestions, rootTerm);
 
   while (
@@ -92,14 +100,14 @@ export const optionsStringToObject = (str: string = ""): Options => {
 };
 
 export const validateLocation = (location: unknown): LocationName =>
-  locations.find((d) => d === location) || null;
+  locations.find((d) => d === location) || defaultOptions.location;
 
 export const validateEngine = (engineId: unknown) =>
   engines.find((d) => d.id === engineId)?.id || defaultOptions.engine;
 
 export const pathToProps = (
   path: string
-): { slug: string; location: LocationName; engine: EngineId } => {
+): { slug: string; location: LocationName | null; engine: EngineId } => {
   const [, slug, optionsString] = path.split("/");
   const { location, engine } = optionsStringToObject(optionsString);
   return {
