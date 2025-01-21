@@ -30,9 +30,8 @@
   know, who you are.
 </p>
 <p>
-  This site does not use cookies from any third parties or include any
-  third-party scripts that transmit data about you or your use of the site
-  beyond what is mentioned below.
+  This site uses a private analytics service controlled and hosted by me to
+  collect usage data.
 </p>
 <h2>Location</h2>
 <p>
